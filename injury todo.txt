@@ -1,0 +1,41 @@
+v1.9
+-	Verify broken heart pickups are multiplayer friendly
+
+v1.8
+-	Add Broken Hearts
+	-	Create broken heart item
+	-	Create bleeding heart projectile
+	-	@Plan
+		-	Each injury ejects a 'Broken Heart' item away from player
+		-	Broken Hearts need to be captured or they fade
+		-	Craftable life crystal:
+			-	4 Broken Hearts
+			-	32 Glass
+			-	4 Shadow Orbs/Tissue Samples
+			-	10 Regeneration Potions
+-	Add optional harm scaling
+-	Add minimum injury
+v1.7
+-	Add Band of Life
+v1.6
+-	Set nurse to be able to heal injury buildup
+-	Update injury formula to not be as forgiving at high health (add as option)
+-	Set Injury to only apply damage up to max health
+v1.5
+-	Release!
+-	Use `Main.buffNoTimeDisplay[buffID] = true;` for bleeding
+-	Scale damage formula with current max health (5% of max health for each 5hp loss)
+-	Spew blood on max hp hit
+-	Add sound (NPC Hit 16)
+v1
+-	Add animation for max hp loss
+-	Add bleeding debuff for having less than 40% remaing health
+-	Add weakness debuff for taking single hits of than 25% max hp
+-	Add Leg Injury debuff
+	-	Apply slowness + low jump effect (via. player.PostUpdateRunSpeeds?)
+	-	Define debuff entry
+-	@Test
+-	Implement fall injury (slowness debuff lasting 2 minutes)
+-	Implement permanent health loss (clamps to 5hp chunks, 1% total damage)
+-	Create mod
+

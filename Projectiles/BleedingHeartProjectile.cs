@@ -35,7 +35,7 @@ namespace Injury.Projectiles {
 			this.projectile.aiStyle = 14;
 			this.projectile.penetrate = -1;
 			this.projectile.netImportant = true;
-			this.projectile.timeLeft = 600;
+			this.projectile.timeLeft = InjuryMod.Config.Data.DurationOfBleedingHeart;
 		}
 
 

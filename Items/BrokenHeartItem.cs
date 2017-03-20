@@ -24,7 +24,7 @@ namespace Injury.Items {
 		public override void AddRecipes() {
 			ModRecipe recipe = new ModRecipe( this.mod );
 			recipe.AddTile( 18 );   // Crafting bench
-			recipe.AddIngredient( this, 4 );
+			recipe.AddIngredient( this, InjuryMod.Config.Data.BrokenHeartsPerLifeCrystal );
 			recipe.AddRecipeGroup( "InjuryMod:EvilBiomeBossDrop", 4 );
 			//recipe.AddIngredient( "Shadow Scale", 4 );
 			//recipe.AddIngredient( "Tissue Sample", 4 );

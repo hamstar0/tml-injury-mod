@@ -65,7 +65,9 @@ namespace Injury {
 			packet.Write( (bool)InjuryMod.Config.Data.HighMaxHealthReducesReceivedHarm );
 			packet.Write( (int)InjuryMod.Config.Data.MaxHealthLostFromInjury );
 			packet.Write( (bool)InjuryMod.Config.Data.BrokenHeartsDrop );
-			
+			packet.Write( (int)InjuryMod.Config.Data.DurationOfBleedingHeart );
+			packet.Write( (int)InjuryMod.Config.Data.BrokenHeartsPerLifeCrystal );
+
 			packet.Send( (int)player.whoAmI );
 		}
 
@@ -90,7 +92,9 @@ namespace Injury {
 			InjuryMod.Config.Data.HighMaxHealthReducesReceivedHarm = (bool)reader.ReadBoolean();
 			InjuryMod.Config.Data.MaxHealthLostFromInjury = (int)reader.ReadInt32();
 			InjuryMod.Config.Data.BrokenHeartsDrop = (bool)reader.ReadBoolean();
-		}
+			InjuryMod.Config.Data.DurationOfBleedingHeart = (int)reader.ReadInt32();
+			InjuryMod.Config.Data.BrokenHeartsPerLifeCrystal = (int)reader.ReadInt32();
+	}
 
 		////////////////////////////////
 		// Recipients (server)

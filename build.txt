@@ -1,5 +1,5 @@
 author = hamstar
-version = 1.8.2
+version = 1.8.3
 displayName = Injury
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*
 includePDB = false

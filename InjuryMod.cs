@@ -23,12 +23,14 @@ namespace Injury {
 		public bool HighMaxHealthReducesReceivedHarm = true;
 		public int MaxHealthLostFromInjury = 5;
 		public bool BrokenHeartsDrop = true;
+		public int DurationOfBleedingHeart = 16 * 60;
+		public int BrokenHeartsPerLifeCrystal = 3;
 	}
 
 
 
 	public class InjuryMod : Mod {
-		public readonly static Version ConfigVersion = new Version(1, 8, 1);
+		public readonly static Version ConfigVersion = new Version(1, 8, 3);
 		public static JsonConfig<ConfigurationData> Config { get; private set; }
 		public Texture2D HeartTex { get; private set; }
 

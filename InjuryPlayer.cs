@@ -25,13 +25,15 @@ namespace Injury {
 		}
 
 		public override void OnEnterWorld( Player player ) {
-			if( Main.netMode == 1 ) {   // Client
+			if( Main.netMode != 2 ) {   // Not server
 				if( player.whoAmI == this.player.whoAmI ) {
 					if( !InjuryMod.Config.Load() ) {
 						InjuryMod.Config.Save();
 					}
 
-					InjuryNetProtocol.SendSettingsRequestFromClient( this.mod, player );
+					if( Main.netMode == 1 ) {   // Client
+						InjuryNetProtocol.SendSettingsRequestFromClient( this.mod, player );
+					}
 				}
 			}
 		}

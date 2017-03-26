@@ -6,7 +6,7 @@ using Utils;
 using Utils.JsonConfig;
 using System.IO;
 using System;
-
+using System.Reflection;
 
 namespace Injury {
 	public class ConfigurationData {
@@ -34,6 +34,23 @@ namespace Injury {
 		public static JsonConfig<ConfigurationData> Config { get; private set; }
 		public Texture2D HeartTex { get; private set; }
 
+		/*public void SetConfig( string field_name, object value ) {
+			Mod mymod = ModLoader.GetMod( "InjuryMod" );
+			Type mymodtype = mymod.GetType();
+			PropertyInfo jsonconfig_prop = mymodtype.GetProperty( "Config", BindingFlags.Public | BindingFlags.Static );
+			if( jsonconfig_prop == null ) {
+				jsonconfig_prop = mymodtype.GetProperty( "Config" );  // Future proofing
+			}
+			if( jsonconfig_prop != null ) {
+				dynamic jsonconfig = jsonconfig_prop.GetValue( mymod, null );
+				PropertyInfo data_prop = jsonconfig_prop.PropertyType.GetProperty( "Data" );
+				dynamic data = data_prop.GetValue( jsonconfig, null );
+				PropertyInfo config_prop = data_prop.PropertyType.GetProperty( field_name );
+				if( config_prop != null ) {
+					config_prop.SetValue( data, value, null );
+				}
+			}
+		}*/
 
 		public InjuryMod() {
 			this.Properties = new ModProperties() {

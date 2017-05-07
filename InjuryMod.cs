@@ -6,51 +6,45 @@ using Utils;
 using Utils.JsonConfig;
 using System.IO;
 using System;
-using System.Reflection;
+
 
 namespace Injury {
 	public class ConfigurationData {
 		public string VersionSinceUpdate = "";
-		public float PercentOfDamageToUseAsHarm = 0.075f;
+
+		public float PercentOfDamageToUseAsInjury = 0.075f;
+		public float AdditionalInjuryPerDamagingHit = 0f;
+		public float BufferBeforeReceivingInjury = 5f;
+		public int MaxHealthLostFromInjury = 5;
+
 		public int FallLimpDurationMultiplier = 9;
 		public float FallLimpSpeedMultiplier = 0.45f;
 		public float FallLimpJumpMultiplier = 0.35f;
+
 		public int LowestAllowedMaxHealth = 20;
-		public float HarmHealPerSecond = 1f / (60f * 75f);	// 1 hp every 75 seconds
-		public float BandOfLifeHarmHealPerSecond = 1f / (60f * 30f); // 1 hp every 30 seconds
-		public float AdditionalHarmPerDamagingHit = 0f;
-		public float HarmBeforeReceivingInjury = 5f;
-		public bool HighMaxHealthReducesReceivedHarm = true;
-		public int MaxHealthLostFromInjury = 5;
+
+		public float InjuryBufferHealPerSecond = 1f / (60f * 75f);	// 1 hp every 75 seconds
+		public float BandOfLifeInjuryHealPerSecond = 1f / (60f * 30f); // 1 hp every 30 seconds
+
+		public bool HighMaxHealthReducesInjury = true;
+
 		public bool BrokenHeartsDrop = true;
 		public int DurationOfBleedingHeart = 16 * 60;
-		public int BrokenHeartsPerLifeCrystal = 3;
+		public int BrokenHeartsPerLifeCrystal = 4;
+		public int BrokenHeartsPerCrackedLifeCrystal = 2;
+
+		public int TemporaryMaxHpChunkDrainTickRate = 5 * 30 * 60;   // 5 hp every 30 seconds
 	}
 
 
 
 	public class InjuryMod : Mod {
-		public readonly static Version ConfigVersion = new Version(1, 8, 3);
-		public static JsonConfig<ConfigurationData> Config { get; private set; }
+		public readonly static Version ConfigVersion = new Version(1, 9, 0);
+		public JsonConfig<ConfigurationData> Config { get; private set; }
+
 		public Texture2D HeartTex { get; private set; }
 
-		/*public void SetConfig( string field_name, object value ) {
-			Mod mymod = ModLoader.GetMod( "InjuryMod" );
-			Type mymodtype = mymod.GetType();
-			PropertyInfo jsonconfig_prop = mymodtype.GetProperty( "Config", BindingFlags.Public | BindingFlags.Static );
-			if( jsonconfig_prop == null ) {
-				jsonconfig_prop = mymodtype.GetProperty( "Config" );  // Future proofing
-			}
-			if( jsonconfig_prop != null ) {
-				dynamic jsonconfig = jsonconfig_prop.GetValue( mymod, null );
-				PropertyInfo data_prop = jsonconfig_prop.PropertyType.GetProperty( "Data" );
-				dynamic data = data_prop.GetValue( jsonconfig, null );
-				PropertyInfo config_prop = data_prop.PropertyType.GetProperty( field_name );
-				if( config_prop != null ) {
-					config_prop.SetValue( data, value, null );
-				}
-			}
-		}*/
+
 
 		public InjuryMod() {
 			this.Properties = new ModProperties() {
@@ -60,7 +54,36 @@ namespace Injury {
 			};
 
 			string filename = "Injury Config.json";
-			InjuryMod.Config = new JsonConfig<ConfigurationData>(filename, new ConfigurationData());
+			this.Config = new JsonConfig<ConfigurationData>( filename, "Mod Configs", new ConfigurationData() );
+		}
+
+
+		private void LoadConfig() {
+			var old_config = new JsonConfig<ConfigurationData>( this.Config.FileName, "", new ConfigurationData() );
+			// Update old config to new location
+			if( old_config.LoadFile() ) {
+				old_config.DestroyFile();
+				old_config.SetFilePath( this.Config.FileName, "Mod Configs" );
+				this.Config = old_config;
+			} else if( !this.Config.LoadFile() ) {
+				this.Config.SaveFile();
+			}
+
+			Version vers_since = this.Config.Data.VersionSinceUpdate != "" ?
+				new Version( this.Config.Data.VersionSinceUpdate ) :
+				new Version();
+
+			if( vers_since < InjuryMod.ConfigVersion ) {
+				var new_config = new ConfigurationData();
+				ErrorLogger.Log( "Stamina config updated to " + InjuryMod.ConfigVersion.ToString() );
+
+				if( vers_since < new Version( 1, 8, 1 ) ) {
+					this.Config.Data.BandOfLifeInjuryHealPerSecond = new ConfigurationData().BandOfLifeInjuryHealPerSecond;
+				}
+
+				this.Config.Data.VersionSinceUpdate = InjuryMod.ConfigVersion.ToString();
+				this.Config.SaveFile();
+			}
 		}
 
 		public override void Load() {
@@ -68,24 +91,7 @@ namespace Injury {
 				this.HeartTex = ModLoader.GetTexture( "Terraria/Heart" );
 			}
 
-			if( !InjuryMod.Config.Load() ) {
-				InjuryMod.Config.Save();
-			} else {
-				Version vers_since = InjuryMod.Config.Data.VersionSinceUpdate != "" ?
-					new Version( InjuryMod.Config.Data.VersionSinceUpdate ) :
-					new Version();
-
-				if( vers_since < InjuryMod.ConfigVersion ) {
-					ErrorLogger.Log( "Injury config updated to " + InjuryMod.ConfigVersion.ToString() );
-					InjuryMod.Config.Data.VersionSinceUpdate = InjuryMod.ConfigVersion.ToString();
-
-					if( vers_since < new Version( 1, 8, 1 ) ) {
-						InjuryMod.Config.Data.BandOfLifeHarmHealPerSecond = new ConfigurationData().BandOfLifeHarmHealPerSecond;
-					}
-
-					InjuryMod.Config.Save();
-				}
-			}
+			this.LoadConfig();
 		}
 
 
@@ -137,7 +143,7 @@ namespace Injury {
 				}
 			}
 
-			Debug.PrintToBatch( sb );
+			DebugHelper.PrintToBatch( sb );
 		}
 	}
 }

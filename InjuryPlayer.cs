@@ -3,14 +3,18 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using Utils;
+
 
 namespace Injury {
 	class InjuryPlayer : ModPlayer {
 		public float HiddenHarmBuffer { get; private set; }
 		public bool IsImpaired;
+		public int TemporaryMaxHp { get; private set; }
 
 		private bool HasHealedInjury = false;
+		private int TemporaryMaxHpTimer = 0;
 
 
 		////////////////
@@ -21,23 +25,44 @@ namespace Injury {
 
 			myclone.HiddenHarmBuffer = this.HiddenHarmBuffer;
 			myclone.IsImpaired = this.IsImpaired;
+			myclone.TemporaryMaxHp = this.TemporaryMaxHp;
 			myclone.HasHealedInjury = this.HasHealedInjury;
+			myclone.TemporaryMaxHpTimer = this.TemporaryMaxHpTimer;
 		}
 
 		public override void OnEnterWorld( Player player ) {
+			var mymod = (InjuryMod)this.mod;
+
 			if( Main.netMode != 2 ) {   // Not server
 				if( player.whoAmI == this.player.whoAmI ) {
-					if( !InjuryMod.Config.Load() ) {
-						InjuryMod.Config.Save();
+					if( !mymod.Config.LoadFile() ) {
+						mymod.Config.SaveFile();
 					}
 
 					if( Main.netMode == 1 ) {   // Client
-						InjuryNetProtocol.SendSettingsRequestFromClient( this.mod, player );
+						InjuryNetProtocol.SendSettingsRequestFromClient( mymod, player );
 					}
 				}
 			}
 		}
 
+		public override void Load( TagCompound tags ) {
+			var mymod = (InjuryMod)this.mod;
+
+			if( !mymod.Config.LoadFile() ) {
+				mymod.Config.SaveFile();
+			}
+			
+			if( tags.ContainsKey( "temp_max_hp" ) ) {
+				int temp_max_hp = tags.GetInt( "temp_max_hp" );
+				this.TemporaryMaxHp = temp_max_hp;
+				this.TemporaryMaxHpTimer = mymod.Config.Data.TemporaryMaxHpChunkDrainTickRate;
+			}
+		}
+
+		public override TagCompound Save() {
+			return new TagCompound { {"temp_max_hp", this.TemporaryMaxHp} };
+		}
 
 		////////////////
 
@@ -52,14 +77,14 @@ namespace Injury {
 			if( !quiet ) {
 				double max_dmg = damage > this.player.statLife ? this.player.statLife + 1 : damage;
 				float harm = this.ComputeHarm( max_dmg, crit );
-				this.Harm( harm );
+				this.AfflictHarm( harm );
 			}
-			
-			//return base.PreHurt( pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage, ref playSound, ref genGore, ref damageSource );
 		}
 
 
 		public override void PreUpdate() {
+			var mymod = (InjuryMod)this.mod;
+
 			// Low hp (< %35) blood loss
 			if( (float)this.player.statLife < (float)this.player.statLifeMax2 * 0.35f ) {
 				this.player.AddBuff( 30, 2 );
@@ -72,12 +97,12 @@ namespace Injury {
 			if( this.player.velocity.Y == 0f ) {
 				int dmg = PlayerHelper.ComputeImpendingFallDamage( this.player );
 				if( dmg != 0 ) {
-					this.player.AddBuff( mod.BuffType("ImpactTrauma"), dmg * InjuryMod.Config.Data.FallLimpDurationMultiplier );
+					this.player.AddBuff( mod.BuffType("ImpactTrauma"), dmg * mymod.Config.Data.FallLimpDurationMultiplier );
 				}
 			}
 
 			// Erode harm gradually
-			this.HiddenHarmBuffer -= InjuryMod.Config.Data.HarmHealPerSecond;
+			this.HiddenHarmBuffer -= mymod.Config.Data.InjuryBufferHealPerSecond;
 			if( this.HiddenHarmBuffer < 0f ) { this.HiddenHarmBuffer = 0f; }
 			if( this.player.dead ) { this.HiddenHarmBuffer = 0f; }
 
@@ -91,51 +116,88 @@ namespace Injury {
 				this.HasHealedInjury = false;
 			}
 
-			if( Debug.DEBUGMODE ) {
-				Debug.Display["wear"] = this.HiddenHarmBuffer.ToString("N2") + " : " + this.ComputeHarmToInjuryThreshold().ToString("N2");
+			// Erode temporary max hp
+			if( this.TemporaryMaxHp > 0 ) {
+				if( this.TemporaryMaxHpTimer == 0 ) {
+					this.TemporaryMaxHpTimer = mymod.Config.Data.TemporaryMaxHpChunkDrainTickRate;
+					this.TemporaryMaxHp -= 5;
+
+					if( this.player.statLifeMax > mymod.Config.Data.LowestAllowedMaxHealth ) {
+						this.player.statLifeMax -= 5;
+						mymod.AnimateHeartDrop();
+						this.InjuryFX( false );
+					} else {
+						this.TemporaryMaxHpTimer = 0;
+						this.TemporaryMaxHp = 0;
+					}
+				} else {
+					this.TemporaryMaxHpTimer -= 1;
+				}
+			}
+
+			if( DebugHelper.DEBUGMODE ) {
+				DebugHelper.Display["wear"] = this.HiddenHarmBuffer.ToString("N2") + " : " + this.ComputeHarmToInjuryThreshold().ToString("N2");
 			}
 		}
 
 
 		public override void PostUpdateRunSpeeds() {
 			if( this.IsImpaired ) {
-				Buffs.ImpactTrauma.ApplyImpairment( this.player );
+				Buffs.ImpactTrauma.ApplyImpairment( (InjuryMod)this.mod, this.player );
 				this.IsImpaired = false;
 			}
 		}
 
 		////////////////
-		
+
+		public bool TemporaryInjuryHeal( int amt ) {
+			if( this.player.statLifeMax >= 400 ) { return false; }
+
+			var mymod = (InjuryMod)this.mod;
+
+			this.player.statLifeMax += amt;
+			this.TemporaryMaxHp += amt;
+			this.TemporaryMaxHpTimer = mymod.Config.Data.TemporaryMaxHpChunkDrainTickRate;
+
+			return true;
+		}
+
+		////////////////
+
 		public float ComputeHarm( double damage, bool crit ) {
-			var data = InjuryMod.Config.Data;
-			float harm = (float)damage * data.PercentOfDamageToUseAsHarm + data.AdditionalHarmPerDamagingHit;
+			var mymod = (InjuryMod)this.mod;
+			var data = mymod.Config.Data;
+			float harm = (float)damage * data.PercentOfDamageToUseAsInjury + data.AdditionalInjuryPerDamagingHit;
 			return crit ? harm * 2f : harm;
 		}
 
 		public float ComputeHarmToInjuryThreshold() {
-			var data = InjuryMod.Config.Data;
+			var mymod = (InjuryMod)this.mod;
+			var data = mymod.Config.Data;
 			float min = 1f;
 
-			if( data.HighMaxHealthReducesReceivedHarm ) {
+			if( data.HighMaxHealthReducesInjury ) {
 				min = 0.75f + ((float)this.player.statLifeMax / 400f);
 			}
 
-			return (min < 1f ? 1f : min) * data.HarmBeforeReceivingInjury;
+			return (min < 1f ? 1f : min) * data.BufferBeforeReceivingInjury;
 		}
 		
 
-		public void Harm( float harm ) {
-			int min_hp = InjuryMod.Config.Data.LowestAllowedMaxHealth;
+		public void AfflictHarm( float harm ) {
+			var mymod = (InjuryMod)this.mod;
+			int min_hp = mymod.Config.Data.LowestAllowedMaxHealth;
 			bool is_injured = false;
 
 			if( this.player.statLifeMax <= min_hp ) { return; }
 			
 			this.HiddenHarmBuffer += harm;
 
+			// When harm is sufficient to cause injury:
 			while( this.HiddenHarmBuffer >= this.ComputeHarmToInjuryThreshold() && this.player.statLifeMax > min_hp ) {
 				is_injured = true;
 				this.HiddenHarmBuffer -= this.ComputeHarmToInjuryThreshold();
-				this.player.statLifeMax -= InjuryMod.Config.Data.MaxHealthLostFromInjury;
+				this.player.statLifeMax -= mymod.Config.Data.MaxHealthLostFromInjury;
 			}
 
 			// Enforce minimum health cap
@@ -145,18 +207,17 @@ namespace Injury {
 			}
 
 			if( is_injured ) {
-				if( InjuryMod.Config.Data.BrokenHeartsDrop ) {
+				if( mymod.Config.Data.BrokenHeartsDrop ) {
 					BleedingHeartProjectile.Spawn( this.player, this.mod );
 				}
-
-				InjuryMod mymod = (InjuryMod)this.mod;
+				
 				mymod.AnimateHeartDrop();
-				this.Ouch();
+				this.InjuryFX();
 			}
 		}
 
 
-		public void Ouch() {
+		public void InjuryFX( bool with_sound=true ) {
 			var pos = new Vector2( this.player.position.X, this.player.position.Y );
 			if( this.player.gravDir < 0 ) {
 				pos.Y += this.player.height;
@@ -169,7 +230,9 @@ namespace Injury {
 				Dust.NewDust( pos, this.player.width, this.player.height, 5, vel_x, vel_y );
 			}
 
-			Main.PlaySound( SoundID.NPCHit16, this.player.position );
+			if( with_sound ) {
+				Main.PlaySound( SoundID.NPCHit16, this.player.position );
+			}
 		}
 	}
 }

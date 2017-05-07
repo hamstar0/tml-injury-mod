@@ -11,15 +11,15 @@ namespace Injury {
 
 
 	public class InjuryNetProtocol {
-		public static void RoutePacket( Mod mod, BinaryReader reader ) {
+		public static void RoutePacket( InjuryMod mymod, BinaryReader reader ) {
 			InjuryNetProtocolTypes protocol = (InjuryNetProtocolTypes)reader.ReadByte();
 
 			switch( protocol ) {
 			case InjuryNetProtocolTypes.SendSettingsRequest:
-				InjuryNetProtocol.ReceiveSettingsRequestOnServer( mod, reader );
+				InjuryNetProtocol.ReceiveSettingsRequestOnServer( mymod, reader );
 				break;
 			case InjuryNetProtocolTypes.SendSettings:
-				InjuryNetProtocol.ReceiveSettingsOnClient( mod, reader );
+				InjuryNetProtocol.ReceiveSettingsOnClient( mymod, reader );
 				break;
 			default:
 				ErrorLogger.Log( "Invalid packet protocol: " + protocol );
@@ -33,10 +33,10 @@ namespace Injury {
 		// Senders (client)
 		////////////////////////////////
 
-		public static void SendSettingsRequestFromClient( Mod mod, Player player ) {
+		public static void SendSettingsRequestFromClient( InjuryMod mymod, Player player ) {
 			if( Main.netMode != 1 ) { return; } // Clients only
 
-			ModPacket packet = mod.GetPacket();
+			ModPacket packet = mymod.GetPacket();
 
 			packet.Write( (byte)InjuryNetProtocolTypes.SendSettingsRequest );
 			packet.Write( (int)player.whoAmI );
@@ -47,26 +47,13 @@ namespace Injury {
 		// Senders (server)
 		////////////////////////////////
 
-		private static void SendSettingFromServer( Mod mod, Player player ) {
+		private static void SendSettingFromServer( InjuryMod mymod, Player player ) {
 			if( Main.netMode != 2 ) { return; }	// Server only
 
-			ModPacket packet = mod.GetPacket();
+			ModPacket packet = mymod.GetPacket();
 
 			packet.Write( (byte)InjuryNetProtocolTypes.SendSettings );
-			packet.Write( (float)InjuryMod.Config.Data.PercentOfDamageToUseAsHarm );
-			packet.Write( (int)InjuryMod.Config.Data.FallLimpDurationMultiplier );
-			packet.Write( (float)InjuryMod.Config.Data.FallLimpSpeedMultiplier );
-			packet.Write( (float)InjuryMod.Config.Data.FallLimpJumpMultiplier );
-			packet.Write( (int)InjuryMod.Config.Data.LowestAllowedMaxHealth );
-			packet.Write( (float)InjuryMod.Config.Data.HarmHealPerSecond );
-			packet.Write( (float)InjuryMod.Config.Data.BandOfLifeHarmHealPerSecond );
-			packet.Write( (float)InjuryMod.Config.Data.AdditionalHarmPerDamagingHit );
-			packet.Write( (float)InjuryMod.Config.Data.HarmBeforeReceivingInjury );
-			packet.Write( (bool)InjuryMod.Config.Data.HighMaxHealthReducesReceivedHarm );
-			packet.Write( (int)InjuryMod.Config.Data.MaxHealthLostFromInjury );
-			packet.Write( (bool)InjuryMod.Config.Data.BrokenHeartsDrop );
-			packet.Write( (int)InjuryMod.Config.Data.DurationOfBleedingHeart );
-			packet.Write( (int)InjuryMod.Config.Data.BrokenHeartsPerLifeCrystal );
+			packet.Write( (string)mymod.Config.SerializeMe() );
 
 			packet.Send( (int)player.whoAmI );
 		}
@@ -77,30 +64,17 @@ namespace Injury {
 		// Recipients (client)
 		////////////////////////////////
 
-		private static void ReceiveSettingsOnClient( Mod mod, BinaryReader reader ) {
+		private static void ReceiveSettingsOnClient( InjuryMod mymod, BinaryReader reader ) {
 			if( Main.netMode != 1 ) { return; } // Client only
-
-			InjuryMod.Config.Data.PercentOfDamageToUseAsHarm = (float)reader.ReadSingle();
-			InjuryMod.Config.Data.FallLimpDurationMultiplier = (int)reader.ReadInt32();
-			InjuryMod.Config.Data.FallLimpSpeedMultiplier = (float)reader.ReadSingle();
-			InjuryMod.Config.Data.FallLimpJumpMultiplier = (float)reader.ReadSingle();
-			InjuryMod.Config.Data.LowestAllowedMaxHealth = (int)reader.ReadInt32();
-			InjuryMod.Config.Data.HarmHealPerSecond = (float)reader.ReadSingle();
-			InjuryMod.Config.Data.BandOfLifeHarmHealPerSecond = (float)reader.ReadSingle();
-			InjuryMod.Config.Data.AdditionalHarmPerDamagingHit = (float)reader.ReadSingle();
-			InjuryMod.Config.Data.HarmBeforeReceivingInjury = (float)reader.ReadSingle();
-			InjuryMod.Config.Data.HighMaxHealthReducesReceivedHarm = (bool)reader.ReadBoolean();
-			InjuryMod.Config.Data.MaxHealthLostFromInjury = (int)reader.ReadInt32();
-			InjuryMod.Config.Data.BrokenHeartsDrop = (bool)reader.ReadBoolean();
-			InjuryMod.Config.Data.DurationOfBleedingHeart = (int)reader.ReadInt32();
-			InjuryMod.Config.Data.BrokenHeartsPerLifeCrystal = (int)reader.ReadInt32();
-	}
+			
+			mymod.Config.DeserializeMe( reader.ReadString() );
+		}
 
 		////////////////////////////////
 		// Recipients (server)
 		////////////////////////////////
 
-		private static void ReceiveSettingsRequestOnServer( Mod mod, BinaryReader reader ) {
+		private static void ReceiveSettingsRequestOnServer( InjuryMod mymod, BinaryReader reader ) {
 			if( Main.netMode != 2 ) { return; } // Server only
 
 			int who = reader.ReadInt32();
@@ -109,7 +83,7 @@ namespace Injury {
 				return;
 			}
 			
-			InjuryNetProtocol.SendSettingFromServer( mod, Main.player[who] );
+			InjuryNetProtocol.SendSettingFromServer( mymod, Main.player[who] );
 		}
 
 	}

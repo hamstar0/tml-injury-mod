@@ -1,6 +1,11 @@
-v1.9
+v2.0
 -	Verify broken heart pickups are multiplayer friendly
 
+v1.9
+-	Add better visibility for Broken Hearts
+-	Add better pickup range for Broken Hearts
+-	Add Cracked Life Crystals
+-	Update config code
 v1.8
 -	Add Broken Hearts
 	-	Create broken heart item

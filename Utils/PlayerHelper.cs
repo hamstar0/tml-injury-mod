@@ -1,5 +1,6 @@
 ﻿using Terraria;
 
+
 namespace Utils {
 	public class PlayerHelper {
 		public static bool HasUsedNurse( Player player ) {

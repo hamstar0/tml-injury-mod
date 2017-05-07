@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
+
 namespace Injury.Items {
 	public class BandOfLifeItem : ModItem {
 		public static int Width = 22;
@@ -18,7 +19,7 @@ namespace Injury.Items {
 
 		public override void SetDefaults() {
 			this.item.name = "Band of Life";
-			this.item.toolTip = "Slowly fills maximum life (up to 400).";
+			this.item.toolTip = "Slowly fills maximum life (up to 400)";
 			this.item.width = BandOfLifeItem.Width;
 			this.item.height = BandOfLifeItem.Height;
 			this.item.maxStack = 1;
@@ -32,16 +33,17 @@ namespace Injury.Items {
 		////////////////
 
 		public override void UpdateAccessory( Player player, bool hide_visual ) {
+			var mymod = (InjuryMod)this.mod;
 			var modplayer = player.GetModPlayer<InjuryPlayer>( this.mod );
-			var info = this.item.GetModInfo<BandOfLifeItemInfo>( this.mod );
+			var item_info = this.item.GetModInfo<BandOfLifeItemInfo>( this.mod );
 
-			if( modplayer.HiddenHarmBuffer == 0 && info.HealBuffer < 5f ) {
-				info.HealBuffer += InjuryMod.Config.Data.BandOfLifeHarmHealPerSecond;
+			if( modplayer.HiddenHarmBuffer == 0 && item_info.HealBuffer < 5f ) {
+				item_info.HealBuffer += mymod.Config.Data.BandOfLifeInjuryHealPerSecond;
 			}
 
-			if( info.HealBuffer >= 5f && player.statLifeMax < 400 ) {
+			if( item_info.HealBuffer >= 5f && player.statLifeMax < 400 ) {
 				player.statLifeMax += 5;
-				info.HealBuffer -= 5f;
+				item_info.HealBuffer -= 5f;
 
 				Main.PlaySound( SoundID.Item4, player.position );
 			}

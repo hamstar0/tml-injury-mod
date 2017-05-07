@@ -1,6 +1,6 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using Injury;
+
 
 namespace Injury.Buffs {
 	public class ImpactTrauma : ModBuff {
@@ -19,12 +19,12 @@ namespace Injury.Buffs {
 		}
 
 
-		public static void ApplyImpairment( Player player ) {
-			player.maxRunSpeed *= InjuryMod.Config.Data.FallLimpSpeedMultiplier;
+		public static void ApplyImpairment( InjuryMod mymod, Player player ) {
+			player.maxRunSpeed *= mymod.Config.Data.FallLimpSpeedMultiplier;
 			player.accRunSpeed = player.maxRunSpeed;
-			player.moveSpeed *= InjuryMod.Config.Data.FallLimpSpeedMultiplier;
+			player.moveSpeed *= mymod.Config.Data.FallLimpSpeedMultiplier;
 
-			int maxJump = (int)(Player.jumpHeight * InjuryMod.Config.Data.FallLimpJumpMultiplier);
+			int maxJump = (int)(Player.jumpHeight * mymod.Config.Data.FallLimpJumpMultiplier);
 			if( player.jump > maxJump ) { player.jump = maxJump; }
 		}
 	}

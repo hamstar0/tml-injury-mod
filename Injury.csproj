@@ -55,9 +55,10 @@
     <Compile Include="InjuryPlayer.cs" />
     <Compile Include="Items\BandOfLifeItem.cs" />
     <Compile Include="Items\BrokenHeartItem.cs" />
+    <Compile Include="Items\CrackedLifeCrystalItem.cs" />
     <Compile Include="Projectiles\BleedingHeartProjectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\Debug.cs" />
+    <Compile Include="Utils\DebugHelper.cs" />
     <Compile Include="Utils\ItemHelper.cs" />
     <Compile Include="Utils\PlayerHelper.cs" />
     <Compile Include="Utils\JsonConfig.cs" />
@@ -65,6 +66,10 @@
   <ItemGroup>
     <Content Include="build.txt" />
     <Content Include="description.txt" />
+    <Content Include="Items\BandOfLifeItem.png" />
+    <Content Include="Items\BandOfLifeItem_HandsOn.png" />
+    <Content Include="Items\BrokenHeartItem.png" />
+    <Content Include="Items\CrackedLifeCrystalItem.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

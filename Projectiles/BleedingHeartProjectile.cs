@@ -29,35 +29,53 @@ namespace Injury.Projectiles {
 
 
 		public override void SetDefaults() {
-			this.projectile.name = "Bleeding Heart";
-			this.projectile.width = 16;
-			this.projectile.height = 16;
-			this.projectile.aiStyle = 14;
-			this.projectile.penetrate = -1;
-			this.projectile.netImportant = true;
-			this.projectile.timeLeft = InjuryMod.Config.Data.DurationOfBleedingHeart;
+			var mymod = (InjuryMod)this.mod;
+			var proj = this.projectile;
+
+			proj.name = "Bleeding Heart";
+			proj.width = 16;
+			proj.height = 16;
+			proj.aiStyle = 14;
+			proj.penetrate = -1;
+			proj.netImportant = true;
+			proj.timeLeft = mymod.Config.Data.DurationOfBleedingHeart;
 		}
 
 
 		public override void AI() {
-			if( (this.projectile.timeLeft > 60 && this.projectile.timeLeft % 2 == 0) || this.projectile.timeLeft % 5 == 0 ) {
-				int dust_id = Dust.NewDust( this.projectile.Center, 3, 6, 216, 0, 1f, 0, Color.Red, 1f );
-				Main.dust[dust_id].velocity /= 2f;
-				Main.dust[dust_id].scale = 0.8f;
-			}
-
-			Rectangle proj_rect = new Rectangle( (int)this.projectile.position.X, (int)this.projectile.position.Y, this.projectile.width, this.projectile.height );
+			var mymod = (InjuryMod)this.mod;
+			var proj = this.projectile;
+			int duration = mymod.Config.Data.DurationOfBleedingHeart;
+			int proj_x = (int)proj.position.X - proj.width;
+			int proj_y = (int)proj.position.Y - proj.height;
+			int proj_width = proj.width * 3;
+			int proj_height = proj.height * 3;
+			var proj_rect = new Rectangle( proj_x, proj_y, proj_width, proj_height );
 			
-			for( int i = 0; i < 255; i++ ) {
-				Player player = Main.player[i];
-				if( player.active && !player.dead ) {
-					if( this.projectile.timeLeft >= 570 && this.projectile.owner == player.whoAmI ) { continue; }
+			if( (proj.timeLeft > 60 && proj.timeLeft % 2 == 0) || proj.timeLeft % 5 == 0 ) {
+				int blood_who = Dust.NewDust( proj.Center, 3, 6, 216, 0, 1f, 0, Color.Red, 1f );
+				Main.dust[blood_who].velocity /= 2f;
+				Main.dust[blood_who].scale = 0.8f;
 
-					Rectangle player_rect = new Rectangle( (int)player.position.X, (int)player.position.Y, player.width, player.height );
+				if( Main.rand.Next(7) == 0 ) {
+					int spark_who = Dust.NewDust( proj.position, proj.width, proj.height, 55, 0f, 0f, 200, Color.White, 1f );
+					Main.dust[spark_who].velocity *= 0.1f;
+					Main.dust[spark_who].scale *= 0.4f;
+				}
+			}
+			
+			if( proj.timeLeft < (duration - 180) ) { //570?
+				for( int i = 0; i < 255; i++ ) {
+					Player player = Main.player[i];
 
-					if( proj_rect.Intersects( player_rect ) ) {
-						BleedingHeartProjectile.GiveBrokenHeart( player, this.mod );
-						this.projectile.Kill();
+					if( player.active && !player.dead ) {
+						Rectangle player_rect = new Rectangle( (int)player.position.X, (int)player.position.Y, player.width, player.height );
+						
+						if( proj_rect.Intersects( player_rect ) ) {
+							BleedingHeartProjectile.GiveBrokenHeart( player, this.mod );
+							proj.Kill();
+							break;
+						}
 					}
 				}
 			}

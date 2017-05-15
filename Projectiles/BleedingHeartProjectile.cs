@@ -13,8 +13,8 @@ namespace Injury.Projectiles {
 			float vel_x = 0, vel_y = 0;
 
 			do {
-				vel_x = (Main.rand.NextFloat() * 12f) - 6f;
-				vel_y = (Main.rand.NextFloat() * 9f) - 6f;
+				vel_x = (Main.rand.NextFloat() * 10f) - 5f;
+				vel_y = (Main.rand.NextFloat() * 7.5f) - 5f;
 			} while( Math.Abs(vel_x) + Math.Abs(vel_y) < 6f );
 
 			Projectile.NewProjectile( player.position.X, player.position.Y, vel_x, vel_y, proj_type, 0, 0, Main.myPlayer, 0f, 0f );

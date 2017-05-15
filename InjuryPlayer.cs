@@ -66,7 +66,7 @@ namespace Injury {
 
 		////////////////
 
-		public override void PostHurt( bool pvp, bool quiet, double damage, int hitDirection, bool crit ) {
+		public override void PostHurt( bool pvp, bool quiet, double damage, int hit_direction, bool crit ) {
 		//public override bool PreHurt( bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource ) {
 			// Powerful blow stagger
 			if( (float)damage > (float)this.player.statLifeMax2 * 0.25f ) {
@@ -74,7 +74,7 @@ namespace Injury {
 				this.player.AddBuff( 33, 6 );	// Weak
 			}
 
-			if( !quiet ) {
+			if( !quiet && this.CanBeHarmed(damage, crit) ) {
 				double max_dmg = damage > this.player.statLife ? this.player.statLife + 1 : damage;
 				float harm = this.ComputeHarm( max_dmg, crit );
 				this.AfflictHarm( harm );
@@ -163,6 +163,14 @@ namespace Injury {
 		}
 
 		////////////////
+
+		public bool CanBeHarmed( double damage, bool crit ) {
+			var mymod = (InjuryMod)this.mod;
+			double max_hp_until_harm = mymod.Config.Data.MaxHpPercentDamageUntilHarm;
+			
+			if( crit ) { damage *= 2; }
+			return player.statLife < player.statLifeMax2 || damage > (double)player.statLifeMax2 * max_hp_until_harm;
+		}
 
 		public float ComputeHarm( double damage, bool crit ) {
 			var mymod = (InjuryMod)this.mod;

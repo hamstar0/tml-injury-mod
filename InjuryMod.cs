@@ -34,12 +34,14 @@ namespace Injury {
 		public int BrokenHeartsPerCrackedLifeCrystal = 2;
 
 		public int TemporaryMaxHpChunkDrainTickRate = 5 * 30 * 60;   // 5 hp every 30 seconds
+
+		public float MaxHpPercentDamageUntilHarm = 0.20f;	// Adventurer's grace
 	}
 
 
 
 	public class InjuryMod : Mod {
-		public readonly static Version ConfigVersion = new Version(1, 9, 0);
+		public readonly static Version ConfigVersion = new Version(1, 9, 1);
 		public JsonConfig<ConfigurationData> Config { get; private set; }
 
 		public Texture2D HeartTex { get; private set; }
@@ -59,30 +61,34 @@ namespace Injury {
 
 
 		private void LoadConfig() {
-			var old_config = new JsonConfig<ConfigurationData>( this.Config.FileName, "", new ConfigurationData() );
+			// Destroy ancient config
+			var very_old_config = new JsonConfig<ConfigurationData>( "Injury 1.6.0.json", "", new ConfigurationData() );
+			if( very_old_config.LoadFile() ) { very_old_config.DestroyFile(); }
+
 			// Update old config to new location
+			var old_config = new JsonConfig<ConfigurationData>( this.Config.FileName, "", new ConfigurationData() );
 			if( old_config.LoadFile() ) {
 				old_config.DestroyFile();
 				old_config.SetFilePath( this.Config.FileName, "Mod Configs" );
 				this.Config = old_config;
 			} else if( !this.Config.LoadFile() ) {
 				this.Config.SaveFile();
-			}
+			} else {
+				Version vers_since = this.Config.Data.VersionSinceUpdate != "" ?
+					new Version( this.Config.Data.VersionSinceUpdate ) :
+					new Version();
 
-			Version vers_since = this.Config.Data.VersionSinceUpdate != "" ?
-				new Version( this.Config.Data.VersionSinceUpdate ) :
-				new Version();
+				if( vers_since < InjuryMod.ConfigVersion ) {
+					var new_config = new ConfigurationData();
+					ErrorLogger.Log( "Stamina config updated to " + InjuryMod.ConfigVersion.ToString() );
 
-			if( vers_since < InjuryMod.ConfigVersion ) {
-				var new_config = new ConfigurationData();
-				ErrorLogger.Log( "Stamina config updated to " + InjuryMod.ConfigVersion.ToString() );
+					if( vers_since < new Version( 1, 8, 1 ) ) {
+						this.Config.Data.BandOfLifeInjuryHealPerSecond = new_config.BandOfLifeInjuryHealPerSecond;
+					}
 
-				if( vers_since < new Version( 1, 8, 1 ) ) {
-					this.Config.Data.BandOfLifeInjuryHealPerSecond = new ConfigurationData().BandOfLifeInjuryHealPerSecond;
+					this.Config.Data.VersionSinceUpdate = InjuryMod.ConfigVersion.ToString();
+					this.Config.SaveFile();
 				}
-
-				this.Config.Data.VersionSinceUpdate = InjuryMod.ConfigVersion.ToString();
-				this.Config.SaveFile();
 			}
 		}
 

@@ -1,6 +1,9 @@
 v2.0
 -	Verify broken heart pickups are multiplayer friendly
 
+v1.9.1
+-	Do not incur harm from hits <25% max hp when at full health
+-	Set broken hearts not to fly as far away on hit
 v1.9
 -	Add better visibility for Broken Hearts
 -	Add better pickup range for Broken Hearts

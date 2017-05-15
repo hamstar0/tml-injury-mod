@@ -35,7 +35,7 @@ namespace Injury {
 
 		public int TemporaryMaxHpChunkDrainTickRate = 5 * 30 * 60;   // 5 hp every 30 seconds
 
-		public float MaxHpPercentDamageUntilHarm = 0.20f;	// Adventurer's grace
+		public float PercentOfMaxHpAsDamageAtFullHealthUntilHarm = 0.20f;	// Adventurer's grace
 	}
 
 

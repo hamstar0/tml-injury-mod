@@ -166,7 +166,7 @@ namespace Injury {
 
 		public bool CanBeHarmed( double damage, bool crit ) {
 			var mymod = (InjuryMod)this.mod;
-			double max_hp_until_harm = mymod.Config.Data.MaxHpPercentDamageUntilHarm;
+			double max_hp_until_harm = mymod.Config.Data.PercentOfMaxHpAsDamageAtFullHealthUntilHarm;
 			
 			if( crit ) { damage *= 2; }
 			return player.statLife < player.statLifeMax2 || damage > (double)player.statLifeMax2 * max_hp_until_harm;

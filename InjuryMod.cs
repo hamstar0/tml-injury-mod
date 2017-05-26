@@ -88,7 +88,7 @@ namespace Injury {
 					if( vers_since < new Version( 1, 8, 1 ) ) {
 						this.Config.Data.BandOfLifeInjuryHealPerSecond = new_config.BandOfLifeInjuryHealPerSecond;
 					}
-					if( vers_since < new Version( 2, 0, 0 ) ) {
+					if( vers_since < new Version( 1, 9, 2 ) ) {
 						this.Config.Data.DurationOfBleedingHeart = new_config.DurationOfBleedingHeart;
 					}
 					

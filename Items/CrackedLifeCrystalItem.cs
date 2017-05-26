@@ -37,7 +37,11 @@ namespace Injury.Items {
 
 		public override bool ConsumeItem( Player player ) {
 			var modplayer = player.GetModPlayer<InjuryPlayer>( this.mod );
-			return modplayer.TemporaryInjuryHeal( 20 );
+			bool can_heal = modplayer.CanTemporaryInjuryHeal( 20 );
+			if( can_heal ) {
+				modplayer.TemporaryInjuryHeal( 20 );
+			}
+			return can_heal;
 		}
 
 

@@ -14,7 +14,7 @@ namespace Injury {
 
 		public float PercentOfDamageToUseAsInjury = 0.075f;
 		public float AdditionalInjuryPerDamagingHit = 0f;
-		public float BufferBeforeReceivingInjury = 5f;
+		public float HarmBufferCapacityBeforeReceivingInjury = 5f;
 		public int MaxHealthLostFromInjury = 5;
 
 		public int FallLimpDurationMultiplier = 9;
@@ -29,19 +29,22 @@ namespace Injury {
 		public bool HighMaxHealthReducesInjury = true;
 
 		public bool BrokenHeartsDrop = true;
-		public int DurationOfBleedingHeart = 16 * 60;
+		public int DurationOfBleedingHeart = 24 * 60;
 		public int BrokenHeartsPerLifeCrystal = 4;
 		public int BrokenHeartsPerCrackedLifeCrystal = 2;
 
 		public int TemporaryMaxHpChunkDrainTickRate = 5 * 30 * 60;   // 5 hp every 30 seconds
 
-		public float PercentOfMaxHpAsDamageAtFullHealthUntilHarm = 0.20f;	// Adventurer's grace
+		public float MaxHpPercentRemainingUntilBleeding = 0.35f;
+		public float MaxHpPercentLossForPowerfulBlowStagger = 0.25f;
+
+		public float MaxHpPercentAsDamageAtFullHealthUntilHarm = 0.20f;	// Adventurer's grace
 	}
 
 
 
 	public class InjuryMod : Mod {
-		public readonly static Version ConfigVersion = new Version(1, 9, 1);
+		public readonly static Version ConfigVersion = new Version(1, 9, 2);
 		public JsonConfig<ConfigurationData> Config { get; private set; }
 
 		public Texture2D HeartTex { get; private set; }
@@ -85,7 +88,10 @@ namespace Injury {
 					if( vers_since < new Version( 1, 8, 1 ) ) {
 						this.Config.Data.BandOfLifeInjuryHealPerSecond = new_config.BandOfLifeInjuryHealPerSecond;
 					}
-
+					if( vers_since < new Version( 2, 0, 0 ) ) {
+						this.Config.Data.DurationOfBleedingHeart = new_config.DurationOfBleedingHeart;
+					}
+					
 					this.Config.Data.VersionSinceUpdate = InjuryMod.ConfigVersion.ToString();
 					this.Config.SaveFile();
 				}

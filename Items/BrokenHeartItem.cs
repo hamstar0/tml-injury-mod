@@ -24,17 +24,17 @@ namespace Injury.Items {
 
 		public override void AddRecipes() {
 			var mymod = (InjuryMod)this.mod;
-			var recipe = new ModRecipe( mymod );
+			var my_recipe = new ModRecipe( mymod );
 
-			recipe.AddTile( 18 );   // Crafting bench
-			recipe.AddIngredient( this, mymod.Config.Data.BrokenHeartsPerLifeCrystal );
-			recipe.AddRecipeGroup( "InjuryMod:EvilBiomeBossDrop", 4 );
+			my_recipe.AddTile( 18 );   // Crafting bench
+			my_recipe.AddIngredient( this, mymod.Config.Data.BrokenHeartsPerLifeCrystal );
+			my_recipe.AddRecipeGroup( "InjuryMod:EvilBiomeBossDrop", 4 );
 			//recipe.AddIngredient( "Shadow Scale", 4 );
 			//recipe.AddIngredient( "Tissue Sample", 4 );
-			recipe.AddIngredient( "Glass", 16 );
-			recipe.AddIngredient( "Regeneration Potion", 4 );
-			recipe.SetResult( 29, 1 );	// Life crystal
-			recipe.AddRecipe();
+			my_recipe.AddIngredient( "Glass", 16 );
+			my_recipe.AddIngredient( "Regeneration Potion", 4 );
+			my_recipe.SetResult( 29, 1 );	// Life crystal
+			my_recipe.AddRecipe();
 		}
 	}
 }

@@ -66,17 +66,20 @@ namespace Injury {
 
 		////////////////
 
-		public override void PostHurt( bool pvp, bool quiet, double damage, int hit_direction, bool crit ) {
 		//public override bool PreHurt( bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource ) {
+		public override void PostHurt( bool pvp, bool quiet, double damage, int hit_direction, bool crit ) {
+			var mymod = (InjuryMod)this.mod;
+			double damage_with_crit = crit ? damage * 2 : damage;
+
 			// Powerful blow stagger
-			if( (float)damage > (float)this.player.statLifeMax2 * 0.25f ) {
-				this.player.AddBuff(mod.BuffType("ImpactTrauma"), 3 );
+			if( (float)damage_with_crit > (float)this.player.statLifeMax2 * mymod.Config.Data.MaxHpPercentLossForPowerfulBlowStagger ) {
+				this.player.AddBuff( mod.BuffType("ImpactTrauma"), 3 );
 				this.player.AddBuff( 33, 6 );	// Weak
 			}
 
 			if( !quiet && this.CanBeHarmed(damage, crit) ) {
-				double max_dmg = damage > this.player.statLife ? this.player.statLife + 1 : damage;
-				float harm = this.ComputeHarm( max_dmg, crit );
+				float harm = this.ComputeHarm( damage, crit );
+//Main.NewText("harmed: "+harm+" buffer: "+ this.HiddenHarmBuffer.ToString("N2")+" threshold: "+this.ComputeHarmBufferCapacity().ToString("N2") );
 				this.AfflictHarm( harm );
 			}
 		}
@@ -86,7 +89,7 @@ namespace Injury {
 			var mymod = (InjuryMod)this.mod;
 
 			// Low hp (< %35) blood loss
-			if( (float)this.player.statLife < (float)this.player.statLifeMax2 * 0.35f ) {
+			if( (float)this.player.statLife < (float)this.player.statLifeMax2 * mymod.Config.Data.MaxHpPercentRemainingUntilBleeding ) {
 				this.player.AddBuff( 30, 2 );
 				Main.buffNoTimeDisplay[30] = true;	// Force bleeding to not render time
 			} else {
@@ -124,8 +127,7 @@ namespace Injury {
 
 					if( this.player.statLifeMax > mymod.Config.Data.LowestAllowedMaxHealth ) {
 						this.player.statLifeMax -= 5;
-						mymod.AnimateHeartDrop();
-						this.InjuryFX( false );
+						this.InjuryVisualFX();
 					} else {
 						this.TemporaryMaxHpTimer = 0;
 						this.TemporaryMaxHp = 0;
@@ -136,7 +138,7 @@ namespace Injury {
 			}
 
 			if( DebugHelper.DEBUGMODE ) {
-				DebugHelper.Display["wear"] = this.HiddenHarmBuffer.ToString("N2") + " : " + this.ComputeHarmToInjuryThreshold().ToString("N2");
+				DebugHelper.Display["wear"] = this.HiddenHarmBuffer.ToString("N2") + " : " + this.ComputeHarmBufferCapacity().ToString("N2");
 			}
 		}
 
@@ -150,9 +152,11 @@ namespace Injury {
 
 		////////////////
 
+		public bool CanTemporaryInjuryHeal( int amt ) {
+			return this.player.statLifeMax < 400;
+		}
+		
 		public bool TemporaryInjuryHeal( int amt ) {
-			if( this.player.statLifeMax >= 400 ) { return false; }
-
 			var mymod = (InjuryMod)this.mod;
 
 			this.player.statLifeMax += amt;
@@ -166,20 +170,25 @@ namespace Injury {
 
 		public bool CanBeHarmed( double damage, bool crit ) {
 			var mymod = (InjuryMod)this.mod;
-			double max_hp_until_harm = mymod.Config.Data.PercentOfMaxHpAsDamageAtFullHealthUntilHarm;
+			double damage_with_crit = crit ? damage * 2 : damage;
+			double max_hp_until_harm = (double)player.statLifeMax2 * mymod.Config.Data.MaxHpPercentAsDamageAtFullHealthUntilHarm;
 			
-			if( crit ) { damage *= 2; }
-			return player.statLife < player.statLifeMax2 || damage > (double)player.statLifeMax2 * max_hp_until_harm;
+			return player.statLife < player.statLifeMax2	// Any amount of hurt
+				|| damage_with_crit > max_hp_until_harm;
 		}
 
 		public float ComputeHarm( double damage, bool crit ) {
 			var mymod = (InjuryMod)this.mod;
 			var data = mymod.Config.Data;
-			float harm = (float)damage * data.PercentOfDamageToUseAsInjury + data.AdditionalInjuryPerDamagingHit;
-			return crit ? harm * 2f : harm;
+
+			float damage_with_crit = crit ? (float)damage * 2f : (float)damage;
+			float damage_clamped = damage_with_crit > this.player.statLife ? (float)(this.player.statLife + 1) : damage_with_crit;
+			float harm = damage_clamped * data.PercentOfDamageToUseAsInjury + data.AdditionalInjuryPerDamagingHit;
+
+			return harm;
 		}
 
-		public float ComputeHarmToInjuryThreshold() {
+		public float ComputeHarmBufferCapacity() {
 			var mymod = (InjuryMod)this.mod;
 			var data = mymod.Config.Data;
 			float min = 1f;
@@ -188,7 +197,7 @@ namespace Injury {
 				min = 0.75f + ((float)this.player.statLifeMax / 400f);
 			}
 
-			return (min < 1f ? 1f : min) * data.BufferBeforeReceivingInjury;
+			return (min < 1f ? 1f : min) * data.HarmBufferCapacityBeforeReceivingInjury;
 		}
 		
 
@@ -196,20 +205,22 @@ namespace Injury {
 			var mymod = (InjuryMod)this.mod;
 			int min_hp = mymod.Config.Data.LowestAllowedMaxHealth;
 			bool is_injured = false;
+			float injury_threshold = this.ComputeHarmBufferCapacity();
 
 			if( this.player.statLifeMax <= min_hp ) { return; }
 			
 			this.HiddenHarmBuffer += harm;
 
-			// When harm is sufficient to cause injury:
-			while( this.HiddenHarmBuffer >= this.ComputeHarmToInjuryThreshold() && this.player.statLifeMax > min_hp ) {
+			// When harm is sufficient to cause injury, transfer buffer to much ouch
+			while( this.HiddenHarmBuffer >= injury_threshold && this.player.statLifeMax > min_hp ) {
 				is_injured = true;
-				this.HiddenHarmBuffer -= this.ComputeHarmToInjuryThreshold();
+				this.HiddenHarmBuffer -= injury_threshold;
 				this.player.statLifeMax -= mymod.Config.Data.MaxHealthLostFromInjury;
 			}
 
 			// Enforce minimum health cap
 			if( this.player.statLifeMax <= min_hp ) {
+				is_injured = false;
 				this.player.statLifeMax = min_hp;
 				this.HiddenHarmBuffer = 0f;
 			}
@@ -219,28 +230,32 @@ namespace Injury {
 					BleedingHeartProjectile.Spawn( this.player, this.mod );
 				}
 				
-				mymod.AnimateHeartDrop();
-				this.InjuryFX();
+				this.InjuryFullFX();
 			}
 		}
 
 
-		public void InjuryFX( bool with_sound=true ) {
+		public void InjuryVisualFX() {
 			var pos = new Vector2( this.player.position.X, this.player.position.Y );
+			var mymod = (InjuryMod)this.mod;
+			int max_blood = Main.rand.Next( 32, 48 );
+
 			if( this.player.gravDir < 0 ) {
 				pos.Y += this.player.height;
 			}
 
-			int max_blood = Main.rand.Next( 32, 48 );
-			for( int i=0; i < max_blood; i++ ) {
+			for( int i = 0; i < max_blood; i++ ) {
 				var vel_x = 2f - (Main.rand.NextFloat() * 4f);
 				var vel_y = 2f - (Main.rand.NextFloat() * 4f);
 				Dust.NewDust( pos, this.player.width, this.player.height, 5, vel_x, vel_y );
 			}
 
-			if( with_sound ) {
-				Main.PlaySound( SoundID.NPCHit16, this.player.position );
-			}
+			mymod.AnimateHeartDrop();
+		}
+
+		public void InjuryFullFX() {
+			this.InjuryVisualFX();
+			Main.PlaySound( SoundID.NPCHit16, this.player.position );
 		}
 	}
 }

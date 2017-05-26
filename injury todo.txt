@@ -1,6 +1,16 @@
+Undecided
+-	Put 'Bad Falls' into separate mod
 v2.0
 -	Verify broken heart pickups are multiplayer friendly
+-	Heartstrings (accessory) - Broken Hearts take longer to dissintegrate
+	-	@Recipe: Bee Wax, Shadow Orb/Heart Pet, Red String
+-	Growth Potion - Slowly adds 5 max hp
+	-	@Recipe: Broken Heart, Bowl of Soup, Pink Prickly Pear
 
+v1.9.2
+-	Increase duration for broken hearts
+-	Prevent use of Cracked Life Crystals at full hp
+-	Various bug fixes
 v1.9.1
 -	Do not incur harm from hits <25% max hp when at full health
 -	Set broken hearts not to fly as far away on hit

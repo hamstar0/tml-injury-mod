@@ -10,7 +10,7 @@ namespace Injury {
 	}
 
 
-	public class InjuryNetProtocol {
+	public static class InjuryNetProtocol {
 		public static void RoutePacket( InjuryMod mymod, BinaryReader reader ) {
 			InjuryNetProtocolTypes protocol = (InjuryNetProtocolTypes)reader.ReadByte();
 

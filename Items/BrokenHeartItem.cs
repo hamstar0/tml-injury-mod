@@ -26,15 +26,19 @@ namespace Injury.Items {
 			var mymod = (InjuryMod)this.mod;
 			var my_recipe = new ModRecipe( mymod );
 
-			my_recipe.AddTile( 18 );   // Crafting bench
-			my_recipe.AddIngredient( this, mymod.Config.Data.BrokenHeartsPerLifeCrystal );
-			my_recipe.AddRecipeGroup( "InjuryMod:EvilBiomeBossDrop", 4 );
-			//recipe.AddIngredient( "Shadow Scale", 4 );
-			//recipe.AddIngredient( "Tissue Sample", 4 );
-			my_recipe.AddIngredient( "Glass", 16 );
-			my_recipe.AddIngredient( "Regeneration Potion", 4 );
-			my_recipe.SetResult( 29, 1 );	// Life crystal
-			my_recipe.AddRecipe();
+			if( mymod.Config.Data.CraftableLifeCrystal ) {
+				my_recipe.AddTile( 18 );   // Crafting bench
+				my_recipe.AddIngredient( this, mymod.Config.Data.BrokenHeartsPerLifeCrystal );
+				if( mymod.Config.Data.LifeCrystalNeedsEvilBossDrops ) {
+					my_recipe.AddRecipeGroup( "InjuryMod:EvilBiomeBossDrop", 4 );
+					//recipe.AddIngredient( "Shadow Scale", 4 );
+					//recipe.AddIngredient( "Tissue Sample", 4 );
+				}
+				my_recipe.AddIngredient( "Glass", 16 );
+				my_recipe.AddIngredient( "Regeneration Potion", 4 );
+				my_recipe.SetResult( 29, 1 );   // Life crystal
+				my_recipe.AddRecipe();
+			}
 		}
 	}
 }

@@ -33,6 +33,10 @@ namespace Injury {
 		public int BrokenHeartsPerLifeCrystal = 4;
 		public int BrokenHeartsPerCrackedLifeCrystal = 2;
 
+		public bool CraftableLifeCrystal = true;
+		public bool CraftableCrackedLifeCrystal = true;
+		public bool LifeCrystalNeedsEvilBossDrops = true;
+
 		public int TemporaryMaxHpChunkDrainTickRate = 5 * 30 * 60;   // 5 hp every 30 seconds
 
 		public float MaxHpPercentRemainingUntilBleeding = 0.35f;
@@ -44,7 +48,7 @@ namespace Injury {
 
 
 	public class InjuryMod : Mod {
-		public readonly static Version ConfigVersion = new Version(1, 9, 2);
+		public readonly static Version ConfigVersion = new Version(1, 9, 3);
 		public JsonConfig<ConfigurationData> Config { get; private set; }
 
 		public Texture2D HeartTex { get; private set; }

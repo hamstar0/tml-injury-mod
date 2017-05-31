@@ -8,7 +8,7 @@ using Utils;
 
 
 namespace Injury {
-	class InjuryPlayer : ModPlayer {
+	public class InjuryPlayer : ModPlayer {
 		public float HiddenHarmBuffer { get; private set; }
 		public bool IsImpaired;
 		public int TemporaryMaxHp { get; private set; }

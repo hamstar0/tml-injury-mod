@@ -4,6 +4,10 @@ Player can now be injured and receive permanent health loss.
 - Falls afflict movement impairment.
 - Low health incurs bleeding.
 - Craftable Band of Life heals max hp:
-   Band of Regen, 4 Life Crystal, 10 Pixie Dust, 10 Regen Pots
-- NEW 1.8 Broken Hearts drop on injury; craftable Life Crystals
-- Config file in Documents/My Games/Terraria/ModLoader/
+   Band of Regen, 4 Life Crystal, 10 Pixie Dust, 10 Regen Pot.
+- 'Broken Hearts' drop on injury; craftable:
+   Cracked Life Crystal: 2 Broken Heart, 16 Glass, 4 Regen Pot
+   Life Crystal: 4 Broken Hearts, 16 Glass, 4 Regen Pot.,
+      4 Evil Biome Boss Drops
+- Config file:
+Documents/My Games/Terraria/ModLoader/Mod Configs/Injury Config.json

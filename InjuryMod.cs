@@ -12,6 +12,8 @@ namespace Injury {
 	public class ConfigurationData {
 		public string VersionSinceUpdate = "";
 
+		public bool Enabled = true;
+
 		public float PercentOfDamageToUseAsInjury = 0.075f;
 		public float AdditionalInjuryPerDamagingHit = 0f;
 		public float HarmBufferCapacityBeforeReceivingInjury = 5f;
@@ -33,6 +35,7 @@ namespace Injury {
 		public int BrokenHeartsPerLifeCrystal = 4;
 		public int BrokenHeartsPerCrackedLifeCrystal = 2;
 
+		public bool CraftableBandOfLife = true;
 		public bool CraftableLifeCrystal = true;
 		public bool CraftableCrackedLifeCrystal = true;
 		public bool LifeCrystalNeedsEvilBossDrops = true;
@@ -48,7 +51,7 @@ namespace Injury {
 
 
 	public class InjuryMod : Mod {
-		public readonly static Version ConfigVersion = new Version(1, 9, 3);
+		public readonly static Version ConfigVersion = new Version(1, 9, 4);
 		public JsonConfig<ConfigurationData> Config { get; private set; }
 
 		public Texture2D HeartTex { get; private set; }
@@ -122,7 +125,22 @@ namespace Injury {
 			RecipeGroup group = new RecipeGroup( () => Lang.misc[37] + " Evil Biome Boss Drop", new int[] { 86, 1329 } );
 			RecipeGroup.RegisterGroup( "InjuryMod:EvilBiomeBossDrop", group );
 		}
+		
 
+		////////////////
+
+		public override void PostDrawInterface( SpriteBatch sb ) {
+			if( this.IsAnimatingHeartDrop ) {
+				this.AnimateHeartDrop( sb, this.HeartDropAnimation++, 32 );
+			
+				if( this.HeartDropAnimation > 16 ) {
+					this.HeartDropAnimation = 0;
+					this.IsAnimatingHeartDrop = false;
+				}
+			}
+
+			DebugHelper.PrintToBatch( sb );
+		}
 
 
 		////////////////
@@ -148,18 +166,5 @@ namespace Injury {
 			this.IsAnimatingHeartDrop = true;
 		}
 
-
-		public override void PostDrawInterface( SpriteBatch sb ) {
-			if( this.IsAnimatingHeartDrop ) {
-				this.AnimateHeartDrop( sb, this.HeartDropAnimation++, 32 );
-			
-				if( this.HeartDropAnimation > 16 ) {
-					this.HeartDropAnimation = 0;
-					this.IsAnimatingHeartDrop = false;
-				}
-			}
-
-			DebugHelper.PrintToBatch( sb );
-		}
 	}
 }

@@ -24,21 +24,31 @@ namespace Injury.Items {
 
 		public override void AddRecipes() {
 			var mymod = (InjuryMod)this.mod;
-			var my_recipe = new ModRecipe( mymod );
+			var myrecipe = new LifeCrystalViaBrokenHeartItemRecipe( mymod, this );
+			myrecipe.AddRecipe();
+		}
+	}
 
-			if( mymod.Config.Data.CraftableLifeCrystal ) {
-				my_recipe.AddTile( 18 );   // Crafting bench
-				my_recipe.AddIngredient( this, mymod.Config.Data.BrokenHeartsPerLifeCrystal );
-				if( mymod.Config.Data.LifeCrystalNeedsEvilBossDrops ) {
-					my_recipe.AddRecipeGroup( "InjuryMod:EvilBiomeBossDrop", 4 );
-					//recipe.AddIngredient( "Shadow Scale", 4 );
-					//recipe.AddIngredient( "Tissue Sample", 4 );
-				}
-				my_recipe.AddIngredient( "Glass", 16 );
-				my_recipe.AddIngredient( "Regeneration Potion", 4 );
-				my_recipe.SetResult( 29, 1 );   // Life crystal
-				my_recipe.AddRecipe();
+
+
+	class LifeCrystalViaBrokenHeartItemRecipe : ModRecipe {
+		public LifeCrystalViaBrokenHeartItemRecipe( InjuryMod mymod, BrokenHeartItem myitem ) : base( mymod ) {
+			this.AddTile( 18 );   // Crafting bench
+			this.AddIngredient( myitem, mymod.Config.Data.BrokenHeartsPerLifeCrystal );
+			if( mymod.Config.Data.LifeCrystalNeedsEvilBossDrops ) {
+				this.AddRecipeGroup( "InjuryMod:EvilBiomeBossDrop", 4 );
+				//this.AddIngredient( "Shadow Scale", 4 );
+				//this.AddIngredient( "Tissue Sample", 4 );
 			}
+			this.AddIngredient( "Glass", 16 );
+			this.AddIngredient( "Regeneration Potion", 4 );
+			this.SetResult( 29, 1 );   // Life crystal
+		}
+
+
+		public override bool RecipeAvailable() {
+			var mymod = (InjuryMod)this.mod;
+			return mymod.Config.Data.Enabled && mymod.Config.Data.CraftableLifeCrystal;
 		}
 	}
 }

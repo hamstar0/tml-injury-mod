@@ -51,15 +51,27 @@ namespace Injury.Items {
 
 
 		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe( this.mod );
-			//recipe.AddTile( 114 );   // Tinkerer's Workshop
-			recipe.AddTile( 18 );   // Crafting bench
-			recipe.AddIngredient( "Band of Regeneration", 1 );
-			recipe.AddIngredient( "Life Crystal", 4 );
-			recipe.AddIngredient( "Pixie Dust", 10 );
-			recipe.AddIngredient( "Regeneration Potion", 10 );
-			recipe.SetResult( this );
+			var recipe = new BandOfLifeItemRecipe( (InjuryMod)this.mod, this );
 			recipe.AddRecipe();
+		}
+	}
+
+
+
+	class BandOfLifeItemRecipe : ModRecipe {
+		public BandOfLifeItemRecipe( InjuryMod mymod, BandOfLifeItem myitem ) : base( mymod ) {
+			//this.AddTile( 114 );   // Tinkerer's Workshop
+			this.AddTile( 18 );   // Crafting bench
+			this.AddIngredient( "Band of Regeneration", 1 );
+			this.AddIngredient( "Life Crystal", 4 );
+			this.AddIngredient( "Pixie Dust", 10 );
+			this.AddIngredient( "Regeneration Potion", 10 );
+			this.SetResult( myitem );
+		}
+
+		public override bool RecipeAvailable() {
+			var mymod = (InjuryMod)this.mod;
+			return mymod.Config.Data.Enabled && mymod.Config.Data.CraftableBandOfLife;
 		}
 	}
 

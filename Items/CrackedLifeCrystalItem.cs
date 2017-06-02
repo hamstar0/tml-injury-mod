@@ -47,16 +47,26 @@ namespace Injury.Items {
 
 		public override void AddRecipes() {
 			var mymod = (InjuryMod)this.mod;
-			var recipe = new ModRecipe( mymod );
+			var myrecipe = new CrackedLifeCrystalItemRecipe( mymod, this );
+			myrecipe.AddRecipe();
+		}
+	}
 
-			if( mymod.Config.Data.CraftableCrackedLifeCrystal ) {
-				recipe.AddTile( 18 );   // Crafting bench
-				recipe.AddIngredient( mymod.GetItem<BrokenHeartItem>(), mymod.Config.Data.BrokenHeartsPerCrackedLifeCrystal );
-				recipe.AddIngredient( "Glass", 16 );
-				recipe.AddIngredient( "Regeneration Potion", 4 );
-				recipe.SetResult( this.item.type, 1 );
-				recipe.AddRecipe();
-			}
+
+	
+	class CrackedLifeCrystalItemRecipe : ModRecipe {
+		public CrackedLifeCrystalItemRecipe( InjuryMod mymod, CrackedLifeCrystalItem myitem ) : base( mymod ) {
+			this.AddTile( 18 );   // Crafting bench
+			this.AddIngredient( mymod.GetItem<BrokenHeartItem>(), mymod.Config.Data.BrokenHeartsPerCrackedLifeCrystal );
+			this.AddIngredient( "Glass", 16 );
+			this.AddIngredient( "Regeneration Potion", 4 );
+			this.SetResult( myitem.item.type, 1 );
+		}
+
+
+		public override bool RecipeAvailable() {
+			var mymod = (InjuryMod)this.mod;
+			return mymod.Config.Data.Enabled && mymod.Config.Data.CraftableCrackedLifeCrystal;
 		}
 	}
 }

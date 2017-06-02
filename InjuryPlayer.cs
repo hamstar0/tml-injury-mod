@@ -71,6 +71,8 @@ namespace Injury {
 			var mymod = (InjuryMod)this.mod;
 			double damage_with_crit = crit ? damage * 2 : damage;
 
+			if( !mymod.Config.Data.Enabled ) { return; }
+
 			// Powerful blow stagger
 			if( (float)damage_with_crit > (float)this.player.statLifeMax2 * mymod.Config.Data.MaxHpPercentLossForPowerfulBlowStagger ) {
 				this.player.AddBuff( mod.BuffType("ImpactTrauma"), 3 );
@@ -87,6 +89,7 @@ namespace Injury {
 
 		public override void PreUpdate() {
 			var mymod = (InjuryMod)this.mod;
+			if( !mymod.Config.Data.Enabled ) { return; }
 
 			// Low hp (< %35) blood loss
 			if( (float)this.player.statLife < (float)this.player.statLifeMax2 * mymod.Config.Data.MaxHpPercentRemainingUntilBleeding ) {

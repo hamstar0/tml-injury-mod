@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 
@@ -9,11 +10,13 @@ namespace Injury.Items {
 
 
 		////////////////
-		
+
+		public override void SetStaticDefaults() {
+			this.DisplayName.SetDefault( "Broken Heart" );
+			this.Tooltip.SetDefault( "Salvaged remnants of life essence" );
+		}
+
 		public override void SetDefaults() {
-			this.item.name = "Broken Heart";
-			this.item.toolTip = "Salvaged remnants of life essence";
-			this.item.toolTip2 = "";
 			this.item.width = BandOfLifeItem.Width;
 			this.item.height = BandOfLifeItem.Height;
 			this.item.maxStack = 99;
@@ -40,8 +43,8 @@ namespace Injury.Items {
 				//this.AddIngredient( "Shadow Scale", 4 );
 				//this.AddIngredient( "Tissue Sample", 4 );
 			}
-			this.AddIngredient( "Glass", 16 );
-			this.AddIngredient( "Regeneration Potion", 4 );
+			this.AddIngredient( ItemID.Glass, 16 );
+			this.AddIngredient( ItemID.RegenerationPotion, 4 );
 			this.SetResult( 29, 1 );   // Life crystal
 		}
 

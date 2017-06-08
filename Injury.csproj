@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Libraries.JSON.NET.Newtonsoft.Json">
-      <HintPath>..\..\..\Reference\Libraries.JSON.NET.Newtonsoft.Json.dll</HintPath>
+    <Reference Include="HamstarHelpers">
+      <HintPath>..\HamstarHelpers\bin\Release\HamstarHelpers.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -58,18 +58,20 @@
     <Compile Include="Items\CrackedLifeCrystalItem.cs" />
     <Compile Include="Projectiles\BleedingHeartProjectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\DebugHelper.cs" />
-    <Compile Include="Utils\ItemHelper.cs" />
-    <Compile Include="Utils\PlayerHelper.cs" />
-    <Compile Include="Utils\JsonConfig.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Buffs\ImpactTrauma.png" />
     <Content Include="build.txt" />
     <Content Include="description.txt" />
     <Content Include="Items\BandOfLifeItem.png" />
     <Content Include="Items\BandOfLifeItem_HandsOn.png" />
     <Content Include="Items\BrokenHeartItem.png" />
     <Content Include="Items\CrackedLifeCrystalItem.png" />
+    <Content Include="Projectiles\BleedingHeartProjectile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LICENSE" />
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

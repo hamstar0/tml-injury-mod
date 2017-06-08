@@ -1,10 +1,10 @@
-﻿using Injury.Projectiles;
+﻿using HamstarHelpers.PlayerHelpers;
+using Injury.Projectiles;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Utils;
 
 
 namespace Injury {
@@ -54,8 +54,7 @@ namespace Injury {
 			}
 			
 			if( tags.ContainsKey( "temp_max_hp" ) ) {
-				int temp_max_hp = tags.GetInt( "temp_max_hp" );
-				this.TemporaryMaxHp = temp_max_hp;
+				this.TemporaryMaxHp = tags.GetInt( "temp_max_hp" );
 				this.TemporaryMaxHpTimer = mymod.Config.Data.TemporaryMaxHpChunkDrainTickRate;
 			}
 		}
@@ -101,7 +100,7 @@ namespace Injury {
 
 			// Fall impact staggering
 			if( this.player.velocity.Y == 0f ) {
-				int dmg = PlayerHelper.ComputeImpendingFallDamage( this.player );
+				int dmg = PlayerHelpers.ComputeImpendingFallDamage( this.player );
 				if( dmg != 0 ) {
 					this.player.AddBuff( mod.BuffType("ImpactTrauma"), dmg * mymod.Config.Data.FallLimpDurationMultiplier );
 				}
@@ -113,7 +112,7 @@ namespace Injury {
 			if( this.player.dead ) { this.HiddenHarmBuffer = 0f; }
 
 			// Remove harm erode with nurse heal
-			if( PlayerHelper.HasUsedNurse( this.player ) ) {
+			if( PlayerHelpers.HasUsedNurse( this.player ) ) {
 				if( !this.HasHealedInjury ) {
 					this.HasHealedInjury = true;
 					this.HiddenHarmBuffer = 0;
@@ -138,10 +137,6 @@ namespace Injury {
 				} else {
 					this.TemporaryMaxHpTimer -= 1;
 				}
-			}
-
-			if( DebugHelper.DEBUGMODE ) {
-				DebugHelper.Display["wear"] = this.HiddenHarmBuffer.ToString("N2") + " : " + this.ComputeHarmBufferCapacity().ToString("N2");
 			}
 		}
 

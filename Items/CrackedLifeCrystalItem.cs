@@ -10,11 +10,13 @@ namespace Injury.Items {
 
 
 		////////////////
-		
+
+		public override void SetStaticDefaults() {
+			this.DisplayName.SetDefault( "Cracked Life Crystal" );
+			this.Tooltip.SetDefault( "Temporarily increases maximum life by 20" );
+		}
+
 		public override void SetDefaults() {
-			this.item.name = "Cracked Life Crystal";
-			this.item.toolTip = "Temporarily increases maximum life by 20";
-			this.item.toolTip2 = "";
 			this.item.width = CrackedLifeCrystalItem.Width;
 			this.item.height = CrackedLifeCrystalItem.Height;
 			this.item.consumable = true;
@@ -58,8 +60,8 @@ namespace Injury.Items {
 		public CrackedLifeCrystalItemRecipe( InjuryMod mymod, CrackedLifeCrystalItem myitem ) : base( mymod ) {
 			this.AddTile( 18 );   // Crafting bench
 			this.AddIngredient( mymod.GetItem<BrokenHeartItem>(), mymod.Config.Data.BrokenHeartsPerCrackedLifeCrystal );
-			this.AddIngredient( "Glass", 16 );
-			this.AddIngredient( "Regeneration Potion", 4 );
+			this.AddIngredient( ItemID.Glass, 16 );
+			this.AddIngredient( ItemID.RegenerationPotion, 4 );
 			this.SetResult( myitem.item.type, 1 );
 		}
 

@@ -2,11 +2,10 @@
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
 using Terraria;
-using Utils;
-using Utils.JsonConfig;
 using System.IO;
 using System;
-
+using HamstarHelpers.Utilities.Config;
+using HamstarHelpers.HudHelpers;
 
 namespace Injury {
 	public class ConfigurationData {
@@ -51,7 +50,7 @@ namespace Injury {
 
 
 	public class InjuryMod : Mod {
-		public readonly static Version ConfigVersion = new Version(1, 9, 4);
+		public readonly static Version ConfigVersion = new Version(1, 9, 5);
 		public JsonConfig<ConfigurationData> Config { get; private set; }
 
 		public Texture2D HeartTex { get; private set; }
@@ -138,8 +137,6 @@ namespace Injury {
 					this.IsAnimatingHeartDrop = false;
 				}
 			}
-
-			DebugHelper.PrintToBatch( sb );
 		}
 
 
@@ -149,7 +146,7 @@ namespace Injury {
 			int x = 0;
 			int y = 0;
 
-			PlayerHelper.GetTopHeartPosition( Main.player[Main.myPlayer], ref x, ref y );
+			HudHelpers.GetTopHeartPosition( Main.player[Main.myPlayer], ref x, ref y );
 			y += frame * 2;
 
 			Rectangle rect = new Rectangle( x, y, this.HeartTex.Width, this.HeartTex.Height );

@@ -5,8 +5,9 @@ using Terraria.ModLoader;
 namespace Injury.Buffs {
 	public class ImpactTrauma : ModBuff {
 		public override void SetDefaults() {
-			Main.buffName[this.Type] = "Impact Trauma";
-			Main.buffTip[this.Type] = "You've been hit hard by something";
+			this.DisplayName.SetDefault( "Impact Trauma" );
+			this.Description.SetDefault( "You've been hit hard by something" );
+
 			Main.debuff[this.Type] = true;
 			Main.pvpBuff[this.Type] = true;
 		}

@@ -1,25 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 
 namespace Injury.Items {
+	[AutoloadEquip( EquipType.HandsOn )]
 	public class BandOfLifeItem : ModItem {
 		public static int Width = 22;
 		public static int Height = 22;
 
 		
 		////////////////
-
-		public override bool Autoload( ref string name, ref string texture, IList<EquipType> equips ) {
-			equips.Add( EquipType.HandsOn );
-			return true;
+		
+		public override void SetStaticDefaults() {
+			this.DisplayName.SetDefault( "Band of Life" );
+			this.Tooltip.SetDefault( "Slowly fills maximum life (up to 400)" );
 		}
 
 		public override void SetDefaults() {
-			this.item.name = "Band of Life";
-			this.item.toolTip = "Slowly fills maximum life (up to 400)";
 			this.item.width = BandOfLifeItem.Width;
 			this.item.height = BandOfLifeItem.Height;
 			this.item.maxStack = 1;
@@ -35,7 +34,7 @@ namespace Injury.Items {
 		public override void UpdateAccessory( Player player, bool hide_visual ) {
 			var mymod = (InjuryMod)this.mod;
 			var modplayer = player.GetModPlayer<InjuryPlayer>( this.mod );
-			var item_info = this.item.GetModInfo<BandOfLifeItemInfo>( this.mod );
+			var item_info = this.item.GetGlobalItem<BandOfLifeItemInfo>( this.mod );
 
 			if( modplayer.HiddenHarmBuffer == 0 && item_info.HealBuffer < 5f ) {
 				item_info.HealBuffer += mymod.Config.Data.BandOfLifeInjuryHealPerSecond;
@@ -62,10 +61,10 @@ namespace Injury.Items {
 		public BandOfLifeItemRecipe( InjuryMod mymod, BandOfLifeItem myitem ) : base( mymod ) {
 			//this.AddTile( 114 );   // Tinkerer's Workshop
 			this.AddTile( 18 );   // Crafting bench
-			this.AddIngredient( "Band of Regeneration", 1 );
-			this.AddIngredient( "Life Crystal", 4 );
-			this.AddIngredient( "Pixie Dust", 10 );
-			this.AddIngredient( "Regeneration Potion", 10 );
+			this.AddIngredient( ItemID.BandofRegeneration, 1 );
+			this.AddIngredient( ItemID.LifeCrystal, 4 );
+			this.AddIngredient( ItemID.PixieDust, 10 );
+			this.AddIngredient( ItemID.RegenerationPotion, 10 );
 			this.SetResult( myitem );
 		}
 
@@ -77,14 +76,28 @@ namespace Injury.Items {
 
 
 
-	class BandOfLifeItemInfo : ItemInfo {
+	class BandOfLifeItemInfo : GlobalItem {
+		public override bool InstancePerEntity { get { return true; } }
+		//public override bool CloneNewInstances { get { return true; } }
+
 		public float HealBuffer = 0;
 
-		public override ItemInfo Clone() {
-			var clone = base.Clone();
-			var myclone = (BandOfLifeItemInfo)clone;
-			myclone.HealBuffer = this.HealBuffer;
-			return myclone;
+		//public override GlobalItem NewInstance( Item item ) {
+		//	return new BandOfLifeItemInfo();
+		//}
+		
+		public override GlobalItem Clone( Item item, Item item_clone ) {
+			var clone = (BandOfLifeItemInfo)base.Clone( item, item_clone );
+			clone.HealBuffer = this.HealBuffer;
+			return clone;
+		}
+
+		public override void NetSend( Item item, BinaryWriter writer ) {
+			writer.Write( (float)this.HealBuffer );
+		}
+
+		public override void NetReceive( Item item, BinaryReader reader ) {
+			this.HealBuffer = reader.ReadSingle();
 		}
 	}
 }

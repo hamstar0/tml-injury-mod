@@ -5,8 +5,8 @@ using Terraria.ModLoader;
 
 namespace Injury {
 	public enum InjuryNetProtocolTypes : byte {
-		SendSettingsRequest,
-		SendSettings
+		ModSettingsRequest,
+		ModSettings
 	}
 
 
@@ -15,10 +15,10 @@ namespace Injury {
 			InjuryNetProtocolTypes protocol = (InjuryNetProtocolTypes)reader.ReadByte();
 
 			switch( protocol ) {
-			case InjuryNetProtocolTypes.SendSettingsRequest:
+			case InjuryNetProtocolTypes.ModSettingsRequest:
 				InjuryNetProtocol.ReceiveSettingsRequestOnServer( mymod, reader );
 				break;
-			case InjuryNetProtocolTypes.SendSettings:
+			case InjuryNetProtocolTypes.ModSettings:
 				InjuryNetProtocol.ReceiveSettingsOnClient( mymod, reader );
 				break;
 			default:
@@ -38,7 +38,7 @@ namespace Injury {
 
 			ModPacket packet = mymod.GetPacket();
 
-			packet.Write( (byte)InjuryNetProtocolTypes.SendSettingsRequest );
+			packet.Write( (byte)InjuryNetProtocolTypes.ModSettingsRequest );
 			packet.Write( (int)player.whoAmI );
 			packet.Send();
 		}
@@ -52,7 +52,7 @@ namespace Injury {
 
 			ModPacket packet = mymod.GetPacket();
 
-			packet.Write( (byte)InjuryNetProtocolTypes.SendSettings );
+			packet.Write( (byte)InjuryNetProtocolTypes.ModSettings );
 			packet.Write( (string)mymod.Config.SerializeMe() );
 
 			packet.Send( (int)player.whoAmI );

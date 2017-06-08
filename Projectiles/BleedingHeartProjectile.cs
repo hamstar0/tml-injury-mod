@@ -1,9 +1,9 @@
-﻿using Injury.Items;
+﻿using HamstarHelpers.ItemHelpers;
+using Injury.Items;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.ModLoader;
-using Utils;
 
 
 namespace Injury.Projectiles {
@@ -21,24 +21,26 @@ namespace Injury.Projectiles {
 		}
 
 		public static void GiveBrokenHeart( Player player, Mod mod ) {
-			int item_which = ItemHelper.CreateItem( player.Center, mod.ItemType<BrokenHeartItem>(), 1, 16, 16 );
+			int item_which = ItemHelpers.CreateItem( player.Center, mod.ItemType<BrokenHeartItem>(), 1, 16, 16 );
 			Item item = Main.item[item_which];
 			item.noGrabDelay = 3;
 		}
 
 
 
+		public override void SetStaticDefaults() {
+			this.DisplayName.SetDefault( "Bleeding Heart" );
+		}
+
 		public override void SetDefaults() {
 			var mymod = (InjuryMod)this.mod;
-			var proj = this.projectile;
 
-			proj.name = "Bleeding Heart";
-			proj.width = 16;
-			proj.height = 16;
-			proj.aiStyle = 14;
-			proj.penetrate = -1;
-			proj.netImportant = true;
-			proj.timeLeft = mymod.Config.Data.DurationOfBleedingHeart;
+			this.projectile.width = 16;
+			this.projectile.height = 16;
+			this.projectile.aiStyle = 14;
+			this.projectile.penetrate = -1;
+			this.projectile.netImportant = true;
+			this.projectile.timeLeft = mymod.Config.Data.DurationOfBleedingHeart;
 		}
 
 

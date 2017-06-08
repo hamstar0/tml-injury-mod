@@ -6,9 +6,9 @@ v2.0
 	-	@Recipe: Bee Wax, Shadow Orb/Heart Pet, Red String
 -	Growth Potion - Slowly adds 5 max hp
 	-	@Recipe: Broken Heart, Bowl of Soup, Pink Prickly Pear
+
 v1.9.4
 -	Add 'enabled' config setting
-
 v1.9.2
 -	Increase duration for broken hearts
 -	Prevent use of Cracked Life Crystals at full hp

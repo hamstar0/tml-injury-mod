@@ -3,59 +3,36 @@ using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
 using Terraria;
 using System.IO;
-using System;
 using HamstarHelpers.Utilities.Config;
 using HamstarHelpers.HudHelpers;
+using Injury.NetProtocol;
+
 
 namespace Injury {
-	public class ConfigurationData {
-		public string VersionSinceUpdate = "";
-
-		public bool Enabled = true;
-
-		public float PercentOfDamageToUseAsInjury = 0.075f;
-		public float AdditionalInjuryPerDamagingHit = 0f;
-		public float HarmBufferCapacityBeforeReceivingInjury = 5f;
-		public int MaxHealthLostFromInjury = 5;
-
-		public int FallLimpDurationMultiplier = 9;
-		public float FallLimpSpeedMultiplier = 0.45f;
-		public float FallLimpJumpMultiplier = 0.35f;
-
-		public int LowestAllowedMaxHealth = 20;
-
-		public float InjuryBufferHealPerSecond = 1f / (60f * 75f);	// 1 hp every 75 seconds
-		public float BandOfLifeInjuryHealPerSecond = 1f / (60f * 30f); // 1 hp every 30 seconds
-
-		public bool HighMaxHealthReducesInjury = true;
-
-		public bool BrokenHeartsDrop = true;
-		public int DurationOfBleedingHeart = 24 * 60;
-		public int BrokenHeartsPerLifeCrystal = 4;
-		public int BrokenHeartsPerCrackedLifeCrystal = 2;
-
-		public bool CraftableBandOfLife = true;
-		public bool CraftableLifeCrystal = true;
-		public bool CraftableCrackedLifeCrystal = true;
-		public bool LifeCrystalNeedsEvilBossDrops = true;
-
-		public int TemporaryMaxHpChunkDrainTickRate = 5 * 30 * 60;   // 5 hp every 30 seconds
-
-		public float MaxHpPercentRemainingUntilBleeding = 0.35f;
-		public float MaxHpPercentLossForPowerfulBlowStagger = 0.25f;
-
-		public float MaxHpPercentAsDamageAtFullHealthUntilHarm = 0.20f;	// Adventurer's grace
-	}
-
-
-
 	public class InjuryMod : Mod {
-		public readonly static Version ConfigVersion = new Version(1, 9, 5);
-		public JsonConfig<ConfigurationData> Config { get; private set; }
+		public static string GithubUserName { get { return "hamstar0"; } }
+		public static string GithubProjectName { get { return "tml-injury-mod"; } }
+
+		public static string ConfigRelativeFilePath {
+			get { return ConfigurationDataBase.RelativePath + Path.DirectorySeparatorChar + InjuryConfigDefaults.ConfigFileName; }
+		}
+		public static void ReloadConfigFromFile() {
+			if( InjuryMod.Instance != null && Main.netMode != 1 ) {
+				InjuryMod.Instance.Config.LoadFile();
+			}
+		}
+
+		public static InjuryMod Instance { get; private set; }
+
+
+		////////////////
+
+		public JsonConfig<InjuryConfigDefaults> Config { get; private set; }
 
 		public Texture2D HeartTex { get; private set; }
 
 
+		////////////////
 
 		public InjuryMod() {
 			this.Properties = new ModProperties() {
@@ -63,62 +40,51 @@ namespace Injury {
 				AutoloadGores = true,
 				AutoloadSounds = true
 			};
-
-			string filename = "Injury Config.json";
-			this.Config = new JsonConfig<ConfigurationData>( filename, "Mod Configs", new ConfigurationData() );
+			
+			this.Config = new JsonConfig<InjuryConfigDefaults>( InjuryConfigDefaults.ConfigFileName,
+				ConfigurationDataBase.RelativePath, new InjuryConfigDefaults() );
 		}
 
-
-		private void LoadConfig() {
-			// Destroy ancient config
-			var very_old_config = new JsonConfig<ConfigurationData>( "Injury 1.6.0.json", "", new ConfigurationData() );
-			if( very_old_config.LoadFile() ) { very_old_config.DestroyFile(); }
-
-			// Update old config to new location
-			var old_config = new JsonConfig<ConfigurationData>( this.Config.FileName, "", new ConfigurationData() );
-			if( old_config.LoadFile() ) {
-				old_config.DestroyFile();
-				old_config.SetFilePath( this.Config.FileName, "Mod Configs" );
-				this.Config = old_config;
-			} else if( !this.Config.LoadFile() ) {
-				this.Config.SaveFile();
-			} else {
-				Version vers_since = this.Config.Data.VersionSinceUpdate != "" ?
-					new Version( this.Config.Data.VersionSinceUpdate ) :
-					new Version();
-
-				if( vers_since < InjuryMod.ConfigVersion ) {
-					var new_config = new ConfigurationData();
-					ErrorLogger.Log( "Stamina config updated to " + InjuryMod.ConfigVersion.ToString() );
-
-					if( vers_since < new Version( 1, 8, 1 ) ) {
-						this.Config.Data.BandOfLifeInjuryHealPerSecond = new_config.BandOfLifeInjuryHealPerSecond;
-					}
-					if( vers_since < new Version( 1, 9, 2 ) ) {
-						this.Config.Data.DurationOfBleedingHeart = new_config.DurationOfBleedingHeart;
-					}
-					
-					this.Config.Data.VersionSinceUpdate = InjuryMod.ConfigVersion.ToString();
-					this.Config.SaveFile();
-				}
-			}
-		}
+		////////////////
 
 		public override void Load() {
-			if( Main.netMode != 2 ) {	// Not server
+			InjuryMod.Instance = this;
+
+			if( Main.netMode != 2 ) {   // Not server
 				this.HeartTex = ModLoader.GetTexture( "Terraria/Heart" );
 			}
 
 			this.LoadConfig();
 		}
 
+		private void LoadConfig() {
+			if( !this.Config.LoadFile() ) {
+				this.Config.SaveFile();
+			}
+
+			if( this.Config.Data.UpdateToLatestVersion() ) {
+				ErrorLogger.Log( "Injury updated to " + InjuryConfigDefaults.ConfigVersion.ToString() );
+				this.Config.SaveFile();
+			}
+		}
+
+
+		public override void Unload() {
+			InjuryMod.Instance = null;
+		}
 
 
 		////////////////
 
-		public override void HandlePacket( BinaryReader reader, int whoAmI ) {
-			InjuryNetProtocol.RoutePacket( this, reader );
+		public override void HandlePacket( BinaryReader reader, int player_who ) {
+			if( Main.netMode == 1 ) {
+				ClientPacketHandlers.RoutePacket( this, reader );
+			} else if( Main.netMode == 2 ) {
+				ServerPacketHandlers.RoutePacket( this, reader, player_who );
+			}
 		}
+
+		////////////////
 
 		public override void AddRecipeGroups() {
 			RecipeGroup group = new RecipeGroup( () => Lang.misc[37] + " Evil Biome Boss Drop", new int[] { 86, 1329 } );

@@ -1,11 +1,16 @@
 Undecided
 -	Put 'Bad Falls' into separate mod
-v2.0
+Future
 -	Verify broken heart pickups are multiplayer friendly
 -	Heartstrings (accessory) - Broken Hearts take longer to dissintegrate
 	-	@Recipe: Bee Wax, Shadow Orb/Heart Pet, Red String
 -	Growth Potion - Slowly adds 5 max hp
-	-	@Recipe: Broken Heart, Bowl of Soup, Pink Prickly Pear
+	-	@Recipe: Broken Heart, Bowl of Soup, Firefly, Pink Prickly Pear
+v1.9.5
+-	Add option to lose health only with deaths
+-	Refactor to new standards
+-	Add alternative life crystal recipe for late hard mode ease (Ectoplasm?)
+-	Show fractional life with heart shadow overlay
 
 v1.9.4
 -	Add 'enabled' config setting

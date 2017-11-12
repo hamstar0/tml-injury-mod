@@ -85,6 +85,5 @@ namespace Injury {
 			
 			InjuryNetProtocol.SendSettingFromServer( mymod, Main.player[who] );
 		}
-
 	}
 }

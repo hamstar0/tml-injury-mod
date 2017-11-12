@@ -112,7 +112,7 @@ namespace Injury {
 			if( this.player.dead ) { this.HiddenHarmBuffer = 0f; }
 
 			// Remove harm erode with nurse heal
-			if( PlayerHelpers.HasUsedNurse( this.player ) ) {
+			if( PlayerNPCHelpers.HasUsedNurse( this.player ) ) {
 				if( !this.HasHealedInjury ) {
 					this.HasHealedInjury = true;
 					this.HiddenHarmBuffer = 0;

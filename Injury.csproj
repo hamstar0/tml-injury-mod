@@ -50,12 +50,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buffs\ImpactTrauma.cs" />
+    <Compile Include="ConfigDefaults.cs" />
     <Compile Include="InjuryMod.cs" />
     <Compile Include="InjuryNetProtocol.cs" />
     <Compile Include="InjuryPlayer.cs" />
     <Compile Include="Items\BandOfLifeItem.cs" />
     <Compile Include="Items\BrokenHeartItem.cs" />
     <Compile Include="Items\CrackedLifeCrystalItem.cs" />
+    <Compile Include="NetProtocol\ClientPacketHandlers.cs" />
+    <Compile Include="NetProtocol\NetProtocolTypes.cs" />
+    <Compile Include="NetProtocol\ServerPacketHandlers.cs" />
     <Compile Include="Projectiles\BleedingHeartProjectile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -63,6 +67,7 @@
     <Content Include="Buffs\ImpactTrauma.png" />
     <Content Include="build.txt" />
     <Content Include="description.txt" />
+    <Content Include="icon.png" />
     <Content Include="Items\BandOfLifeItem.png" />
     <Content Include="Items\BandOfLifeItem_HandsOn.png" />
     <Content Include="Items\BrokenHeartItem.png" />

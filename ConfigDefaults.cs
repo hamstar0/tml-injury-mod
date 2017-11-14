@@ -3,7 +3,7 @@ using System;
 
 
 namespace Injury {
-	public class InjuryConfigDefaults : ConfigurationDataBase {
+	public class InjuryConfigData : ConfigurationDataBase {
 		public readonly static Version ConfigVersion = new Version( 1, 9, 5 );
 		public readonly static string ConfigFileName = "Injury Config.json";
 
@@ -52,12 +52,12 @@ namespace Injury {
 		////////////////
 
 		public bool UpdateToLatestVersion() {
-			var new_config = new InjuryConfigDefaults();
+			var new_config = new InjuryConfigData();
 			var vers_since = this.VersionSinceUpdate != "" ?
 				new Version( this.VersionSinceUpdate ) :
 				new Version();
 
-			if( vers_since >= InjuryConfigDefaults.ConfigVersion ) {
+			if( vers_since >= InjuryConfigData.ConfigVersion ) {
 				return false;
 			}
 			
@@ -68,7 +68,7 @@ namespace Injury {
 				this.DurationOfBleedingHeart = new_config.DurationOfBleedingHeart;
 			}
 
-			this.VersionSinceUpdate = InjuryConfigDefaults.ConfigVersion.ToString();
+			this.VersionSinceUpdate = InjuryConfigData.ConfigVersion.ToString();
 
 			return true;
 		}

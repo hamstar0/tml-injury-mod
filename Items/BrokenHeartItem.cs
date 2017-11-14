@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 
 namespace Injury.Items {
-	public class BrokenHeartItem : ModItem {
+	class BrokenHeartItem : ModItem {
 		public static int Width = 16;
 		public static int Height = 16;
 

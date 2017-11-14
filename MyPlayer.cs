@@ -1,4 +1,5 @@
 ﻿using HamstarHelpers.PlayerHelpers;
+using Injury.NetProtocol;
 using Injury.Projectiles;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -8,7 +9,7 @@ using Terraria.ModLoader.IO;
 
 
 namespace Injury {
-	public class InjuryPlayer : ModPlayer {
+	class MyPlayer : ModPlayer {
 		public float HiddenHarmBuffer { get; private set; }
 		public bool IsImpaired;
 		public int TemporaryMaxHp { get; private set; }
@@ -21,7 +22,7 @@ namespace Injury {
 
 		public override void clientClone( ModPlayer clone ) {
 			base.clientClone( clone );
-			var myclone = (InjuryPlayer)clone;
+			var myclone = (MyPlayer)clone;
 
 			myclone.HiddenHarmBuffer = this.HiddenHarmBuffer;
 			myclone.IsImpaired = this.IsImpaired;
@@ -40,7 +41,7 @@ namespace Injury {
 					}
 
 					if( Main.netMode == 1 ) {   // Client
-						InjuryNetProtocol.SendSettingsRequestFromClient( mymod, player );
+						ClientPacketHandlers.SendSettingsRequestFromClient( mymod, player );
 					}
 				}
 			}

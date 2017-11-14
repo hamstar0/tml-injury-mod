@@ -6,28 +6,30 @@ using System.IO;
 using HamstarHelpers.Utilities.Config;
 using HamstarHelpers.HudHelpers;
 using Injury.NetProtocol;
+using System;
 
 
 namespace Injury {
-	public class InjuryMod : Mod {
+	class InjuryMod : Mod {
+		public static InjuryMod Instance { get; private set; }
+
 		public static string GithubUserName { get { return "hamstar0"; } }
 		public static string GithubProjectName { get { return "tml-injury-mod"; } }
 
 		public static string ConfigRelativeFilePath {
-			get { return ConfigurationDataBase.RelativePath + Path.DirectorySeparatorChar + InjuryConfigDefaults.ConfigFileName; }
+			get { return ConfigurationDataBase.RelativePath + Path.DirectorySeparatorChar + InjuryConfigData.ConfigFileName; }
 		}
 		public static void ReloadConfigFromFile() {
-			if( InjuryMod.Instance != null && Main.netMode != 1 ) {
-				InjuryMod.Instance.Config.LoadFile();
+			if( Main.netMode != 0 ) {
+				throw new Exception( "Cannot reload configs outside of single player." );
 			}
+			InjuryMod.Instance.Config.LoadFile();
 		}
-
-		public static InjuryMod Instance { get; private set; }
 
 
 		////////////////
 
-		public JsonConfig<InjuryConfigDefaults> Config { get; private set; }
+		public JsonConfig<InjuryConfigData> Config { get; private set; }
 
 		public Texture2D HeartTex { get; private set; }
 
@@ -41,8 +43,8 @@ namespace Injury {
 				AutoloadSounds = true
 			};
 			
-			this.Config = new JsonConfig<InjuryConfigDefaults>( InjuryConfigDefaults.ConfigFileName,
-				ConfigurationDataBase.RelativePath, new InjuryConfigDefaults() );
+			this.Config = new JsonConfig<InjuryConfigData>( InjuryConfigData.ConfigFileName,
+				ConfigurationDataBase.RelativePath, new InjuryConfigData() );
 		}
 
 		////////////////
@@ -63,7 +65,7 @@ namespace Injury {
 			}
 
 			if( this.Config.Data.UpdateToLatestVersion() ) {
-				ErrorLogger.Log( "Injury updated to " + InjuryConfigDefaults.ConfigVersion.ToString() );
+				ErrorLogger.Log( "Injury updated to " + InjuryConfigData.ConfigVersion.ToString() );
 				this.Config.SaveFile();
 			}
 		}

@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 
 namespace Injury.Buffs {
-	public class ImpactTrauma : ModBuff {
+	class ImpactTrauma : ModBuff {
 		public override void SetDefaults() {
 			this.DisplayName.SetDefault( "Impact Trauma" );
 			this.Description.SetDefault( "You've been hit hard by something" );
@@ -15,7 +15,7 @@ namespace Injury.Buffs {
 		public override void Update( Player player, ref int buffIndex ) {
 			if( player.mount.Active ) { return; }
 
-			InjuryPlayer info = player.GetModPlayer<InjuryPlayer>( this.mod );
+			MyPlayer info = player.GetModPlayer<MyPlayer>( this.mod );
 			info.IsImpaired = true;
 		}
 

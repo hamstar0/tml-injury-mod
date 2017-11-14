@@ -49,11 +49,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API.cs" />
     <Compile Include="Buffs\ImpactTrauma.cs" />
     <Compile Include="ConfigDefaults.cs" />
     <Compile Include="InjuryMod.cs" />
-    <Compile Include="InjuryNetProtocol.cs" />
-    <Compile Include="InjuryPlayer.cs" />
+    <Compile Include="MyPlayer.cs" />
     <Compile Include="Items\BandOfLifeItem.cs" />
     <Compile Include="Items\BrokenHeartItem.cs" />
     <Compile Include="Items\CrackedLifeCrystalItem.cs" />

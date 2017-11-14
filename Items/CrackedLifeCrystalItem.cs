@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 
 namespace Injury.Items {
-	public class CrackedLifeCrystalItem : ModItem {
+	class CrackedLifeCrystalItem : ModItem {
 		public static int Width = 22;
 		public static int Height = 22;
 
@@ -38,7 +38,7 @@ namespace Injury.Items {
 		}
 
 		public override bool ConsumeItem( Player player ) {
-			var modplayer = player.GetModPlayer<InjuryPlayer>( this.mod );
+			var modplayer = player.GetModPlayer<MyPlayer>( this.mod );
 			bool can_heal = modplayer.CanTemporaryInjuryHeal( 20 );
 			if( can_heal ) {
 				modplayer.TemporaryInjuryHeal( 20 );

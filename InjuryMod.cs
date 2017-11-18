@@ -16,7 +16,7 @@ namespace Injury {
 		public static string GithubUserName { get { return "hamstar0"; } }
 		public static string GithubProjectName { get { return "tml-injury-mod"; } }
 
-		public static string ConfigRelativeFilePath {
+		public static string ConfigFileRelativePath {
 			get { return ConfigurationDataBase.RelativePath + Path.DirectorySeparatorChar + InjuryConfigData.ConfigFileName; }
 		}
 		public static void ReloadConfigFromFile() {

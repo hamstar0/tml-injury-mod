@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Injury.Items.Consumables;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -27,25 +28,22 @@ namespace Injury.Items {
 
 		public override void AddRecipes() {
 			var mymod = (InjuryMod)this.mod;
-			var myrecipe = new LifeCrystalViaBrokenHeartItemRecipe( mymod, this );
+			var myrecipe = new VitaeViaBrokenHeartItemRecipe( mymod, this );
 			myrecipe.AddRecipe();
 		}
 	}
 
 
 
-	class LifeCrystalViaBrokenHeartItemRecipe : ModRecipe {
-		public LifeCrystalViaBrokenHeartItemRecipe( InjuryMod mymod, BrokenHeartItem myitem ) : base( mymod ) {
-			this.AddTile( 18 );   // Crafting bench
-			this.AddIngredient( myitem, mymod.Config.Data.BrokenHeartsPerLifeCrystal );
-			if( mymod.Config.Data.LifeCrystalNeedsEvilBossDrops ) {
-				this.AddRecipeGroup( "InjuryMod:EvilBiomeBossDrop", 4 );
-				//this.AddIngredient( "Shadow Scale", 4 );
-				//this.AddIngredient( "Tissue Sample", 4 );
-			}
-			this.AddIngredient( ItemID.Glass, 16 );
-			this.AddIngredient( ItemID.RegenerationPotion, 4 );
-			this.SetResult( 29, 1 );   // Life crystal
+	class VitaeViaBrokenHeartItemRecipe : ModRecipe {
+		public VitaeViaBrokenHeartItemRecipe( InjuryMod mymod, BrokenHeartItem myitem ) : base( mymod ) {
+			this.AddTile( TileID.DemonAltar );
+
+			this.AddIngredient( myitem, 1 );
+			this.AddRecipeGroup( "HamstarHelpers:Animals", 1 );
+			this.AddIngredient( ItemID.Mushroom, 1 );
+
+			this.SetResult( mymod.GetItem<VitaeItem>(), 1 );
 		}
 
 

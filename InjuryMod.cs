@@ -1,12 +1,11 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using Terraria.ModLoader;
+﻿using Terraria.ModLoader;
 using Terraria;
 using System.IO;
 using HamstarHelpers.Utilities.Config;
-using HamstarHelpers.HudHelpers;
 using Injury.NetProtocol;
 using System;
+using Terraria.UI;
+using System.Collections.Generic;
 
 
 namespace Injury {
@@ -30,8 +29,9 @@ namespace Injury {
 		////////////////
 
 		public JsonConfig<InjuryConfigData> Config { get; private set; }
+		public HealthLossDisplay HealthLoss { get; private set; }
 
-		public Texture2D HeartTex { get; private set; }
+		public event Action AddRecipeEvt;
 
 
 		////////////////
@@ -58,9 +58,7 @@ namespace Injury {
 				throw new Exception( "Hamstar Helpers must be version " + min_vers.ToString() + " or greater." );
 			}
 
-			if( Main.netMode != 2 ) {   // Not server
-				this.HeartTex = ModLoader.GetTexture( "Terraria/Heart" );
-			}
+			this.HealthLoss = new HealthLossDisplay();
 
 			this.LoadConfig();
 		}
@@ -94,48 +92,26 @@ namespace Injury {
 
 		////////////////
 
-		public override void AddRecipeGroups() {
-			RecipeGroup group = new RecipeGroup( () => Lang.misc[37] + " Evil Biome Boss Drop", new int[] { 86, 1329 } );
-			RecipeGroup.RegisterGroup( "InjuryMod:EvilBiomeBossDrop", group );
+		public override void AddRecipes() {
+			this.AddRecipeEvt();
 		}
-		
+
 
 		////////////////
 
-		public override void PostDrawInterface( SpriteBatch sb ) {
-			if( this.IsAnimatingHeartDrop ) {
-				this.AnimateHeartDrop( sb, this.HeartDropAnimation++, 32 );
-			
-				if( this.HeartDropAnimation > 16 ) {
-					this.HeartDropAnimation = 0;
-					this.IsAnimatingHeartDrop = false;
-				}
+		public override void ModifyInterfaceLayers( List<GameInterfaceLayer> layers ) {
+			int idx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Resource Bars" ) );	//Vanilla: Inventory
+			if( idx != -1 ) {
+				GameInterfaceDrawMethod func = delegate {
+					this.HealthLoss.DrawSubHealth( this, Main.spriteBatch );
+					this.HealthLoss.DrawCurrentHeartDropAnimation( this, Main.spriteBatch );
+
+					return true;
+				};
+				var interface_layer = new LegacyGameInterfaceLayer( "Injury: Heart Overlay", func, InterfaceScaleType.UI );
+
+				layers.Insert( idx+1, interface_layer );
 			}
 		}
-
-
-		////////////////
-
-		private void AnimateHeartDrop( SpriteBatch sb, int frame, int maxframes ) {
-			int x = 0;
-			int y = 0;
-
-			HudHelpers.GetTopHeartPosition( Main.player[Main.myPlayer], ref x, ref y );
-			y += frame * 2;
-
-			Rectangle rect = new Rectangle( x, y, this.HeartTex.Width, this.HeartTex.Height );
-			float alpha = (0.5f - (frame / maxframes) / 2);
-
-			sb.Draw( this.HeartTex, rect, Color.White * alpha );
-		}
-
-
-		private bool IsAnimatingHeartDrop = false;
-		private int HeartDropAnimation = 0;
-
-		public void AnimateHeartDrop() {
-			this.IsAnimatingHeartDrop = true;
-		}
-
 	}
 }

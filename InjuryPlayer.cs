@@ -9,10 +9,11 @@ using Terraria.ModLoader.IO;
 
 
 namespace Injury {
-	class MyPlayer : ModPlayer {
+	class InjuryPlayer : ModPlayer {
 		public float HiddenHarmBuffer { get; private set; }
 		public bool IsImpaired;
 		public int TemporaryMaxHp { get; private set; }
+		public int HeartstringsEffectDuration = 0;
 
 		private bool HasHealedInjury = false;
 		private int TemporaryMaxHpTimer = 0;
@@ -20,9 +21,15 @@ namespace Injury {
 
 		////////////////
 
+		public override void Initialize() {
+			this.HiddenHarmBuffer = 0;
+			this.IsImpaired = false;
+			this.TemporaryMaxHp = 0;
+		}
+
 		public override void clientClone( ModPlayer clone ) {
 			base.clientClone( clone );
-			var myclone = (MyPlayer)clone;
+			var myclone = (InjuryPlayer)clone;
 
 			myclone.HiddenHarmBuffer = this.HiddenHarmBuffer;
 			myclone.IsImpaired = this.IsImpaired;
@@ -47,6 +54,8 @@ namespace Injury {
 			}
 		}
 
+		////////////////
+
 		public override void Load( TagCompound tags ) {
 			var mymod = (InjuryMod)this.mod;
 
@@ -63,6 +72,7 @@ namespace Injury {
 		public override TagCompound Save() {
 			return new TagCompound { {"temp_max_hp", this.TemporaryMaxHp} };
 		}
+
 
 		////////////////
 
@@ -139,6 +149,10 @@ namespace Injury {
 					this.TemporaryMaxHpTimer -= 1;
 				}
 			}
+
+			if( this.HeartstringsEffectDuration > 0 ) {
+				this.HeartstringsEffectDuration--;
+			}
 		}
 
 
@@ -148,6 +162,7 @@ namespace Injury {
 				this.IsImpaired = false;
 			}
 		}
+
 
 		////////////////
 
@@ -198,7 +213,13 @@ namespace Injury {
 
 			return (min < 1f ? 1f : min) * data.HarmBufferCapacityBeforeReceivingInjury;
 		}
-		
+
+		public float ComputeHarmBufferPercent() {
+			return this.HiddenHarmBuffer / this.ComputeHarmBufferCapacity();
+		}
+
+
+		////////////////
 
 		public void AfflictHarm( float harm ) {
 			var mymod = (InjuryMod)this.mod;
@@ -226,7 +247,7 @@ namespace Injury {
 
 			if( is_injured ) {
 				if( mymod.Config.Data.BrokenHeartsDrop ) {
-					BleedingHeartProjectile.Spawn( this.player, this.mod );
+					BleedingHeartProjectile.Spawn( this.player, mymod );
 				}
 				
 				this.InjuryFullFX();
@@ -234,8 +255,10 @@ namespace Injury {
 		}
 
 
+		////////////////
+
 		public void InjuryVisualFX() {
-			var pos = new Vector2( this.player.position.X, this.player.position.Y );
+			Vector2 pos = this.player.position;
 			var mymod = (InjuryMod)this.mod;
 			int max_blood = Main.rand.Next( 32, 48 );
 
@@ -249,7 +272,7 @@ namespace Injury {
 				Dust.NewDust( pos, this.player.width, this.player.height, 5, vel_x, vel_y );
 			}
 
-			mymod.AnimateHeartDrop();
+			mymod.HealthLoss.AnimateHeartDrop();
 		}
 
 		public void InjuryFullFX() {

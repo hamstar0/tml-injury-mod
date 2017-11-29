@@ -7,9 +7,10 @@ using Terraria.ModLoader;
 
 
 namespace Injury.Projectiles {
-	public class BleedingHeartProjectile : ModProjectile {
-		public static void Spawn( Player player, Mod mod ) {
-			int proj_type = mod.ProjectileType<BleedingHeartProjectile>();
+	class BleedingHeartProjectile : ModProjectile {
+		public static void Spawn( Player player, InjuryMod mymod ) {
+			var modplayer = player.GetModPlayer<InjuryPlayer>();
+			int proj_type = mymod.ProjectileType<BleedingHeartProjectile>();
 			float vel_x = 0, vel_y = 0;
 
 			do {
@@ -17,7 +18,11 @@ namespace Injury.Projectiles {
 				vel_y = (Main.rand.NextFloat() * 7.5f) - 5f;
 			} while( Math.Abs(vel_x) + Math.Abs(vel_y) < 6f );
 
-			Projectile.NewProjectile( player.position.X, player.position.Y, vel_x, vel_y, proj_type, 0, 0, Main.myPlayer, 0f, 0f );
+			int proj_id = Projectile.NewProjectile( player.position.X, player.position.Y, vel_x, vel_y, proj_type, 0, 0, Main.myPlayer, 0f, 0f );
+
+			if( modplayer.HeartstringsEffectDuration > 0 ) {
+				Main.projectile[proj_id].timeLeft += mymod.Config.Data.HeartstringsAddedDuration;
+			}
 		}
 
 		public static void GiveBrokenHeart( Player player, Mod mod ) {

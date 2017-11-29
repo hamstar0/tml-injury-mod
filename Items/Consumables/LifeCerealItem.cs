@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 
 namespace Injury.Items {
-	class CrackedLifeCrystalItem : ModItem {
+	class LifeCerealItem : ModItem {
 		public static int Width = 22;
 		public static int Height = 22;
 
@@ -17,8 +17,8 @@ namespace Injury.Items {
 		}
 
 		public override void SetDefaults() {
-			this.item.width = CrackedLifeCrystalItem.Width;
-			this.item.height = CrackedLifeCrystalItem.Height;
+			this.item.width = LifeCerealItem.Width;
+			this.item.height = LifeCerealItem.Height;
 			this.item.consumable = true;
 			this.item.useStyle = 4;
 			this.item.useTime = 30;
@@ -38,7 +38,7 @@ namespace Injury.Items {
 		}
 
 		public override bool ConsumeItem( Player player ) {
-			var modplayer = player.GetModPlayer<MyPlayer>( this.mod );
+			var modplayer = player.GetModPlayer<InjuryPlayer>( this.mod );
 			bool can_heal = modplayer.CanTemporaryInjuryHeal( 20 );
 			if( can_heal ) {
 				modplayer.TemporaryInjuryHeal( 20 );
@@ -49,15 +49,15 @@ namespace Injury.Items {
 
 		public override void AddRecipes() {
 			var mymod = (InjuryMod)this.mod;
-			var myrecipe = new CrackedLifeCrystalItemRecipe( mymod, this );
+			var myrecipe = new LifeCerealItemRecipe( mymod, this );
 			myrecipe.AddRecipe();
 		}
 	}
 
 
 	
-	class CrackedLifeCrystalItemRecipe : ModRecipe {
-		public CrackedLifeCrystalItemRecipe( InjuryMod mymod, CrackedLifeCrystalItem myitem ) : base( mymod ) {
+	class LifeCerealItemRecipe : ModRecipe {
+		public LifeCerealItemRecipe( InjuryMod mymod, LifeCerealItem myitem ) : base( mymod ) {
 			this.AddTile( 18 );   // Crafting bench
 			this.AddIngredient( mymod.GetItem<BrokenHeartItem>(), mymod.Config.Data.BrokenHeartsPerCrackedLifeCrystal );
 			this.AddIngredient( ItemID.Glass, 16 );

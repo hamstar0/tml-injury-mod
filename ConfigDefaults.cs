@@ -4,7 +4,7 @@ using System;
 
 namespace Injury {
 	public class InjuryConfigData : ConfigurationDataBase {
-		public readonly static Version ConfigVersion = new Version( 1, 9, 5 );
+		public readonly static Version ConfigVersion = new Version( 2, 0, 0 );
 		public readonly static string ConfigFileName = "Injury Config.json";
 
 
@@ -32,13 +32,15 @@ namespace Injury {
 
 		public bool BrokenHeartsDrop = true;
 		public int DurationOfBleedingHeart = 24 * 60;
-		public int BrokenHeartsPerLifeCrystal = 4;
-		public int BrokenHeartsPerCrackedLifeCrystal = 2;
-
+		public int VitaePerLifeCrystal = 4;
+		public int VitaePerCrackedLifeCrystal = 2;
+		
 		public bool CraftableBandOfLife = true;
+		public bool CraftableVitae = true;
 		public bool CraftableLifeCrystal = true;
 		public bool CraftableCrackedLifeCrystal = true;
-		public bool LifeCrystalNeedsEvilBossDrops = true;
+		 public bool LifeCrystalNeedsEvilBossDrops = true;
+		public bool CraftableHeartstrings = true;
 
 		public int TemporaryMaxHpChunkDrainTickRate = 5 * 30 * 60;   // 5 hp every 30 seconds
 
@@ -47,6 +49,16 @@ namespace Injury {
 
 		public float MaxHpPercentAsDamageAtFullHealthUntilHarm = 0.20f; // Adventurer's grace
 
+		public bool RenderSubHealth = true;
+		public bool RenderHudHeartDrops = true;
+
+		public int HeartstringsAddedDuration = 60 * 45; // +45s
+
+
+		public string _OLD_SETTINGS_BELOW_ = "";
+
+		public int BrokenHeartsPerLifeCrystal = 4;
+		public int BrokenHeartsPerCrackedLifeCrystal = 2;
 
 
 		////////////////

@@ -1,17 +1,69 @@
-Undecided
--	Put 'Bad Falls' into separate mod
-Future
+v2.0.0
 -	Verify broken heart pickups are multiplayer friendly
--	Heartstrings (accessory) - Broken Hearts take longer to dissintegrate
-	-	@Recipe: Bee Wax, Shadow Orb/Heart Pet, Red String
--	Growth Potion - Slowly adds 5 max hp
-	-	@Recipe: Broken Heart, Bowl of Soup, Firefly, Pink Prickly Pear
-v1.9.5
 -	Add option to lose health only with deaths
--	Refactor to new standards
--	Add alternative life crystal recipe for late hard mode ease (Ectoplasm?)
--	Show fractional life with heart shadow overlay
+-	Life Cereal: Adds 5 max hp up to 500
+	-	Implement effects
+	-	Create graphics
+	-	@Recipe: Stray Heart, Jungle Grass Seed
+	-	Change Broken Heart to Stray Heart
+		-	Create graphic
+		-	Define item
+		-	@Names:
+			-	Bloody Chunk
+			-	Regurgitated Life Fruit
+			-	Soul Shard
+			-	Soul Heart
+			-	Mini Heart
+			-	Life Essense
+			-	Surplus Heart
+			-	Heart Overflow
+			-	Life Extract
+-	Hearty Soup: Adds 5 max hp
+	-	Implement effects
+	-	Create graphics
+	-	@Recipe: Vitae, Bowl of Soup, Firefly, Pink Prickly Pear
+-	Fortitude Bracer: Heartstrings + Band of Afterlife + Heart Mender
+	-	Implement effects
+	-	Create graphics
+-	Heart Mender: Allows consuming broken hearts for max health (50% chance)
+	-	Implement effects
+	-	Create graphics
+	-	@Recipe: Nanites, Actuator Rod, Super Healing Potion
+-	Heart Catcher: Reduces broken heart flight distance and pulls hearts in at range
+	-	Implement effects
+	-	Create graphics
+	-	@Recipe: Logic Sensor (Player Above), Bug Net, Slime Hook
+-	Band of Afterlife: Recovers max health up to 500
+	-	Implement effects
+	-	Create graphics
+	-	@Recipe: Band of Life, 5 Life Fruits, 20 Ectoplasm
+-	Life Vest: Fortifies further against losing hearts (late game)
+	-	Implement effects
+	-	Create graphics
+	-	@Recipe: Life Line + 10 Vitae + 5 Shroomite Bars
+-	Life Line: Fortifies against losing hearts (mid game)
+	-	Implement effects
+	-	Create graphics
+	-	@Recipe: Pink Thread, 10x Restoration Potions
+-	Fortitude Potion: Fortifies against losing hearts
+	-	Implement effects
+	-	Create graphics
+	-	Define item
+	-	@Recipe: Water Bottle, Vitae, Shadow Orb/Tissue Sample
+	-	Implement 'Vitae' (crafted at Demon Altar)
+		-	Set Cracked Life Crystal, Life Crystal recipes to use this
+		-	Define item
+		-	Create graphic
 
+		-	Define item
+		-	@Recipe: Broken heart, any live animal, mushroom
+-	Heartstrings: Broken Hearts take longer to dissintegrate
+	-	Implement effects
+	-	Create graphics
+	-	@Recipe: 20x Bees Wax, Shadow Orb/Heart Pet, Rainbow String
+-	Define items
+-	Show fractional life with heart shadow overlay
+-	Refactor to new standards
 v1.9.4
 -	Add 'enabled' config setting
 v1.9.2

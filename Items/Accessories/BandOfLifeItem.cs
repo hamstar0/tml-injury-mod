@@ -33,7 +33,7 @@ namespace Injury.Items {
 
 		public override void UpdateAccessory( Player player, bool hide_visual ) {
 			var mymod = (InjuryMod)this.mod;
-			var modplayer = player.GetModPlayer<MyPlayer>( this.mod );
+			var modplayer = player.GetModPlayer<InjuryPlayer>( this.mod );
 			var item_info = this.item.GetGlobalItem<BandOfLifeItemInfo>( this.mod );
 
 			if( modplayer.HiddenHarmBuffer == 0 && item_info.HealBuffer < 5f ) {

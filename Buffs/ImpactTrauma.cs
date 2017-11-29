@@ -15,7 +15,7 @@ namespace Injury.Buffs {
 		public override void Update( Player player, ref int buffIndex ) {
 			if( player.mount.Active ) { return; }
 
-			MyPlayer info = player.GetModPlayer<MyPlayer>( this.mod );
+			InjuryPlayer info = player.GetModPlayer<InjuryPlayer>( this.mod );
 			info.IsImpaired = true;
 		}
 

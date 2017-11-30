@@ -39,17 +39,16 @@ namespace Injury.Items {
 
 		public override bool ConsumeItem( Player player ) {
 			var modplayer = player.GetModPlayer<InjuryPlayer>( this.mod );
-			bool can_heal = modplayer.CanTemporaryInjuryHeal( 20 );
+			bool can_heal = modplayer.Logic.CanTemporaryInjuryHeal( player, 20 );
 			if( can_heal ) {
-				modplayer.TemporaryInjuryHeal( 20 );
+				modplayer.Logic.TemporaryInjuryHeal( (InjuryMod)this.mod, player, 20 );
 			}
 			return can_heal;
 		}
 
 
 		public override void AddRecipes() {
-			var mymod = (InjuryMod)this.mod;
-			var myrecipe = new HeartySoupItemRecipe( mymod, this );
+			var myrecipe = new HeartySoupItemRecipe( this );
 			myrecipe.AddRecipe();
 		}
 	}
@@ -57,12 +56,16 @@ namespace Injury.Items {
 
 	
 	class HeartySoupItemRecipe : ModRecipe {
-		public HeartySoupItemRecipe( InjuryMod mymod, HeartySoupItem myitem ) : base( mymod ) {
-			this.AddTile( 18 );   // Crafting bench
+		public HeartySoupItemRecipe( HeartySoupItem myitem ) : base( myitem.mod ) {
+			var mymod = (InjuryMod)this.mod;
+
+			this.AddTile( TileID.WorkBenches );
+
 			this.AddIngredient( mymod.GetItem<BrokenHeartItem>(), mymod.Config.Data.BrokenHeartsPerCrackedLifeCrystal );
 			this.AddIngredient( ItemID.Glass, 16 );
 			this.AddIngredient( ItemID.RegenerationPotion, 4 );
-			this.SetResult( myitem.item.type, 1 );
+
+			this.SetResult( myitem, 1 );
 		}
 
 

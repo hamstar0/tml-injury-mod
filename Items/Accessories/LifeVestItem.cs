@@ -38,7 +38,7 @@ namespace Injury.Items {
 
 
 		public override void AddRecipes() {
-			var recipe = new LifeVestItemRecipe( (InjuryMod)this.mod, this );
+			var recipe = new LifeVestItemRecipe( this );
 			recipe.AddRecipe();
 		}
 	}
@@ -46,9 +46,8 @@ namespace Injury.Items {
 
 
 	class LifeVestItemRecipe : ModRecipe {
-		public LifeVestItemRecipe( InjuryMod mymod, LifeVestItem myitem ) : base( mymod ) {
-			//this.AddTile( 114 );   // Tinkerer's Workshop
-			this.AddTile( 18 );   // Crafting bench
+		public LifeVestItemRecipe( LifeVestItem myitem ) : base( myitem.mod ) {
+			this.AddTile( TileID.WorkBenches );
 			this.AddIngredient( ItemID.BandofRegeneration, 1 );
 			this.AddIngredient( ItemID.LifeCrystal, 4 );
 			this.AddIngredient( ItemID.PixieDust, 10 );

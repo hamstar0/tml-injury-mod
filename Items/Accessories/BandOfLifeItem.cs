@@ -36,7 +36,7 @@ namespace Injury.Items {
 			var modplayer = player.GetModPlayer<InjuryPlayer>( this.mod );
 			var item_info = this.item.GetGlobalItem<BandOfLifeItemInfo>( this.mod );
 
-			if( modplayer.HiddenHarmBuffer == 0 && item_info.HealBuffer < 5f ) {
+			if( modplayer.Logic.HiddenHarmBuffer == 0 && item_info.HealBuffer < 5f ) {
 				item_info.HealBuffer += mymod.Config.Data.BandOfLifeInjuryHealPerSecond;
 			}
 
@@ -50,7 +50,7 @@ namespace Injury.Items {
 
 
 		public override void AddRecipes() {
-			var recipe = new BandOfLifeItemRecipe( (InjuryMod)this.mod, this );
+			var recipe = new BandOfLifeItemRecipe( this );
 			recipe.AddRecipe();
 		}
 	}
@@ -58,7 +58,7 @@ namespace Injury.Items {
 
 
 	class BandOfLifeItemRecipe : ModRecipe {
-		public BandOfLifeItemRecipe( InjuryMod mymod, BandOfLifeItem myitem ) : base( mymod ) {
+		public BandOfLifeItemRecipe( BandOfLifeItem myitem ) : base( myitem.mod ) {
 			//this.AddTile( 114 );   // Tinkerer's Workshop
 			this.AddTile( 18 );   // Crafting bench
 			this.AddIngredient( ItemID.BandofRegeneration, 1 );

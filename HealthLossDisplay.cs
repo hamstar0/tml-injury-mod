@@ -28,7 +28,7 @@ namespace Injury {
 			int x = 0;
 			int y = 0;
 			var myplayer = Main.LocalPlayer.GetModPlayer<InjuryPlayer>();
-			float percent = myplayer.ComputeHarmBufferPercent();
+			float percent = myplayer.Logic.ComputeHarmBufferPercent( mymod, Main.LocalPlayer );
 			var src_rect = new Rectangle( 0, 0, this.HeartTex.Width, (int)((float)this.HeartTex.Height * percent) );
 			var dest_rect = new Rectangle( x, y, this.HeartTex.Width, this.HeartTex.Height );
 

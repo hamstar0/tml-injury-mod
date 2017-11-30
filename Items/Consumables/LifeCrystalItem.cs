@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using HamstarHelpers.RecipeHelpers;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 
@@ -20,9 +21,9 @@ namespace Injury.Items.Consumables {
 
 			this.AddIngredient( mymod.GetItem<VitaeItem>(), mymod.Config.Data.VitaePerLifeCrystal );
 			if( mymod.Config.Data.LifeCrystalNeedsEvilBossDrops ) {
-				this.AddRecipeGroup( "HamstarHelpers:EvilBiomeBossDrop", 4 );
+				this.AddRecipeGroup( RecipeHelpers.EvilBossDrops.Key, 4 );
 			}
-			this.AddIngredient( ItemID.Glass, 16 );
+			this.AddIngredient( ItemID.RubyGemsparkBlock, 10 );
 
 			this.SetResult( ItemID.LifeCrystal, 1 );
 		}

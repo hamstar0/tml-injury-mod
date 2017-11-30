@@ -45,6 +45,7 @@ v2.0.0
 	-	Implement effects
 	-	Create graphics
 	-	@Recipe: Pink Thread, 10x Restoration Potions
+
 -	Fortitude Potion: Fortifies against losing hearts
 	-	Implement effects
 	-	Create graphics
@@ -54,7 +55,6 @@ v2.0.0
 		-	Set Cracked Life Crystal, Life Crystal recipes to use this
 		-	Define item
 		-	Create graphic
-
 		-	Define item
 		-	@Recipe: Broken heart, any live animal, mushroom
 -	Heartstrings: Broken Hearts take longer to dissintegrate

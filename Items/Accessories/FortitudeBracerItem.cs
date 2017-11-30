@@ -17,8 +17,8 @@ namespace Injury.Items {
 		}
 
 		public override void SetDefaults() {
-			this.item.width = LifeVestItem.Width;
-			this.item.height = LifeVestItem.Height;
+			this.item.width = FortitudeBracerItem.Width;
+			this.item.height = FortitudeBracerItem.Height;
 			this.item.maxStack = 1;
 			this.item.value = Item.buyPrice( 1, 0, 0, 0 );
 			this.item.rare = 5;
@@ -38,7 +38,7 @@ namespace Injury.Items {
 
 
 		public override void AddRecipes() {
-			var recipe = new FortitudeBracerItemRecipe( (InjuryMod)this.mod, this );
+			var recipe = new FortitudeBracerItemRecipe( this );
 			recipe.AddRecipe();
 		}
 	}
@@ -46,7 +46,7 @@ namespace Injury.Items {
 
 
 	class FortitudeBracerItemRecipe : ModRecipe {
-		public FortitudeBracerItemRecipe( InjuryMod mymod, FortitudeBracerItem myitem ) : base( mymod ) {
+		public FortitudeBracerItemRecipe( FortitudeBracerItem myitem ) : base( myitem.mod ) {
 			//this.AddTile( 114 );   // Tinkerer's Workshop
 			this.AddTile( 18 );   // Crafting bench
 			this.AddIngredient( ItemID.BandofRegeneration, 1 );

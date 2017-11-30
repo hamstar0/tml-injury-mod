@@ -37,7 +37,7 @@ namespace Injury.Items {
 
 
 		public override void AddRecipes() {
-			var recipe = new BandOfAfterlifeItemRecipe( (InjuryMod)this.mod, this );
+			var recipe = new BandOfAfterlifeItemRecipe( this );
 			recipe.AddRecipe();
 		}
 	}
@@ -45,13 +45,14 @@ namespace Injury.Items {
 
 
 	class BandOfAfterlifeItemRecipe : ModRecipe {
-		public BandOfAfterlifeItemRecipe( InjuryMod mymod, BandOfAfterlifeItem myitem ) : base( mymod ) {
-			//this.AddTile( 114 );   // Tinkerer's Workshop
-			this.AddTile( 18 );   // Crafting bench
+		public BandOfAfterlifeItemRecipe( BandOfAfterlifeItem myitem ) : base( myitem.mod ) {
+			this.AddTile( TileID.WorkBenches );
+
 			this.AddIngredient( ItemID.BandofRegeneration, 1 );
 			this.AddIngredient( ItemID.LifeCrystal, 4 );
 			this.AddIngredient( ItemID.PixieDust, 10 );
 			this.AddIngredient( ItemID.RegenerationPotion, 10 );
+
 			this.SetResult( myitem );
 		}
 

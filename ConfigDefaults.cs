@@ -41,6 +41,7 @@ namespace Injury {
 		public bool CraftableCrackedLifeCrystal = true;
 		 public bool LifeCrystalNeedsEvilBossDrops = true;
 		public bool CraftableHeartstrings = true;
+		public bool CraftableFortitudePotions = true;
 
 		public int TemporaryMaxHpChunkDrainTickRate = 5 * 30 * 60;   // 5 hp every 30 seconds
 
@@ -53,6 +54,7 @@ namespace Injury {
 		public bool RenderHudHeartDrops = true;
 
 		public int HeartstringsAddedDuration = 60 * 45; // +45s
+		public float HarmBufferCapacityFortifiedScale = 2f;
 
 
 		public string _OLD_SETTINGS_BELOW_ = "";

@@ -38,7 +38,7 @@ namespace Injury.Items {
 
 
 		public override void AddRecipes() {
-			var recipe = new HeartMenderItemRecipe( (InjuryMod)this.mod, this );
+			var recipe = new HeartMenderItemRecipe( this );
 			recipe.AddRecipe();
 		}
 	}
@@ -46,9 +46,8 @@ namespace Injury.Items {
 
 
 	class HeartMenderItemRecipe : ModRecipe {
-		public HeartMenderItemRecipe( InjuryMod mymod, HeartMenderItem myitem ) : base( mymod ) {
-			//this.AddTile( 114 );   // Tinkerer's Workshop
-			this.AddTile( 18 );   // Crafting bench
+		public HeartMenderItemRecipe( HeartMenderItem myitem ) : base( myitem.mod ) {
+			this.AddTile( TileID.WorkBenches );
 			this.AddIngredient( ItemID.BandofRegeneration, 1 );
 			this.AddIngredient( ItemID.LifeCrystal, 4 );
 			this.AddIngredient( ItemID.PixieDust, 10 );

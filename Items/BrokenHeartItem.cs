@@ -1,4 +1,5 @@
-﻿using Injury.Items.Consumables;
+﻿using HamstarHelpers.RecipeHelpers;
+using Injury.Items.Consumables;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -27,8 +28,7 @@ namespace Injury.Items {
 
 
 		public override void AddRecipes() {
-			var mymod = (InjuryMod)this.mod;
-			var myrecipe = new VitaeViaBrokenHeartItemRecipe( mymod, this );
+			var myrecipe = new VitaeViaBrokenHeartItemRecipe( this );
 			myrecipe.AddRecipe();
 		}
 	}
@@ -36,14 +36,14 @@ namespace Injury.Items {
 
 
 	class VitaeViaBrokenHeartItemRecipe : ModRecipe {
-		public VitaeViaBrokenHeartItemRecipe( InjuryMod mymod, BrokenHeartItem myitem ) : base( mymod ) {
+		public VitaeViaBrokenHeartItemRecipe( BrokenHeartItem myitem ) : base( myitem.mod ) {
 			this.AddTile( TileID.DemonAltar );
 
 			this.AddIngredient( myitem, 1 );
-			this.AddRecipeGroup( "HamstarHelpers:Animals", 1 );
+			this.AddRecipeGroup( RecipeHelpers.VanillaAnimals.Key, 1 );
 			this.AddIngredient( ItemID.Mushroom, 1 );
 
-			this.SetResult( mymod.GetItem<VitaeItem>(), 1 );
+			this.SetResult( this.mod.GetItem<VitaeItem>(), 1 );
 		}
 
 

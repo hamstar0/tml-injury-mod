@@ -40,7 +40,7 @@ namespace Injury.Items {
 		////////////////
 
 		public override void AddRecipes() {
-			var recipe = new HeartstringsItemRecipe( (InjuryMod)this.mod, this );
+			var recipe = new HeartstringsItemRecipe( this );
 			recipe.AddRecipe();
 		}
 	}
@@ -48,7 +48,7 @@ namespace Injury.Items {
 
 
 	class HeartstringsItemRecipe : ModRecipe {
-		public HeartstringsItemRecipe( InjuryMod mymod, HeartstringsItem myitem ) : base( mymod ) {
+		public HeartstringsItemRecipe( HeartstringsItem myitem ) : base( myitem.mod ) {
 			this.AddTile( TileID.TinkerersWorkbench );
 			this.AddIngredient( ItemID.BeeWax, 20 );
 			this.AddRecipeGroup( "HamstarHelpers:EvilBiomeLightPet", 1 );

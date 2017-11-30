@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 
 namespace Injury.Buffs {
-	class ImpactTrauma : ModBuff {
+	class ImpactTraumaBuff : ModBuff {
 		public override void SetDefaults() {
 			this.DisplayName.SetDefault( "Impact Trauma" );
 			this.Description.SetDefault( "You've been hit hard by something" );

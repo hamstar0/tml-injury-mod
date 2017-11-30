@@ -40,17 +40,18 @@ namespace Injury.Items {
 
 		public override bool ConsumeItem( Player player ) {
 			var modplayer = player.GetModPlayer<InjuryPlayer>( this.mod );
-			bool can_heal = modplayer.CanTemporaryInjuryHeal( 20 );
+			bool can_heal = modplayer.Logic.CanTemporaryInjuryHeal( player, 20 );
+
 			if( can_heal ) {
-				modplayer.TemporaryInjuryHeal( 20 );
+				modplayer.Logic.TemporaryInjuryHeal( (InjuryMod)this.mod, player, 20 );
 			}
+
 			return can_heal;
 		}
 
 
 		public override void AddRecipes() {
-			var mymod = (InjuryMod)this.mod;
-			var myrecipe = new CrackedLifeCrystalItemRecipe( mymod, this );
+			var myrecipe = new CrackedLifeCrystalItemRecipe( this );
 			myrecipe.AddRecipe();
 		}
 	}
@@ -58,12 +59,13 @@ namespace Injury.Items {
 
 	
 	class CrackedLifeCrystalItemRecipe : ModRecipe {
-		public CrackedLifeCrystalItemRecipe( InjuryMod mymod, CrackedLifeCrystalItem myitem ) : base( mymod ) {
+		public CrackedLifeCrystalItemRecipe( CrackedLifeCrystalItem myitem ) : base( myitem.mod ) {
+			var mymod = (InjuryMod)this.mod;
+
 			this.AddTile( TileID.WorkBenches );
 
 			this.AddIngredient( mymod.GetItem<VitaeItem>(), mymod.Config.Data.VitaePerCrackedLifeCrystal );
-			this.AddIngredient( ItemID.Glass, 16 );
-			this.AddIngredient( ItemID.RegenerationPotion, 4 );
+			this.AddIngredient( ItemID.RubyGemsparkBlock, 10 );
 
 			this.SetResult( myitem, 1 );
 		}

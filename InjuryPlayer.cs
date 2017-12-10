@@ -12,6 +12,9 @@ namespace Injury {
 
 		public bool IsImpaired = false;
 		public int HeartstringsEffectDuration = 0;
+		public int LifeVestPresence = 0;
+
+		private bool AmDead = false;
 
 
 		////////////////
@@ -27,6 +30,7 @@ namespace Injury {
 			myclone.Logic = this.Logic;
 			myclone.IsImpaired = this.IsImpaired;
 			myclone.HeartstringsEffectDuration = this.HeartstringsEffectDuration;
+			myclone.LifeVestPresence = this.LifeVestPresence;
 		}
 
 		public override void OnEnterWorld( Player player ) {
@@ -39,7 +43,7 @@ namespace Injury {
 					}
 
 					if( Main.netMode == 1 ) {   // Client
-						ClientPacketHandlers.SendSettingsRequestFromClient( mymod, player );
+						ClientPacketHandlers.SendSettingsRequest( mymod );
 					}
 				}
 			}
@@ -73,7 +77,7 @@ namespace Injury {
 			}
 			
 			if( !quiet && this.Logic.CanBeHarmed( mymod, player, damage, crit) ) {
-				float harm = this.Logic.ComputeHarm( mymod, player, damage, crit );
+				float harm = this.Logic.ComputeHarmFromDamage( mymod, player, damage, crit );
 //Main.NewText("harmed: "+harm+" buffer: "+ this.HiddenHarmBuffer.ToString("N2")+" threshold: "+this.ComputeHarmBufferCapacity().ToString("N2") );
 				this.Logic.AfflictHarm( mymod, player, harm );
 			}
@@ -100,7 +104,26 @@ namespace Injury {
 			if( this.HeartstringsEffectDuration > 0 ) {
 				this.HeartstringsEffectDuration--;
 			}
+			if( this.LifeVestPresence > 0 ) {
+				this.LifeVestPresence--;
+			}
+
+			if( mymod.Config.Data.InjuryOnDeath ) {
+				if( !this.AmDead ) {
+					if( player.dead ) {
+						this.AmDead = true;
+
+						float harm_buffer_percent = this.Logic.ComputeHarmBufferPercent( mymod, this.player );
+						float harm = this.Logic.ComputeHarmBufferCapacity( mymod, player ) * (1f - harm_buffer_percent);
+
+						this.Logic.AfflictHarm( mymod, this.player, harm + 0.001f );
+					}
+				} else if( !player.dead ) {
+					this.AmDead = false;
+				}
+			}
 		}
+		
 
 
 		public override void PostUpdateRunSpeeds() {

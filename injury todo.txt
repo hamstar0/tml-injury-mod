@@ -1,30 +1,8 @@
-v2.0.0
--	Verify broken heart pickups are multiplayer friendly
--	Add option to lose health only with deaths
--	Life Cereal: Adds 5 max hp up to 500
-	-	Implement effects
+Junkyard
+-	Life Line: Fortifies against losing hearts (mid game)
+	-	Implement effects (stacks)
 	-	Create graphics
-	-	@Recipe: Stray Heart, Jungle Grass Seed
-	-	Change Broken Heart to Stray Heart
-		-	Create graphic
-		-	Define item
-		-	@Names:
-			-	Bloody Chunk
-			-	Regurgitated Life Fruit
-			-	Soul Shard
-			-	Soul Heart
-			-	Mini Heart
-			-	Life Essense
-			-	Surplus Heart
-			-	Heart Overflow
-			-	Life Extract
--	Hearty Soup: Adds 5 max hp
-	-	Implement effects
-	-	Create graphics
-	-	@Recipe: Vitae, Bowl of Soup, Firefly, Pink Prickly Pear
--	Fortitude Bracer: Heartstrings + Band of Afterlife + Heart Mender
-	-	Implement effects
-	-	Create graphics
+	-	@Recipe: Pink Thread, Rainbow String?, 5 Vitae
 -	Heart Mender: Allows consuming broken hearts for max health (50% chance)
 	-	Implement effects
 	-	Create graphics
@@ -33,30 +11,55 @@ v2.0.0
 	-	Implement effects
 	-	Create graphics
 	-	@Recipe: Logic Sensor (Player Above), Bug Net, Slime Hook
--	Band of Afterlife: Recovers max health up to 500
-	-	Implement effects
-	-	Create graphics
-	-	@Recipe: Band of Life, 5 Life Fruits, 20 Ectoplasm
--	Life Vest: Fortifies further against losing hearts (late game)
-	-	Implement effects
-	-	Create graphics
-	-	@Recipe: Life Line + 10 Vitae + 5 Shroomite Bars
--	Life Line: Fortifies against losing hearts (mid game)
-	-	Implement effects
-	-	Create graphics
-	-	@Recipe: Pink Thread, 10x Restoration Potions
 
+
+v2.0.0
+-	Test new config options for tml prototype
+
+-	@Test life vest
+-	Add option to lose health only with deaths
+-	Life Vest: Fortifies further against losing hearts (late game)
+	-	Implement effects (stacks)
+	-	Create graphics
+	-	@Recipe: 50 Bubble Blocks, 5 Shroomite Bars, 10 Enriched Vitae
+-	Rename Ambrosia Potion to Enriched Vitae
+-	@Test hp display, vitae, wandering heart, fortitude potion, heartstrings
+-	Band of Afterlife: Recovers max health up to 500 + longer lasting Broken Hearts
+	-	Implement effects
+	-	Create graphics
+	-	@Recipe: Band of Life, Heartstrings, 10 Enriched Vitae
+-	Enriched Vitae: Consumable for +5 max life recovery (over 400 hp) + poisoning
+	-	Implement effects
+	-	Create graphics
+	-	@Recipe x3: 2 Wandering Heart, Vitae, Pink Prickly Pear
+-	Add vitae crafting curse: Curse + Wraith spawn
+-	Change vitae color
+-	Set Heartstrings to drop hearts closer by
+-	Wandering Heart: Broken Hearts when over 400 hp
+	-	Create graphics
+	-	Define item
+	-	Define projectile
+	-	@Names:
+		-	Bloody Chunk
+		-	Regurgitated Life Fruit
+		-	Soul Shard
+		-	Soul Heart
+		-	Mini Heart
+		-	Life Essense
+		-	Surplus Heart
+		-	Heart Overflow
+		-	Life Extract
+		-	Stray Heart
 -	Fortitude Potion: Fortifies against losing hearts
 	-	Implement effects
 	-	Create graphics
 	-	Define item
 	-	@Recipe: Water Bottle, Vitae, Shadow Orb/Tissue Sample
-	-	Implement 'Vitae' (crafted at Demon Altar)
-		-	Set Cracked Life Crystal, Life Crystal recipes to use this
-		-	Define item
-		-	Create graphic
-		-	Define item
-		-	@Recipe: Broken heart, any live animal, mushroom
+-	Vitae: Compound for crafting life recovery (crafted at Demon Altar)
+	-	Set Cracked Life Crystal, Life Crystal recipes to use this
+	-	Define item
+	-	Create graphic
+	-	@Recipe (via. Demon Altar): Broken heart, any live animal, mushroom
 -	Heartstrings: Broken Hearts take longer to dissintegrate
 	-	Implement effects
 	-	Create graphics

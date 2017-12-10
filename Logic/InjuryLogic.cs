@@ -1,4 +1,5 @@
-﻿using Injury.Buffs;
+﻿using HamstarHelpers.DebugHelpers;
+using Injury.Buffs;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -59,12 +60,21 @@ namespace Injury.Logic {
 
 		public float ComputeFortifyScale( InjuryMod mymod, Player player ) {
 			float amt = 1f;
+			float add = 0f;
+			var modplayer = player.GetModPlayer<InjuryPlayer>();
 
 			if( player.FindBuffIndex( mymod.BuffType<FortifiedBuff>() ) != -1 ) {
-				amt *= mymod.Config.Data.HarmBufferCapacityFortifiedScale;
+				add += mymod.Config.Data.FortitudePotionHarmBufferMultiplier - 1f;
+			}
+			if( modplayer.LifeVestPresence > 0 ) {
+				add += mymod.Config.Data.LifeVestHarmBufferMultiplier - 1f;
 			}
 
-			return amt;
+			if( mymod.IsDebugInfoMode() ) {
+				DebugHelpers.SetDisplay( "fortify scale ", "" + (amt + add), 30 );
+			}
+
+			return amt + add;
 		}
 
 

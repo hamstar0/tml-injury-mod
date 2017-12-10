@@ -4,7 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 
-namespace Injury.Items {
+namespace Injury.Items.Accessories {
 	[AutoloadEquip( EquipType.HandsOn )]
 	class BandOfLifeItem : ModItem {
 		public static int Width = 22;
@@ -33,14 +33,15 @@ namespace Injury.Items {
 
 		public override void UpdateAccessory( Player player, bool hide_visual ) {
 			var mymod = (InjuryMod)this.mod;
-			var modplayer = player.GetModPlayer<InjuryPlayer>( this.mod );
-			var item_info = this.item.GetGlobalItem<BandOfLifeItemInfo>( this.mod );
+			var modplayer = player.GetModPlayer<InjuryPlayer>( mymod );
+			var item_info = this.item.GetGlobalItem<BandOfLifeItemInfo>( mymod );
+			bool can_heal = player.statLifeMax < 400;
 
 			if( modplayer.Logic.HiddenHarmBuffer == 0 && item_info.HealBuffer < 5f ) {
 				item_info.HealBuffer += mymod.Config.Data.BandOfLifeInjuryHealPerSecond;
 			}
 
-			if( item_info.HealBuffer >= 5f && player.statLifeMax < 400 ) {
+			if( item_info.HealBuffer >= 5f && can_heal ) {
 				player.statLifeMax += 5;
 				item_info.HealBuffer -= 5f;
 
@@ -60,11 +61,10 @@ namespace Injury.Items {
 	class BandOfLifeItemRecipe : ModRecipe {
 		public BandOfLifeItemRecipe( BandOfLifeItem myitem ) : base( myitem.mod ) {
 			//this.AddTile( 114 );   // Tinkerer's Workshop
-			this.AddTile( 18 );   // Crafting bench
+			this.AddTile( TileID.WorkBenches );
 			this.AddIngredient( ItemID.BandofRegeneration, 1 );
-			this.AddIngredient( ItemID.LifeCrystal, 4 );
 			this.AddIngredient( ItemID.PixieDust, 10 );
-			this.AddIngredient( ItemID.RegenerationPotion, 10 );
+			this.AddIngredient( this.mod.GetItem<VitaeItem>(), 10 );
 			this.SetResult( myitem );
 		}
 

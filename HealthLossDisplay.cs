@@ -25,16 +25,10 @@ namespace Injury {
 		////////////////
 
 		public void DrawSubHealth( InjuryMod mymod, SpriteBatch sb ) {
-			int x = 0;
-			int y = 0;
 			var myplayer = Main.LocalPlayer.GetModPlayer<InjuryPlayer>();
 			float percent = myplayer.Logic.ComputeHarmBufferPercent( mymod, Main.LocalPlayer );
-			var src_rect = new Rectangle( 0, 0, this.HeartTex.Width, (int)((float)this.HeartTex.Height * percent) );
-			var dest_rect = new Rectangle( x, y, this.HeartTex.Width, this.HeartTex.Height );
 
-			HudHelpers.GetTopHeartPosition( Main.LocalPlayer, ref x, ref y );
-
-			sb.Draw( this.HeartTex, dest_rect, src_rect, Color.Black );
+			this.DrawSubHealthAtPercent( sb, percent );
 		}
 
 
@@ -51,6 +45,21 @@ namespace Injury {
 
 
 		////////////////
+
+		private void DrawSubHealthAtPercent( SpriteBatch sb, float percent ) {
+			int width = this.HeartTex.Width;
+			int height = (int)( (float)this.HeartTex.Height * percent );
+			var src_rect = new Rectangle( 0, 0, width, height );
+			int x = 0;
+			int y = 0;
+
+			HudHelpers.GetTopHeartPosition( Main.LocalPlayer, ref x, ref y );
+
+			var dest_rect = new Rectangle( x, y, width, height );
+
+			sb.Draw( this.HeartTex, dest_rect, src_rect, Color.Black * 0.5f );
+		}
+
 
 		private void DrawHeartDropAnimationFrame( SpriteBatch sb, int frame, int maxframes ) {
 			int x = 0;

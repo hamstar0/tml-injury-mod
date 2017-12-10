@@ -36,7 +36,7 @@ namespace Injury.Logic {
 
 		////////////////
 
-		public float ComputeHarm( InjuryMod mymod, Player player, double damage, bool crit ) {
+		public float ComputeHarmFromDamage( InjuryMod mymod, Player player, double damage, bool crit ) {
 			var data = mymod.Config.Data;
 
 			float damage_with_crit = crit ? (float)damage * 2f : (float)damage;
@@ -92,7 +92,11 @@ namespace Injury.Logic {
 
 			if( is_injured ) {
 				if( mymod.Config.Data.BrokenHeartsDrop ) {
-					BleedingHeartProjectile.Spawn( player, mymod );
+					if( player.statLifeMax <= 415 || (NPC.downedMechBossAny && player.statLifeMax <= 400) ) {
+						BleedingHeartProjectile.Spawn( player, mymod );
+					} else {
+						WanderingHeartProjectile.Spawn( player, mymod );
+					}
 				}
 
 				this.InjuryFullFX( mymod, player );

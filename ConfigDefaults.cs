@@ -13,6 +13,9 @@ namespace Injury {
 		public string VersionSinceUpdate = "";
 
 		public bool Enabled = true;
+		public int DEBUGMODE = 0;
+
+		public bool InjuryOnDeath = true;
 
 		public float PercentOfDamageToUseAsInjury = 0.075f;
 		public float AdditionalInjuryPerDamagingHit = 0f;
@@ -27,6 +30,7 @@ namespace Injury {
 
 		public float InjuryBufferHealPerSecond = 1f / (60f * 75f);  // 1 hp every 75 seconds
 		public float BandOfLifeInjuryHealPerSecond = 1f / (60f * 30f); // 1 hp every 30 seconds
+		public float BandOfAfterlifeInjuryHealPerSecond = 1f / (60f * 45f); // 1 hp every 45 seconds
 
 		public bool HighMaxHealthReducesInjury = true;
 
@@ -34,7 +38,9 @@ namespace Injury {
 		public int DurationOfBleedingHeart = 24 * 60;
 		public int VitaePerLifeCrystal = 4;
 		public int VitaePerCrackedLifeCrystal = 2;
-		
+		public int EnrichedVitaeQuantityPerCraft = 3;
+
+
 		public bool CraftableBandOfLife = true;
 		public bool CraftableVitae = true;
 		public bool CraftableLifeCrystal = true;
@@ -42,6 +48,9 @@ namespace Injury {
 		 public bool LifeCrystalNeedsEvilBossDrops = true;
 		public bool CraftableHeartstrings = true;
 		public bool CraftableFortitudePotions = true;
+		public bool CraftableAmbrosia = true;
+		public bool CraftableBandOfAfterlife = true;
+		public bool CraftableLifeVest = true;
 
 		public int TemporaryMaxHpChunkDrainTickRate = 5 * 30 * 60;   // 5 hp every 30 seconds
 
@@ -54,7 +63,11 @@ namespace Injury {
 		public bool RenderHudHeartDrops = true;
 
 		public int HeartstringsAddedDuration = 60 * 45; // +45s
-		public float HarmBufferCapacityFortifiedScale = 2f;
+		public float FortitudePotionHarmBufferMultiplier = 1.4f;
+		public float LifeVestHarmBufferMultiplier = 1.7f;
+
+		public int VitaeCraftingAccidentOdds = 6;
+
 
 
 		public string _OLD_SETTINGS_BELOW_ = "";

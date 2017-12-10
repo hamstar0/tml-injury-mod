@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 
@@ -10,7 +11,10 @@ namespace Injury.NetProtocol {
 
 			switch( protocol ) {
 			case InjuryNetProtocolTypes.ModSettingsRequest:
-				ServerPacketHandlers.ReceiveSettingsRequestOnServer( mymod, reader, player_who );
+				ServerPacketHandlers.ReceiveSettingsRequest( mymod, reader, player_who );
+				break;
+			case InjuryNetProtocolTypes.NpcSpawnRequest:
+				ServerPacketHandlers.ReceiveNpcSpawnRequest( mymod, reader, player_who );
 				break;
 			default:
 				ErrorLogger.Log( "Invalid packet protocol: " + protocol );
@@ -20,12 +24,10 @@ namespace Injury.NetProtocol {
 
 		
 		////////////////////////////////
-		// Senders (server)
+		// Senders
 		////////////////////////////////
 
-		private static void SendSettingFromServer( InjuryMod mymod, Player player ) {
-			if( Main.netMode != 2 ) { return; } // Server only
-
+		private static void SendSettings( InjuryMod mymod, Player player ) {
 			ModPacket packet = mymod.GetPacket();
 
 			packet.Write( (byte)InjuryNetProtocolTypes.ModSettings );
@@ -39,10 +41,14 @@ namespace Injury.NetProtocol {
 		// Recipients (server)
 		////////////////////////////////
 
-		private static void ReceiveSettingsRequestOnServer( InjuryMod mymod, BinaryReader reader, int player_who ) {
-			if( Main.netMode != 2 ) { return; } // Server only
+		private static void ReceiveSettingsRequest( InjuryMod mymod, BinaryReader reader, int player_who ) {
+			ServerPacketHandlers.SendSettings( mymod, Main.player[player_who] );
+		}
 
-			ServerPacketHandlers.SendSettingFromServer( mymod, Main.player[player_who] );
+		private static void ReceiveNpcSpawnRequest( InjuryMod mymod, BinaryReader reader, int player_who ) {
+			int npc_id = reader.ReadInt32();
+
+			NPC.SpawnOnPlayer( player_who, npc_id );
 		}
 	}
 }

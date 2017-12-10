@@ -6,7 +6,7 @@ using Injury.NetProtocol;
 using System;
 using Terraria.UI;
 using System.Collections.Generic;
-
+using Injury.Items.Consumables;
 
 namespace Injury {
 	class InjuryMod : Mod {
@@ -31,8 +31,6 @@ namespace Injury {
 		public JsonConfig<InjuryConfigData> Config { get; private set; }
 		public HealthLossDisplay HealthLoss { get; private set; }
 
-		public event Action AddRecipeEvt;
-
 
 		////////////////
 
@@ -42,7 +40,7 @@ namespace Injury {
 				AutoloadGores = true,
 				AutoloadSounds = true
 			};
-			
+
 			this.Config = new JsonConfig<InjuryConfigData>( InjuryConfigData.ConfigFileName,
 				ConfigurationDataBase.RelativePath, new InjuryConfigData() );
 		}
@@ -53,7 +51,7 @@ namespace Injury {
 			InjuryMod.Instance = this;
 
 			var hamhelpmod = ModLoader.GetMod( "HamstarHelpers" );
-			var min_vers = new Version( 1, 2, 0 );
+			var min_vers = new Version( 1, 2, 2 );
 			if( hamhelpmod.Version < min_vers ) {
 				throw new Exception( "Hamstar Helpers must be version " + min_vers.ToString() + " or greater." );
 			}
@@ -93,14 +91,15 @@ namespace Injury {
 		////////////////
 
 		public override void AddRecipes() {
-			this.AddRecipeEvt();
+			var life_crystal_recipe = new LifeCrystalViaVitaeItemRecipe( this );
+			life_crystal_recipe.AddRecipe();
 		}
 
 
 		////////////////
 
 		public override void ModifyInterfaceLayers( List<GameInterfaceLayer> layers ) {
-			int idx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Resource Bars" ) );	//Vanilla: Inventory
+			int idx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Resource Bars" ) );   //Vanilla: Inventory
 			if( idx != -1 ) {
 				GameInterfaceDrawMethod func = delegate {
 					this.HealthLoss.DrawSubHealth( this, Main.spriteBatch );
@@ -110,8 +109,15 @@ namespace Injury {
 				};
 				var interface_layer = new LegacyGameInterfaceLayer( "Injury: Heart Overlay", func, InterfaceScaleType.UI );
 
-				layers.Insert( idx+1, interface_layer );
+				layers.Insert( idx + 1, interface_layer );
 			}
+		}
+
+
+		////////////////
+
+		public bool IsDebugInfoMode() {
+			return (this.Config.Data.DEBUGMODE & 1) != 0;
 		}
 	}
 }

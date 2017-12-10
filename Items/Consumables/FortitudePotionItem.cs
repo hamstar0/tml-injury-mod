@@ -8,7 +8,7 @@ namespace Injury.Items.Consumables {
 	class FortitudePotionItem : ModItem {
 		public override void SetStaticDefaults() {
 			this.DisplayName.SetDefault( "Fortitude Potion" );
-			this.Tooltip.SetDefault( "Adds resistance to injury" );
+			this.Tooltip.SetDefault( "Adds temporary resistance to injury" );
 		}
 
 		public override void SetDefaults() {
@@ -22,7 +22,7 @@ namespace Injury.Items.Consumables {
 			this.item.width = 14;
 			this.item.height = 24;
 			//item.potion = true;
-			this.item.buffType = this.mod.BuffType( "Fortified" );
+			this.item.buffType = this.mod.BuffType( "FortifiedBuff" );
 			this.item.buffTime = 30 * 60;
 			this.item.value = 1000;
 			this.item.rare = 1;

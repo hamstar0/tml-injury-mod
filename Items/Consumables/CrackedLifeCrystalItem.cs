@@ -1,10 +1,9 @@
-﻿using Injury.Items.Consumables;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 
-namespace Injury.Items {
+namespace Injury.Items.Consumables {
 	class CrackedLifeCrystalItem : ModItem {
 		public static int Width = 22;
 		public static int Height = 22;

@@ -5,17 +5,6 @@ using Terraria.ModLoader;
 
 namespace Injury.Items.Consumables {
 	class LifeCrystalViaVitaeItemRecipe : ModRecipe {
-		static LifeCrystalViaVitaeItemRecipe() {
-			var mymod = (InjuryMod)ModLoader.GetMod( "Injury" );
-
-			mymod.AddRecipeEvt += delegate () {
-				var myrecipe = new LifeCrystalViaVitaeItemRecipe( mymod );
-				myrecipe.AddRecipe();
-			};
-		}
-
-
-
 		public LifeCrystalViaVitaeItemRecipe( InjuryMod mymod ) : base( mymod ) {
 			this.AddTile( TileID.WorkBenches ); 
 

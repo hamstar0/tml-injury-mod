@@ -67,7 +67,7 @@ namespace Injury.Items.Accessories {
 			this.AddTile( TileID.WorkBenches );
 
 			this.AddIngredient( this.mod.GetItem<BandOfLifeItem>(), 1 );
-			this.AddIngredient( this.mod.GetItem<HeartstringsItem>(), 4 );
+			this.AddIngredient( this.mod.GetItem<HeartstringsItem>(), 1 );
 			this.AddIngredient( this.mod.GetItem<EnrichedVitaeItem>(), 20 );
 
 			this.SetResult( myitem );

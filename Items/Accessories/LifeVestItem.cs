@@ -65,7 +65,7 @@ namespace Injury.Items.Accessories {
 
 		public override bool RecipeAvailable() {
 			var mymod = (InjuryMod)this.mod;
-			return mymod.Config.Data.Enabled && mymod.Config.Data.CraftableLifeVest;
+			return mymod.ServerConfig.Enabled && mymod.ServerConfig.CraftableLifeVest;
 		}
 	}
 }

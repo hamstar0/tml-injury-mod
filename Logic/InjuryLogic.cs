@@ -27,7 +27,7 @@ namespace Injury.Logic {
 		public void Load( InjuryMod mymod, TagCompound tags ) {
 			if( tags.ContainsKey( "temp_max_hp" ) ) {
 				this.TemporaryMaxHp = tags.GetInt( "temp_max_hp" );
-				this.TemporaryMaxHpTimer = mymod.Config.Data.TemporaryMaxHpChunkDrainTickRate;
+				this.TemporaryMaxHpTimer = mymod.ServerConfig.TemporaryMaxHpChunkDrainTickRate;
 			}
 		}
 
@@ -40,7 +40,7 @@ namespace Injury.Logic {
 
 		public void UpdateBleeding( InjuryMod mymod, Player player ) {
 			// Low hp (< %35) blood loss
-			if( (float)player.statLife < (float)player.statLifeMax2 * mymod.Config.Data.MaxHpPercentRemainingUntilBleeding ) {
+			if( (float)player.statLife < (float)player.statLifeMax2 * mymod.ServerConfig.MaxHpPercentRemainingUntilBleeding ) {
 				player.AddBuff( 30, 2 );
 				Main.buffNoTimeDisplay[30] = true;  // Force bleeding to not render time
 			} else {
@@ -52,7 +52,7 @@ namespace Injury.Logic {
 		////////////////
 
 		public bool IsPowerfulBlow( InjuryMod mymod, Player player, float damage_with_crit ) {
-			return damage_with_crit > (float)player.statLifeMax2 * mymod.Config.Data.MaxHpPercentLossForPowerfulBlowStagger;
+			return damage_with_crit > (float)player.statLifeMax2 * mymod.ServerConfig.MaxHpPercentLossForPowerfulBlowStagger;
 		}
 
 
@@ -64,13 +64,13 @@ namespace Injury.Logic {
 			var modplayer = player.GetModPlayer<InjuryPlayer>();
 
 			if( player.FindBuffIndex( mymod.BuffType<FortifiedBuff>() ) != -1 ) {
-				add += mymod.Config.Data.FortitudePotionHarmBufferMultiplier - 1f;
+				add += mymod.ServerConfig.FortitudePotionHarmBufferMultiplier - 1f;
 			}
 			if( modplayer.LifeVestPresence > 0 ) {
-				add += mymod.Config.Data.LifeVestHarmBufferMultiplier - 1f;
+				add += mymod.ServerConfig.LifeVestHarmBufferMultiplier - 1f;
 			}
 
-			if( mymod.IsDebugInfoMode() ) {
+			if( mymod.ServerConfig.DEBUGINFOMODE ) {
 				DebugHelpers.SetDisplay( "fortify scale ", "" + (amt + add), 30 );
 			}
 

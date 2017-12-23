@@ -21,11 +21,11 @@ namespace Injury.Buffs {
 
 
 		public static void ApplyImpairment( InjuryMod mymod, Player player ) {
-			player.maxRunSpeed *= mymod.Config.Data.FallLimpSpeedMultiplier;
+			player.maxRunSpeed *= mymod.ServerConfig.FallLimpSpeedMultiplier;
 			player.accRunSpeed = player.maxRunSpeed;
-			player.moveSpeed *= mymod.Config.Data.FallLimpSpeedMultiplier;
+			player.moveSpeed *= mymod.ServerConfig.FallLimpSpeedMultiplier;
 
-			int maxJump = (int)(Player.jumpHeight * mymod.Config.Data.FallLimpJumpMultiplier);
+			int maxJump = (int)(Player.jumpHeight * mymod.ServerConfig.FallLimpJumpMultiplier);
 			if( player.jump > maxJump ) { player.jump = maxJump; }
 		}
 	}

@@ -69,7 +69,7 @@ namespace Injury {
 			var mymod = (InjuryMod)this.mod;
 			double damage_with_crit = crit ? damage * 2 : damage;
 
-			if( !mymod.Config.Data.Enabled ) { return; }
+			if( !mymod.ServerConfig.Enabled ) { return; }
 
 			// Powerful blow stagger
 			if( this.Logic.IsPowerfulBlow( mymod, player, (float)damage_with_crit ) ) {
@@ -86,7 +86,7 @@ namespace Injury {
 
 		public override void PreUpdate() {
 			var mymod = (InjuryMod)this.mod;
-			if( !mymod.Config.Data.Enabled ) { return; }
+			if( !mymod.ServerConfig.Enabled ) { return; }
 
 			this.Logic.UpdateBleeding( mymod, this.player );
 
@@ -94,7 +94,7 @@ namespace Injury {
 			if( this.player.velocity.Y == 0f ) {
 				int dmg = PlayerHelpers.ComputeImpendingFallDamage( this.player );
 				if( dmg != 0 ) {
-					this.player.AddBuff( mod.BuffType("ImpactTrauma"), dmg * mymod.Config.Data.FallLimpDurationMultiplier );
+					this.player.AddBuff( mod.BuffType("ImpactTrauma"), dmg * mymod.ServerConfig.FallLimpDurationMultiplier );
 				}
 			}
 
@@ -108,7 +108,7 @@ namespace Injury {
 				this.LifeVestPresence--;
 			}
 
-			if( mymod.Config.Data.InjuryOnDeath ) {
+			if( mymod.ServerConfig.InjuryOnDeath ) {
 				if( !this.AmDead ) {
 					if( player.dead ) {
 						this.AmDead = true;

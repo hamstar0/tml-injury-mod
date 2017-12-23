@@ -1,7 +1,19 @@
-﻿namespace Injury {
+﻿using System;
+
+
+namespace Injury {
 	public static class InjuryAPI {
-		public static InjuryConfigData GetModSettings() {
-			return InjuryMod.Instance.Config.Data;
+		[Obsolete( "use GetModServerSettings" )]
+		public static InjuryServerConfigData GetModSettings() {
+			return InjuryAPI.GetModServerSettings();
+		}
+
+
+		public static InjuryClientConfigData GetModClientSettings() {
+			return InjuryMod.Instance.ClientConfig;
+		}
+		public static InjuryServerConfigData GetModServerSettings() {
+			return InjuryMod.Instance.ServerConfig;
 		}
 	}
 }

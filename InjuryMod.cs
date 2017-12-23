@@ -8,6 +8,7 @@ using Terraria.UI;
 using System.Collections.Generic;
 using Injury.Items.Consumables;
 
+
 namespace Injury {
 	class InjuryMod : Mod {
 		public static InjuryMod Instance { get; private set; }
@@ -16,19 +17,25 @@ namespace Injury {
 		public static string GithubProjectName { get { return "tml-injury-mod"; } }
 
 		public static string ConfigFileRelativePath {
-			get { return ConfigurationDataBase.RelativePath + Path.DirectorySeparatorChar + InjuryConfigData.ConfigFileName; }
+			get { return ConfigurationDataBase.RelativePath + Path.DirectorySeparatorChar + InjuryConfigMetaData.ConfigFileName; }
 		}
 		public static void ReloadConfigFromFile() {
 			if( Main.netMode != 0 ) {
 				throw new Exception( "Cannot reload configs outside of single player." );
 			}
-			InjuryMod.Instance.Config.LoadFile();
+			if( !InjuryMod.Instance.ServerConfig.LoadFile() ) {
+				InjuryMod.Instance.ServerConfig.SaveFile();
+			}
+			if( !InjuryMod.Instance.ClientConfig.LoadFile() ) {
+				InjuryMod.Instance.ClientConfig.SaveFile();
+			}
 		}
 
 
 		////////////////
 
-		public JsonConfig<InjuryConfigData> Config { get; private set; }
+		public InjuryServerConfigData ServerConfig { get; internal set; }
+		public InjuryClientConfigData ClientConfig { get; internal set; }
 		public HealthLossDisplay HealthLoss { get; private set; }
 
 
@@ -40,9 +47,6 @@ namespace Injury {
 				AutoloadGores = true,
 				AutoloadSounds = true
 			};
-
-			this.Config = new JsonConfig<InjuryConfigData>( InjuryConfigData.ConfigFileName,
-				ConfigurationDataBase.RelativePath, new InjuryConfigData() );
 		}
 
 		////////////////
@@ -57,17 +61,9 @@ namespace Injury {
 			}
 
 			this.HealthLoss = new HealthLossDisplay();
-
-			this.LoadConfig();
-		}
-
-		private void LoadConfig() {
-			if( !this.Config.LoadFile() ) {
-				this.Config.SaveFile();
-			}
-
-			if( this.Config.Data.UpdateToLatestVersion() ) {
-				ErrorLogger.Log( "Injury updated to " + InjuryConfigData.ConfigVersion.ToString() );
+			
+			if( this.ServerConfig.UpdateToLatestVersion() ) {
+				ErrorLogger.Log( "Injury updated to " + InjuryConfigMetaData.ConfigVersion.ToString() );
 				this.Config.SaveFile();
 			}
 		}
@@ -102,8 +98,12 @@ namespace Injury {
 			int idx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Resource Bars" ) );   //Vanilla: Inventory
 			if( idx != -1 ) {
 				GameInterfaceDrawMethod func = delegate {
-					this.HealthLoss.DrawSubHealth( this, Main.spriteBatch );
-					this.HealthLoss.DrawCurrentHeartDropAnimation( this, Main.spriteBatch );
+					if( this.ClientConfig.RenderSubHealth ) {
+						this.HealthLoss.DrawSubHealth( this, Main.spriteBatch );
+					}
+					if( this.ClientConfig.RenderHudHeartDrops ) {
+						this.HealthLoss.DrawCurrentHeartDropAnimation( this, Main.spriteBatch );
+					}
 
 					return true;
 				};
@@ -111,13 +111,6 @@ namespace Injury {
 
 				layers.Insert( idx + 1, interface_layer );
 			}
-		}
-
-
-		////////////////
-
-		public bool IsDebugInfoMode() {
-			return (this.Config.Data.DEBUGMODE & 1) != 0;
 		}
 	}
 }

@@ -15,8 +15,8 @@ namespace Injury.Items.Consumables {
 
 		public override void SetStaticDefaults() {
 			this.DisplayName.SetDefault( "Enriched Vitae" );
-			this.Tooltip.SetDefault( "Enriched life extract. A drink to die for."
-				+ '\n'+"Increases maximum life by 5 (up to 500)" );
+			this.Tooltip.SetDefault( "Increases maximum life by 5 (up to 500)"
+				+ '\n'+ "Enriched life extract. A drink to die for." );
 		}
 
 		public override void ModifyTooltips( List<TooltipLine> tooltips ) {
@@ -95,13 +95,13 @@ namespace Injury.Items.Consumables {
 			this.AddIngredient( mymod.GetItem<VitaeItem>(), 1 );
 			this.AddIngredient( ItemID.PinkPricklyPear, 1 );
 
-			this.SetResult( myitem, mymod.Config.Data.EnrichedVitaeQuantityPerCraft );
+			this.SetResult( myitem, mymod.ServerConfig.EnrichedVitaeQuantityPerCraft );
 		}
 
 
 		public override bool RecipeAvailable() {
 			var mymod = (InjuryMod)this.mod;
-			return mymod.Config.Data.Enabled && mymod.Config.Data.CraftableAmbrosia;
+			return mymod.ServerConfig.Enabled && mymod.ServerConfig.CraftableAmbrosia;
 		}
 	}
 }

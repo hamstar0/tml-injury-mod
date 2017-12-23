@@ -7,7 +7,7 @@ namespace Injury.Logic {
 	partial class InjuryLogic {
 		public void UpdateHarm( InjuryMod mymod, Player player ) {
 			// Erode harm gradually
-			this.HiddenHarmBuffer -= mymod.Config.Data.InjuryBufferHealPerSecond;
+			this.HiddenHarmBuffer -= mymod.ServerConfig.InjuryBufferHealPerSecond;
 			if( this.HiddenHarmBuffer < 0f ) { this.HiddenHarmBuffer = 0f; }
 			if( player.dead ) { this.HiddenHarmBuffer = 0f; }
 
@@ -27,17 +27,17 @@ namespace Injury.Logic {
 
 		public bool CanBeHarmed( InjuryMod mymod, Player player, double damage, bool crit ) {
 			double damage_with_crit = crit ? damage * 2 : damage;
-			double max_hp_until_harm = (double)player.statLifeMax2 * mymod.Config.Data.MaxHpPercentAsDamageAtFullHealthUntilHarm;
+			double max_hp_until_harm = (double)player.statLifeMax2 * mymod.ServerConfig.MaxHpPercentAsDamageAtFullHealthUntilHarm;
 
-			return player.statLife < player.statLifeMax2    // Any amount of hurt
-				|| damage_with_crit > max_hp_until_harm;
+			return player.statLife < player.statLifeMax2    // Allow harm only when not full health...
+				|| damage_with_crit > max_hp_until_harm;	// ...or else damage exceeds 20% max hp
 		}
 
 
 		////////////////
 
 		public float ComputeHarmFromDamage( InjuryMod mymod, Player player, double damage, bool crit ) {
-			var data = mymod.Config.Data;
+			var data = mymod.ServerConfig;
 
 			float damage_with_crit = crit ? (float)damage * 2f : (float)damage;
 			float damage_clamped = damage_with_crit > player.statLife ? (float)(player.statLife + 1) : damage_with_crit;
@@ -47,7 +47,7 @@ namespace Injury.Logic {
 		}
 
 		public float ComputeHarmBufferCapacity( InjuryMod mymod, Player player ) {
-			var data = mymod.Config.Data;
+			var data = mymod.ServerConfig;
 			float hp_scale = 1f;
 
 			if( data.HighMaxHealthReducesInjury ) {
@@ -68,7 +68,7 @@ namespace Injury.Logic {
 		////////////////
 
 		public void AfflictHarm( InjuryMod mymod, Player player, float harm ) {
-			int min_hp = mymod.Config.Data.LowestAllowedMaxHealth;
+			int min_hp = mymod.ServerConfig.LowestAllowedMaxHealth;
 			bool is_injured = false;
 			float injury_threshold = this.ComputeHarmBufferCapacity( mymod, player );
 
@@ -80,7 +80,7 @@ namespace Injury.Logic {
 			while( this.HiddenHarmBuffer >= injury_threshold && player.statLifeMax > min_hp ) {
 				is_injured = true;
 				this.HiddenHarmBuffer -= injury_threshold;
-				player.statLifeMax -= mymod.Config.Data.MaxHealthLostFromInjury;
+				player.statLifeMax -= mymod.ServerConfig.MaxHealthLostFromInjury;
 			}
 
 			// Enforce minimum health cap
@@ -91,7 +91,7 @@ namespace Injury.Logic {
 			}
 
 			if( is_injured ) {
-				if( mymod.Config.Data.BrokenHeartsDrop ) {
+				if( mymod.ServerConfig.BrokenHeartsDrop ) {
 					if( player.statLifeMax <= 415 || (NPC.downedMechBossAny && player.statLifeMax <= 400) ) {
 						BleedingHeartProjectile.Spawn( player, mymod );
 					} else {

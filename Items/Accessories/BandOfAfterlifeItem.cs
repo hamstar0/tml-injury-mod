@@ -42,7 +42,7 @@ namespace Injury.Items.Accessories {
 			HeartstringsItem.ApplyHeartstringEffect( player );
 
 			if( modplayer.Logic.HiddenHarmBuffer == 0 && item_info.HealBuffer < 5f ) {
-				item_info.HealBuffer += mymod.Config.Data.BandOfAfterlifeInjuryHealPerSecond;
+				item_info.HealBuffer += mymod.ServerConfig.BandOfAfterlifeInjuryHealPerSecond;
 			}
 
 			if( item_info.HealBuffer >= 5f && can_heal ) {
@@ -75,7 +75,7 @@ namespace Injury.Items.Accessories {
 
 		public override bool RecipeAvailable() {
 			var mymod = (InjuryMod)this.mod;
-			return mymod.Config.Data.Enabled && mymod.Config.Data.CraftableBandOfAfterlife;
+			return mymod.ServerConfig.Enabled && mymod.ServerConfig.CraftableBandOfAfterlife;
 		}
 	}
 }

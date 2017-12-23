@@ -1,90 +1,196 @@
-﻿using HamstarHelpers.Utilities.Config;
-using System;
+﻿using System;
+using System.ComponentModel;
+using Terraria.ModLoader;
 
 
 namespace Injury {
-	public class InjuryConfigData : ConfigurationDataBase {
-		public readonly static Version ConfigVersion = new Version( 2, 0, 0 );
-		public readonly static string ConfigFileName = "Injury Config.json";
+	public class InjuryConfigMetaData {
+		public readonly static Version ConfigVersion = new Version( 2, 1, 0 );
+		public readonly static string ConfigFileName = "Injury ModConfig.json";
+	}
+
+
+
+	////////////////
+
+	public class InjuryClientConfigData : ModConfig {
+		public override MultiplayerSyncMode Mode {
+			get { return MultiplayerSyncMode.UniquePerPlayer; }
+		}
+
+		public override void PostAutoLoad() {
+			var mymod = (InjuryMod)this.mod;
+			mymod.ClientConfig = this;
+		}
 
 
 		////////////////
 
+		[Label( "Render sub health (how close to injury you are)" )]
+		[DefaultValue( true )]
+		public bool RenderSubHealth = true;
+		[Label( "Render HUD injury heart drop animation" )]
+		[DefaultValue( true )]
+		public bool RenderHudHeartDrops = true;
+	}
+	
+
+
+	public class InjuryServerConfigData : ModConfig {
+		public override MultiplayerSyncMode Mode {
+			get { return MultiplayerSyncMode.ServerDictates; }
+		}
+
+		public override void PostAutoLoad() {
+			var mymod = (InjuryMod)this.mod;
+			mymod.ServerConfig = this;
+		}
+
+
+		////////////////
+
+		[DefaultValue( "" )]
 		public string VersionSinceUpdate = "";
 
+		[DefaultValue( true )]
 		public bool Enabled = true;
-		public int DEBUGMODE = 0;
+		[Label( "Display debug information" )]
+		[DefaultValue( false )]
+		public bool DEBUGINFOMODE;
 
+		[Label( "Take injury on death" )]
+		[DefaultValue( true )]
 		public bool InjuryOnDeath = true;
 
+		[Label( "Percent of damage to build up to each injury with (pre-injury)" )]
+		[DefaultValue( 0.075f )]
 		public float PercentOfDamageToUseAsInjury = 0.075f;
-		public float AdditionalInjuryPerDamagingHit = 0f;
+		[Label( "Amount of build up until injury (pre-injury)" )]
+		[DefaultValue( 5f )]
 		public float HarmBufferCapacityBeforeReceivingInjury = 5f;
+		[Label( "Additional injury per damaging hit" )]
+		[DefaultValue( 0f )]
+		public float AdditionalInjuryPerDamagingHit = 0f;
+		[Label( "Max health lost from injury" )]
+		[DefaultValue( 5 )]
 		public int MaxHealthLostFromInjury = 5;
 
-		public int FallLimpDurationMultiplier = 9;
-		public float FallLimpSpeedMultiplier = 0.45f;
-		public float FallLimpJumpMultiplier = 0.35f;
-
+		[Label( "Lowest allowed max health" )]
+		[DefaultValue( 20 )]
 		public int LowestAllowedMaxHealth = 20;
 
+		[Label( "Pre-injury 1/60th second auto-heal amount" )]
+		[DefaultValue( 1f / ( 60f * 75f ) )]
 		public float InjuryBufferHealPerSecond = 1f / (60f * 75f);  // 1 hp every 75 seconds
+		[Label( "Pre-injury 1/60th second auto-heal amount via. Band of Life" )]
+		[DefaultValue( 1f / ( 60f * 30f ) )]
 		public float BandOfLifeInjuryHealPerSecond = 1f / (60f * 30f); // 1 hp every 30 seconds
+		[Label( "Pre-injury 1/60th second auto-heal amount via. Band of Afterlife" )]
+		[DefaultValue( 1f / ( 60f * 45f ) )]
 		public float BandOfAfterlifeInjuryHealPerSecond = 1f / (60f * 45f); // 1 hp every 45 seconds
 
+		[Label( "Reduce injury with high max health" )]
+		[DefaultValue( true )]
 		public bool HighMaxHealthReducesInjury = true;
 
+		[Label( "Fall limp duration multiplier" )]
+		[DefaultValue( 9 )]
+		public int FallLimpDurationMultiplier = 9;
+		[Label( "Fall limp player speed multiplier" )]
+		[DefaultValue( 0.45f )]
+		public float FallLimpSpeedMultiplier = 0.45f;
+		[Label( "Fall limp player jump height multiplier" )]
+		[DefaultValue( 0.35f )]
+		public float FallLimpJumpMultiplier = 0.35f;
+
+		[Label( "Drop Broken Hearts on injury" )]
+		[DefaultValue( true )]
 		public bool BrokenHeartsDrop = true;
+		[Label( "Duration of broken hearts (1/60s units)" )]
+		[DefaultValue( 24 * 60 )]
 		public int DurationOfBleedingHeart = 24 * 60;
+		[Label( "Vitae required to craft Life Crystal" )]
+		[DefaultValue( 4 )]
 		public int VitaePerLifeCrystal = 4;
+		[Label( "Vitae required to craft Cracked Life Crystal" )]
+		[DefaultValue( 2 )]
 		public int VitaePerCrackedLifeCrystal = 2;
+		[Label( "Vitae required to craft Cracked Life Crystal" )]
+		[DefaultValue( 3 )]
 		public int EnrichedVitaeQuantityPerCraft = 3;
+		[Label( "Evil boss drops needed per Life Crystal" )]
+		[DefaultValue( true )]
+		public bool LifeCrystalNeedsEvilBossDrops = true;
 
 
+		[Label( "Craftable Band of Life" )]
+		[DefaultValue( true )]
 		public bool CraftableBandOfLife = true;
+		[Label( "Craftable Vitae (beware curses!)" )]
+		[DefaultValue( true )]
 		public bool CraftableVitae = true;
+		[Label( "Craftable Life Crystal" )]
+		[DefaultValue( true )]
 		public bool CraftableLifeCrystal = true;
+		[Label( "Craftable Cracked Life Crystal" )]
+		[DefaultValue( true )]
 		public bool CraftableCrackedLifeCrystal = true;
-		 public bool LifeCrystalNeedsEvilBossDrops = true;
+		[Label( "Craftable Heartstrings" )]
+		[DefaultValue( true )]
 		public bool CraftableHeartstrings = true;
+		[Label( "Craftable Fortitude Potions" )]
+		[DefaultValue( true )]
 		public bool CraftableFortitudePotions = true;
+		[Label( "Craftable Ambrosia" )]
+		[DefaultValue( true )]
 		public bool CraftableAmbrosia = true;
+		[Label( "Craftable Band of Afterlife" )]
+		[DefaultValue( true )]
 		public bool CraftableBandOfAfterlife = true;
+		[Label( "Craftable Band Vest" )]
+		[DefaultValue( true )]
 		public bool CraftableLifeVest = true;
 
+		[Label( "Time (in 1/60s units) until loss of Cracked Life Crystal's temporary max hp" )]
+		[DefaultValue( 5 * 30 * 60 )]
 		public int TemporaryMaxHpChunkDrainTickRate = 5 * 30 * 60;   // 5 hp every 30 seconds
 
+		[Label( "Life% remaining until Bleeding debuff appears" )]
+		[DefaultValue( 0.35f )]
 		public float MaxHpPercentRemainingUntilBleeding = 0.35f;
+		[Label( "Life% remaining before powerful blows cause staggering" )]
+		[DefaultValue( 0.25f )]
 		public float MaxHpPercentLossForPowerfulBlowStagger = 0.25f;
 
+		[Label( "Damage as max hp% before injury happens (when at full health; adventurer's grace)" )]
+		[DefaultValue( 0.20f )]
 		public float MaxHpPercentAsDamageAtFullHealthUntilHarm = 0.20f; // Adventurer's grace
 
-		public bool RenderSubHealth = true;
-		public bool RenderHudHeartDrops = true;
-
+		[Label( "Broken Heart added duration via. Heartstrings (in 1/60s units)" )]
+		[DefaultValue( 60 * 45 )]
 		public int HeartstringsAddedDuration = 60 * 45; // +45s
+		[Label( "Fortitude potion pre-injury capacity multiplier" )]
+		[DefaultValue( 1.4f )]
 		public float FortitudePotionHarmBufferMultiplier = 1.4f;
+		[Label( "Life vest pre-injury capacity multiplier" )]
+		[DefaultValue( 1.7f )]
 		public float LifeVestHarmBufferMultiplier = 1.7f;
 
+		[Label( "Odds of an accident while crafting Vitae" )]
+		[DefaultValue( 6 )]
 		public int VitaeCraftingAccidentOdds = 6;
 
-
-
-		public string _OLD_SETTINGS_BELOW_ = "";
-
-		public int BrokenHeartsPerLifeCrystal = 4;
-		public int BrokenHeartsPerCrackedLifeCrystal = 2;
 
 
 		////////////////
 
 		public bool UpdateToLatestVersion() {
-			var new_config = new InjuryConfigData();
+			var new_config = new InjuryServerConfigData();
 			var vers_since = this.VersionSinceUpdate != "" ?
 				new Version( this.VersionSinceUpdate ) :
 				new Version();
 
-			if( vers_since >= InjuryConfigData.ConfigVersion ) {
+			if( vers_since >= InjuryConfigMetaData.ConfigVersion ) {
 				return false;
 			}
 			
@@ -95,7 +201,7 @@ namespace Injury {
 				this.DurationOfBleedingHeart = new_config.DurationOfBleedingHeart;
 			}
 
-			this.VersionSinceUpdate = InjuryConfigData.ConfigVersion.ToString();
+			this.VersionSinceUpdate = InjuryConfigMetaData.ConfigVersion.ToString();
 
 			return true;
 		}

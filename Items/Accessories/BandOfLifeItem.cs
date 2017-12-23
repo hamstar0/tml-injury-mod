@@ -38,7 +38,7 @@ namespace Injury.Items.Accessories {
 			bool can_heal = player.statLifeMax < 400;
 
 			if( modplayer.Logic.HiddenHarmBuffer == 0 && item_info.HealBuffer < 5f ) {
-				item_info.HealBuffer += mymod.Config.Data.BandOfLifeInjuryHealPerSecond;
+				item_info.HealBuffer += mymod.ServerConfig.BandOfLifeInjuryHealPerSecond;
 			}
 
 			if( item_info.HealBuffer >= 5f && can_heal ) {
@@ -70,7 +70,7 @@ namespace Injury.Items.Accessories {
 
 		public override bool RecipeAvailable() {
 			var mymod = (InjuryMod)this.mod;
-			return mymod.Config.Data.Enabled && mymod.Config.Data.CraftableBandOfLife;
+			return mymod.ServerConfig.Enabled && mymod.ServerConfig.CraftableBandOfLife;
 		}
 	}
 

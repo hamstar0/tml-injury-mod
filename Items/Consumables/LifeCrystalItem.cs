@@ -8,8 +8,8 @@ namespace Injury.Items.Consumables {
 		public LifeCrystalViaVitaeItemRecipe( InjuryMod mymod ) : base( mymod ) {
 			this.AddTile( TileID.WorkBenches ); 
 
-			this.AddIngredient( mymod.GetItem<VitaeItem>(), mymod.Config.Data.VitaePerLifeCrystal );
-			if( mymod.Config.Data.LifeCrystalNeedsEvilBossDrops ) {
+			this.AddIngredient( mymod.GetItem<VitaeItem>(), mymod.ServerConfig.VitaePerLifeCrystal );
+			if( mymod.ServerConfig.LifeCrystalNeedsEvilBossDrops ) {
 				this.AddRecipeGroup( RecipeHelpers.EvilBossDrops.Key, 4 );
 			}
 			this.AddIngredient( ItemID.RubyGemsparkBlock, 10 );
@@ -20,7 +20,7 @@ namespace Injury.Items.Consumables {
 
 		public override bool RecipeAvailable() {
 			var mymod = (InjuryMod)this.mod;
-			return mymod.Config.Data.Enabled && mymod.Config.Data.CraftableLifeCrystal;
+			return mymod.ServerConfig.Enabled && mymod.ServerConfig.CraftableLifeCrystal;
 		}
 	}
 }

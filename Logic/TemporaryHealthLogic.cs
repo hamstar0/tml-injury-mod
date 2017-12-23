@@ -7,10 +7,10 @@ namespace Injury.Logic {
 			// Erode temporary max hp
 			if( this.TemporaryMaxHp > 0 ) {
 				if( this.TemporaryMaxHpTimer == 0 ) {
-					this.TemporaryMaxHpTimer = mymod.Config.Data.TemporaryMaxHpChunkDrainTickRate;
+					this.TemporaryMaxHpTimer = mymod.ServerConfig.TemporaryMaxHpChunkDrainTickRate;
 					this.TemporaryMaxHp -= 5;
 
-					if( player.statLifeMax > mymod.Config.Data.LowestAllowedMaxHealth ) {
+					if( player.statLifeMax > mymod.ServerConfig.LowestAllowedMaxHealth ) {
 						player.statLifeMax -= 5;
 						this.InjuryVisualFX( mymod, player );
 					} else {
@@ -36,7 +36,7 @@ namespace Injury.Logic {
 		public bool TemporaryInjuryHeal( InjuryMod mymod, Player player, int amt ) {
 			player.statLifeMax += amt;
 			this.TemporaryMaxHp += amt;
-			this.TemporaryMaxHpTimer = mymod.Config.Data.TemporaryMaxHpChunkDrainTickRate;
+			this.TemporaryMaxHpTimer = mymod.ServerConfig.TemporaryMaxHpChunkDrainTickRate;
 
 			return true;
 		}

@@ -1,4 +1,4 @@
-Junkyard
+Future consideration
 -	Life Line: Fortifies against losing hearts (mid game)
 	-	Implement effects (stacks)
 	-	Create graphics
@@ -13,9 +13,12 @@ Junkyard
 	-	@Recipe: Logic Sensor (Player Above), Bug Net, Slime Hook
 
 
-v2.0.0
+v2.0.2
 -	Test new config options for tml prototype
+v2.0.1
+-	Add setting for innate health regen
 
+v2.0.0
 -	@Test life vest
 -	Add option to lose health only with deaths
 -	Life Vest: Fortifies further against losing hearts (late game)

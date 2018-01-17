@@ -23,12 +23,8 @@ namespace Injury {
 			if( Main.netMode != 0 ) {
 				throw new Exception( "Cannot reload configs outside of single player." );
 			}
-			if( !InjuryMod.Instance.ServerConfig.LoadFile() ) {
-				InjuryMod.Instance.ServerConfig.SaveFile();
-			}
-			if( !InjuryMod.Instance.ClientConfig.LoadFile() ) {
-				InjuryMod.Instance.ClientConfig.SaveFile();
-			}
+			InjuryMod.Instance.ServerConfig.Load();
+			InjuryMod.Instance.ClientConfig.Load();
 		}
 
 
@@ -61,11 +57,6 @@ namespace Injury {
 			}
 
 			this.HealthLoss = new HealthLossDisplay();
-			
-			if( this.ServerConfig.UpdateToLatestVersion() ) {
-				ErrorLogger.Log( "Injury updated to " + InjuryConfigMetaData.ConfigVersion.ToString() );
-				this.Config.SaveFile();
-			}
 		}
 
 

@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 
@@ -31,7 +30,7 @@ namespace Injury.NetProtocol {
 			ModPacket packet = mymod.GetPacket();
 
 			packet.Write( (byte)InjuryNetProtocolTypes.ModSettings );
-			packet.Write( (string)mymod.Config.SerializeMe() );
+			packet.Write( (string)mymod.JsonConfig.SerializeMe() );
 
 			packet.Send( (int)player.whoAmI );
 		}

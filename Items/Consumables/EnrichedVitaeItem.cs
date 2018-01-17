@@ -91,17 +91,17 @@ namespace Injury.Items.Consumables {
 
 			this.AddTile( TileID.Bottles );
 
-			this.AddIngredient( mymod.GetItem<WanderingHeartItem>(), 2 );
-			this.AddIngredient( mymod.GetItem<VitaeItem>(), 1 );
+			this.AddIngredient( mymod.GetItem<WanderingHeartItem>(), 3 );
+			this.AddIngredient( mymod.GetItem<VitaeItem>(), 2 );
 			this.AddIngredient( ItemID.PinkPricklyPear, 1 );
 
-			this.SetResult( myitem, mymod.Config.Data.EnrichedVitaeQuantityPerCraft );
+			this.SetResult( myitem, mymod.Config.EnrichedVitaeQuantityPerCraft );
 		}
 
 
 		public override bool RecipeAvailable() {
 			var mymod = (InjuryMod)this.mod;
-			return mymod.Config.Data.Enabled && mymod.Config.Data.CraftableAmbrosia;
+			return mymod.Config.Enabled && mymod.Config.CraftableAmbrosia;
 		}
 	}
 }

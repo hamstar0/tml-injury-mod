@@ -8,6 +8,7 @@ using Terraria.UI;
 using System.Collections.Generic;
 using Injury.Items.Consumables;
 
+
 namespace Injury {
 	class InjuryMod : Mod {
 		public static InjuryMod Instance { get; private set; }
@@ -22,13 +23,19 @@ namespace Injury {
 			if( Main.netMode != 0 ) {
 				throw new Exception( "Cannot reload configs outside of single player." );
 			}
-			InjuryMod.Instance.Config.LoadFile();
+			if( InjuryMod.Instance != null ) {
+				if( !InjuryMod.Instance.JsonConfig.LoadFile() ) {
+					InjuryMod.Instance.JsonConfig.SaveFile();
+				}
+			}
 		}
 
 
 		////////////////
 
-		public JsonConfig<InjuryConfigData> Config { get; private set; }
+		public JsonConfig<InjuryConfigData> JsonConfig { get; private set; }
+		public InjuryConfigData Config { get { return this.JsonConfig.Data; } }
+
 		public HealthLossDisplay HealthLoss { get; private set; }
 
 
@@ -41,7 +48,7 @@ namespace Injury {
 				AutoloadSounds = true
 			};
 
-			this.Config = new JsonConfig<InjuryConfigData>( InjuryConfigData.ConfigFileName,
+			this.JsonConfig = new JsonConfig<InjuryConfigData>( InjuryConfigData.ConfigFileName,
 				ConfigurationDataBase.RelativePath, new InjuryConfigData() );
 		}
 
@@ -50,25 +57,19 @@ namespace Injury {
 		public override void Load() {
 			InjuryMod.Instance = this;
 
-			var hamhelpmod = ModLoader.GetMod( "HamstarHelpers" );
-			var min_vers = new Version( 1, 2, 2 );
-			if( hamhelpmod.Version < min_vers ) {
-				throw new Exception( "Hamstar Helpers must be version " + min_vers.ToString() + " or greater." );
-			}
-
 			this.HealthLoss = new HealthLossDisplay();
 
 			this.LoadConfig();
 		}
 
 		private void LoadConfig() {
-			if( !this.Config.LoadFile() ) {
-				this.Config.SaveFile();
+			if( !this.JsonConfig.LoadFile() ) {
+				this.JsonConfig.SaveFile();
 			}
 
-			if( this.Config.Data.UpdateToLatestVersion() ) {
+			if( this.Config.UpdateToLatestVersion() ) {
 				ErrorLogger.Log( "Injury updated to " + InjuryConfigData.ConfigVersion.ToString() );
-				this.Config.SaveFile();
+				this.JsonConfig.SaveFile();
 			}
 		}
 
@@ -77,6 +78,21 @@ namespace Injury {
 			InjuryMod.Instance = null;
 		}
 
+
+		////////////////
+
+
+		public override object Call( params object[] args ) {
+			if( args.Length == 0 ) { throw new Exception( "Undefined call type." ); }
+
+			string call_type = args[0] as string;
+			if( args == null ) { throw new Exception( "Invalid call type." ); }
+
+			var new_args = new object[args.Length - 1];
+			Array.Copy( args, 1, new_args, 0, args.Length - 1 );
+
+			return InjuryAPI.Call( call_type, new_args );
+		}
 
 		////////////////
 
@@ -117,7 +133,7 @@ namespace Injury {
 		////////////////
 
 		public bool IsDebugInfoMode() {
-			return (this.Config.Data.DEBUGMODE & 1) != 0;
+			return this.Config.DebugModeInfo;
 		}
 	}
 }

@@ -58,7 +58,7 @@ namespace Injury.Items.Consumables {
 
 		public override bool RecipeAvailable() {
 			var mymod = (InjuryMod)this.mod;
-			return mymod.Config.Data.Enabled && mymod.Config.Data.CraftableFortitudePotions;
+			return mymod.Config.Enabled && mymod.Config.CraftableFortitudePotions;
 		}
 	}
 }

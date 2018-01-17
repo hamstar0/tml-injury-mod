@@ -10,9 +10,9 @@ namespace Injury.Projectiles {
 	class WanderingHeartProjectile : ModProjectile {
 		public static int GetDuration( InjuryMod mymod, InjuryPlayer modplayer ) {
 			if( modplayer != null && modplayer.HeartstringsEffectDuration > 0 ) {
-				return mymod.Config.Data.DurationOfBleedingHeart + mymod.Config.Data.HeartstringsAddedDuration;
+				return mymod.Config.DurationOfBleedingHeart + mymod.Config.HeartstringsAddedDuration;
 			}
-			return mymod.Config.Data.DurationOfBleedingHeart;
+			return mymod.Config.DurationOfBleedingHeart;
 		}
 
 		////////////////

@@ -31,19 +31,30 @@ namespace Injury {
 			myclone.IsImpaired = this.IsImpaired;
 			myclone.HeartstringsEffectDuration = this.HeartstringsEffectDuration;
 			myclone.LifeVestPresence = this.LifeVestPresence;
+			myclone.AmDead = this.AmDead;
 		}
+
+
+		////////////////
+
+		public override void SyncPlayer( int to_who, int from_who, bool new_player ) {
+			var mymod = (InjuryMod)this.mod;
+
+			if( Main.netMode == 1 ) {
+				if( new_player ) {
+					ClientPacketHandlers.SendSettingsRequest( mymod );
+				}
+			}
+		}
+
 
 		public override void OnEnterWorld( Player player ) {
 			var mymod = (InjuryMod)this.mod;
 
-			if( Main.netMode != 2 ) {   // Not server
-				if( player.whoAmI == this.player.whoAmI ) {
-					if( !mymod.Config.LoadFile() ) {
-						mymod.Config.SaveFile();
-					}
-
-					if( Main.netMode == 1 ) {   // Client
-						ClientPacketHandlers.SendSettingsRequest( mymod );
+			if( player.whoAmI == this.player.whoAmI ) {
+				if( Main.netMode == 0 ) {   // Not server
+					if( !mymod.JsonConfig.LoadFile() ) {
+						mymod.JsonConfig.SaveFile();
 					}
 				}
 			}
@@ -69,7 +80,7 @@ namespace Injury {
 			var mymod = (InjuryMod)this.mod;
 			double damage_with_crit = crit ? damage * 2 : damage;
 
-			if( !mymod.Config.Data.Enabled ) { return; }
+			if( !mymod.Config.Enabled ) { return; }
 
 			// Powerful blow stagger
 			if( this.Logic.IsPowerfulBlow( mymod, player, (float)damage_with_crit ) ) {
@@ -86,7 +97,7 @@ namespace Injury {
 
 		public override void PreUpdate() {
 			var mymod = (InjuryMod)this.mod;
-			if( !mymod.Config.Data.Enabled ) { return; }
+			if( !mymod.Config.Enabled ) { return; }
 
 			this.Logic.UpdateBleeding( mymod, this.player );
 
@@ -94,7 +105,7 @@ namespace Injury {
 			if( this.player.velocity.Y == 0f ) {
 				int dmg = PlayerHelpers.ComputeImpendingFallDamage( this.player );
 				if( dmg != 0 ) {
-					this.player.AddBuff( mod.BuffType("ImpactTrauma"), dmg * mymod.Config.Data.FallLimpDurationMultiplier );
+					this.player.AddBuff( mod.BuffType("ImpactTrauma"), dmg * mymod.Config.FallLimpDurationMultiplier );
 				}
 			}
 
@@ -108,7 +119,7 @@ namespace Injury {
 				this.LifeVestPresence--;
 			}
 
-			if( mymod.Config.Data.InjuryOnDeath ) {
+			if( mymod.Config.InjuryOnDeath ) {
 				if( !this.AmDead ) {
 					if( player.dead ) {
 						this.AmDead = true;

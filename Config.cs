@@ -4,7 +4,7 @@ using System;
 
 namespace Injury {
 	public class InjuryConfigData : ConfigurationDataBase {
-		public readonly static Version ConfigVersion = new Version( 2, 0, 0 );
+		public readonly static Version ConfigVersion = new Version( 2, 0, 2 );
 		public readonly static string ConfigFileName = "Injury Config.json";
 
 
@@ -13,7 +13,8 @@ namespace Injury {
 		public string VersionSinceUpdate = "";
 
 		public bool Enabled = true;
-		public int DEBUGMODE = 0;
+
+		public bool DebugModeInfo = false;
 
 		public bool InjuryOnDeath = true;
 
@@ -38,14 +39,15 @@ namespace Injury {
 		public int DurationOfBleedingHeart = 24 * 60;
 		public int VitaePerLifeCrystal = 4;
 		public int VitaePerCrackedLifeCrystal = 2;
-		public int EnrichedVitaeQuantityPerCraft = 3;
+		public int EnrichedVitaeQuantityPerCraft = 5;
 
 
 		public bool CraftableBandOfLife = true;
 		public bool CraftableVitae = true;
 		public bool CraftableLifeCrystal = true;
-		public bool CraftableCrackedLifeCrystal = true;
 		 public bool LifeCrystalNeedsEvilBossDrops = true;
+		public bool CraftableCrackedLifeCrystal = true;
+		public bool CraftableWanderingHeart = true;
 		public bool CraftableHeartstrings = true;
 		public bool CraftableFortitudePotions = true;
 		public bool CraftableAmbrosia = true;
@@ -69,11 +71,18 @@ namespace Injury {
 		public int VitaeCraftingAccidentOdds = 6;
 
 
+		////
 
 		public string _OLD_SETTINGS_BELOW_ = "";
 
 		public int BrokenHeartsPerLifeCrystal = 4;
 		public int BrokenHeartsPerCrackedLifeCrystal = 2;
+
+
+
+		////////////////
+
+		public static int _2_0_0_EnrichedVitaeQuantityPerCraft = 3;
 
 
 		////////////////
@@ -93,6 +102,11 @@ namespace Injury {
 			}
 			if( vers_since < new Version( 1, 9, 2 ) ) {
 				this.DurationOfBleedingHeart = new_config.DurationOfBleedingHeart;
+			}
+			if( vers_since < new Version( 2, 0, 2 ) ) {
+				if( this.EnrichedVitaeQuantityPerCraft == InjuryConfigData._2_0_0_EnrichedVitaeQuantityPerCraft ) {
+					this.EnrichedVitaeQuantityPerCraft = new_config.EnrichedVitaeQuantityPerCraft;
+				}
 			}
 
 			this.VersionSinceUpdate = InjuryConfigData.ConfigVersion.ToString();

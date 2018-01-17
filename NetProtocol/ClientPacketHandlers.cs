@@ -29,7 +29,7 @@ namespace Injury.NetProtocol {
 			packet.Send();
 		}
 
-		public static void SendSpawnRequestFromClient( InjuryMod mymod, int npc_type ) {
+		public static void SendSpawnRequest( InjuryMod mymod, int npc_type ) {
 			ModPacket packet = mymod.GetPacket();
 
 			packet.Write( (byte)InjuryNetProtocolTypes.NpcSpawnRequest );
@@ -44,7 +44,7 @@ namespace Injury.NetProtocol {
 		////////////////////////////////
 
 		private static void ReceiveSettings( InjuryMod mymod, BinaryReader reader ) {
-			mymod.Config.DeserializeMe( reader.ReadString() );
+			mymod.JsonConfig.DeserializeMe( reader.ReadString() );
 		}
 	}
 }

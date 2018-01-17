@@ -1,19 +1,31 @@
 ﻿using System;
+using Terraria;
 
 
 namespace Injury {
 	public static class InjuryAPI {
-		[Obsolete( "use GetModServerSettings" )]
-		public static InjuryServerConfigData GetModSettings() {
-			return InjuryAPI.GetModServerSettings();
+		internal static object Call( string call_type, params object[] args ) {
+			switch( call_type ) {
+			case "GetModSettings":
+				return InjuryAPI.GetModSettings();
+			case "SaveModSettingsChanges":
+				InjuryAPI.SaveModSettingsChanges();
+				return null;
+			}
+
+			throw new Exception( "No such api call " + call_type );
 		}
 
 
-		public static InjuryClientConfigData GetModClientSettings() {
-			return InjuryMod.Instance.ClientConfig;
+
+		////////////////
+
+		public static InjuryConfigData GetModSettings() {
+			return InjuryMod.Instance.Config;
 		}
-		public static InjuryServerConfigData GetModServerSettings() {
-			return InjuryMod.Instance.ServerConfig;
+
+		public static void SaveModSettingsChanges() {
+			InjuryMod.Instance.JsonConfig.SaveFile();
 		}
 	}
 }

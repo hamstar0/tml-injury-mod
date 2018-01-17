@@ -4,12 +4,6 @@ using Terraria.ModLoader;
 
 
 namespace Injury {
-	public class InjuryConfigMetaData {
-		public readonly static Version ConfigVersion = new Version( 2, 1, 0 );
-		public readonly static string ConfigFileName = "Injury ModConfig.json";
-	}
-	
-
 
 	public class InjuryServerConfigData : ModConfig {
 		public override MultiplayerSyncMode Mode {
@@ -47,8 +41,6 @@ namespace Injury {
 		[DefaultValue( false )]
 		public bool DEBUGINFOMODE;
 
-		[Label( "Take injury on death" )]
-		[DefaultValue( true )]
 		public bool InjuryOnDeath = true;
 
 
@@ -57,13 +49,13 @@ namespace Injury {
 		[DefaultValue( 0.075f )]
 		public float PercentOfDamageToUseAsInjury = 0.075f;
 
-		[Label( "Amount of build up until injury (pre-injury)" )]
-		[DefaultValue( 5f )]
-		public float HarmBufferCapacityBeforeReceivingInjury = 5f;
-
 		[Label( "Additional injury per damaging hit" )]
 		[DefaultValue( 0f )]
 		public float AdditionalInjuryPerDamagingHit = 0f;
+
+		[Label( "Amount of build up until injury (pre-injury)" )]
+		[DefaultValue( 5f )]
+		public float HarmBufferCapacityBeforeReceivingInjury = 5f;
 
 		[Label( "Max health lost from injury" )]
 		[DefaultValue( 5 )]
@@ -123,13 +115,10 @@ namespace Injury {
 		public int VitaePerCrackedLifeCrystal = 2;
 
 		[Label( "Vitae required to craft Cracked Life Crystal" )]
-		[DefaultValue( 3 )]
-		public int EnrichedVitaeQuantityPerCraft = 3;
+		[DefaultValue( 5 )]
+		public int EnrichedVitaeQuantityPerCraft = 5;
 
-		[Label( "Evil boss drops needed per Life Crystal" )]
-		[DefaultValue( true )]
-		public bool LifeCrystalNeedsEvilBossDrops = true;
-
+		public bool CraftableWanderingHeart = true;
 
 		[Label( "Craftable Band of Life" )]
 		[DefaultValue( true )]
@@ -142,6 +131,11 @@ namespace Injury {
 		[Label( "Craftable Life Crystal" )]
 		[DefaultValue( true )]
 		public bool CraftableLifeCrystal = true;
+
+
+		[Label( "Evil boss drops needed per Life Crystal" )]
+		[DefaultValue( true )]
+		public bool LifeCrystalNeedsEvilBossDrops = true;
 
 		[Label( "Craftable Cracked Life Crystal" )]
 		[DefaultValue( true )]
@@ -206,6 +200,19 @@ namespace Injury {
 		public int VitaeCraftingAccidentOdds = 6;
 
 
+		////
+
+		public string _OLD_SETTINGS_BELOW_ = "";
+
+		public int BrokenHeartsPerLifeCrystal = 4;
+		public int BrokenHeartsPerCrackedLifeCrystal = 2;
+
+
+
+		////////////////
+
+		public static int _2_0_0_EnrichedVitaeQuantityPerCraft = 3;
+
 
 		////////////////
 
@@ -224,6 +231,11 @@ namespace Injury {
 			}
 			if( vers_since < new Version( 1, 9, 2 ) ) {
 				this.DurationOfBleedingHeart = new_config.DurationOfBleedingHeart;
+			}
+			if( vers_since < new Version( 2, 0, 2 ) ) {
+				if( this.EnrichedVitaeQuantityPerCraft == InjuryConfigData._2_0_0_EnrichedVitaeQuantityPerCraft ) {
+					this.EnrichedVitaeQuantityPerCraft = new_config.EnrichedVitaeQuantityPerCraft;
+				}
 			}
 
 			this.VersionSinceUpdate = InjuryConfigMetaData.ConfigVersion.ToString();

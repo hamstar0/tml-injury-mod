@@ -33,6 +33,21 @@ namespace Injury {
 			myclone.LifeVestPresence = this.LifeVestPresence;
 		}
 
+
+		////////////////
+
+		public override void SyncPlayer( int to_who, int from_who, bool new_player ) {
+			var mymod = (InjuryMod)this.mod;
+
+			if( Main.netMode == 1 ) {
+				if( new_player ) {
+					ClientPacketHandlers.SendSettingsRequest( mymod );
+				}
+			}
+		}
+
+		
+
 		////////////////
 
 		public override void Load( TagCompound tags ) {

@@ -31,6 +31,8 @@ namespace Injury.Items {
 		public override void AddRecipes() {
 			var myrecipe = new VitaeViaBrokenHeartItemRecipe( this );
 			myrecipe.AddRecipe();
+			var myotherrecipe = new VitaeViaLifeCrystalItemRecipe( this );
+			myotherrecipe.AddRecipe();
 		}
 	}
 
@@ -50,7 +52,7 @@ namespace Injury.Items {
 
 		public override bool RecipeAvailable() {
 			var mymod = (InjuryMod)this.mod;
-			return mymod.ServerConfig.Enabled && mymod.ServerConfig.CraftableLifeCrystal;
+			return mymod.ServerConfig.Enabled && mymod.ServerConfig.CraftableVitae;
 		}
 
 
@@ -62,7 +64,7 @@ namespace Injury.Items {
 				Main.LocalPlayer.AddBuff( BuffID.Cursed, 60 * 15 ); // 15 seconds of curse
 
 				if( Main.netMode == 1 ) {
-					ClientPacketHandlers.SendSpawnRequestFromClient( mymod, NPCID.Wraith );
+					ClientPacketHandlers.SendSpawnRequest( mymod, NPCID.Wraith );
 				} else if( Main.netMode == 0 ) {
 					NPC.SpawnOnPlayer( Main.LocalPlayer.whoAmI, NPCID.Wraith );
 				}
@@ -73,6 +75,26 @@ namespace Injury.Items {
 					Main.NewText( "An otherworldly presense has noticed your act...", Color.Red );
 				}
 			}
+		}
+	}
+
+
+
+	class VitaeViaLifeCrystalItemRecipe : ModRecipe {
+		public VitaeViaLifeCrystalItemRecipe( VitaeItem myitem ) : base( myitem.mod ) {
+			var mymod = (InjuryMod)this.mod;
+
+			this.AddTile( TileID.WorkBenches );
+
+			this.AddIngredient( ItemID.LifeCrystal, 1 );
+
+			this.SetResult( myitem, mymod.ServerConfig.VitaePerLifeCrystal );
+		}
+
+
+		public override bool RecipeAvailable() {
+			var mymod = (InjuryMod)this.mod;
+			return mymod.Config.Enabled && mymod.ServerConfig.CraftableVitae;
 		}
 	}
 }

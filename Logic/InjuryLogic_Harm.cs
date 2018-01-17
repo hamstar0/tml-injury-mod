@@ -1,6 +1,7 @@
 ﻿using HamstarHelpers.PlayerHelpers;
 using Injury.Projectiles;
 using Terraria;
+using Terraria.ID;
 
 
 namespace Injury.Logic {
@@ -88,11 +89,17 @@ namespace Injury.Logic {
 				is_injured = false;
 				player.statLifeMax = min_hp;
 				this.HiddenHarmBuffer = 0f;
+
+				if( Main.netMode == 1 ) {
+					NetMessage.SendData( MessageID.PlayerHealth, -1, player.whoAmI, null, player.whoAmI, 0f, 0f, 0f, 0, 0, 0 );
+				}
 			}
 
 			if( is_injured ) {
 				if( mymod.ServerConfig.BrokenHeartsDrop ) {
-					if( player.statLifeMax <= 415 || (NPC.downedMechBossAny && player.statLifeMax <= 400) ) {
+					bool mech = NPC.downedMechBoss1 || NPC.downedMechBoss2 || NPC.downedMechBoss3;
+
+					if( player.statLifeMax <= 415 || (mech && player.statLifeMax <= 400) ) {
 						BleedingHeartProjectile.Spawn( player, mymod );
 					} else {
 						WanderingHeartProjectile.Spawn( player, mymod );

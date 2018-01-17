@@ -5,5 +5,4 @@ Player can now be injured and receive permanent health loss.
 - Low health incurs bleeding.
 - 4 new accessories added.
 - 3 new consumables/potions added.
-- Config file:
-Documents/My Games/Terraria/ModLoader/Mod Configs/Injury Config.json
+- Use the Hamstar's Helpers control panel for settings.

@@ -15,8 +15,8 @@ namespace Injury.Items.Consumables {
 
 		public override void SetStaticDefaults() {
 			this.DisplayName.SetDefault( "Enriched Vitae" );
-			this.Tooltip.SetDefault( "Increases maximum life by 5 (up to 500)"
-				+ '\n'+ "Enriched life extract. A drink to die for." );
+			this.Tooltip.SetDefault( "Enriched life extract. A drink to die for."
+				+ '\n'+"Increases maximum life by 5 (up to 500)" );
 		}
 
 		public override void ModifyTooltips( List<TooltipLine> tooltips ) {
@@ -91,8 +91,8 @@ namespace Injury.Items.Consumables {
 
 			this.AddTile( TileID.Bottles );
 
-			this.AddIngredient( mymod.GetItem<WanderingHeartItem>(), 2 );
-			this.AddIngredient( mymod.GetItem<VitaeItem>(), 1 );
+			this.AddIngredient( mymod.GetItem<WanderingHeartItem>(), 3 );
+			this.AddIngredient( mymod.GetItem<VitaeItem>(), 2 );
 			this.AddIngredient( ItemID.PinkPricklyPear, 1 );
 
 			this.SetResult( myitem, mymod.ServerConfig.EnrichedVitaeQuantityPerCraft );

@@ -27,12 +27,13 @@
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>1</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HamstarHelpers">
-      <HintPath>..\HamstarHelpers\bin\Release\HamstarHelpers.dll</HintPath>
+    <Reference Include="HamstarHelpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Helpers\HamstarHelpers\bin\Release\HamstarHelpers.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,21 +46,19 @@
     <Reference Include="Microsoft.Xna.Framework" />
     <Reference Include="Microsoft.Xna.Framework.Game" />
     <Reference Include="Microsoft.Xna.Framework.Graphics" />
-    <Reference Include="Terraria, Version=1.3.5.1, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Terraria\Terraria.exe</HintPath>
+    <Reference Include="Terraria">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Terraria\Terraria.exe</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API.cs" />
     <Compile Include="Buffs\FortifiedBuff.cs" />
     <Compile Include="Buffs\ImpactTraumaBuff.cs" />
-    <Compile Include="ConfigDefaults.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="HealthLossDisplay.cs" />
     <Compile Include="Items\Accessories\LifeVestItem.cs" />
     <Compile Include="Items\WanderingHeartItem.cs" />
-    <Compile Include="Logic\HarmLogic.cs" />
-    <Compile Include="Logic\TemporaryHealthLogic.cs" />
+    <Compile Include="Logic\InjuryLogic_Harm.cs" />
     <Compile Include="Logic\InjuryLogic.cs" />
     <Compile Include="InjuryMod.cs" />
     <Compile Include="InjuryPlayer.cs" />
@@ -72,6 +71,7 @@
     <Compile Include="Items\VitaeItem.cs" />
     <Compile Include="Items\BrokenHeartItem.cs" />
     <Compile Include="Items\Consumables\CrackedLifeCrystalItem.cs" />
+    <Compile Include="Logic\InjuryLogic_TempMaxLife.cs" />
     <Compile Include="NetProtocol\ClientPacketHandlers.cs" />
     <Compile Include="NetProtocol\NetProtocolTypes.cs" />
     <Compile Include="NetProtocol\ServerPacketHandlers.cs" />

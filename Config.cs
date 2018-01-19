@@ -39,7 +39,7 @@ namespace Injury {
 		public bool Enabled = true;
 		[Label( "Display debug information" )]
 		[DefaultValue( false )]
-		public bool DEBUGINFOMODE;
+		public bool DebugModeInfo;
 
 		public bool InjuryOnDeath = true;
 
@@ -115,8 +115,8 @@ namespace Injury {
 		public int VitaePerCrackedLifeCrystal = 2;
 
 		[Label( "Vitae required to craft Cracked Life Crystal" )]
-		[DefaultValue( 5 )]
-		public int EnrichedVitaeQuantityPerCraft = 5;
+		[DefaultValue( 3 )]
+		public int EnrichedVitaeQuantityPerCraft = 3;
 
 		public bool CraftableWanderingHeart = true;
 
@@ -212,6 +212,7 @@ namespace Injury {
 		////////////////
 
 		public static int _2_0_0_EnrichedVitaeQuantityPerCraft = 3;
+		public static int _2_0_2_EnrichedVitaeQuantityPerCraft = 5;
 
 
 		////////////////
@@ -284,24 +285,5 @@ namespace Injury {
 		[Label( "Render HUD injury heart drop animation" )]
 		[DefaultValue( true )]
 		public bool RenderHudHeartDrops = true;
-
-
-
-		////////////////
-
-		public bool UpdateToLatestVersion() {
-			var new_config = new InjuryServerConfigData();
-			var vers_since = this.VersionSinceUpdate != "" ?
-				new Version( this.VersionSinceUpdate ) :
-				new Version();
-
-			if( vers_since >= InjuryConfigMetaData.ConfigVersion ) {
-				return false;
-			}
-
-			this.VersionSinceUpdate = InjuryConfigMetaData.ConfigVersion.ToString();
-
-			return true;
-		}
 	}
 }

@@ -54,7 +54,7 @@
     <Compile Include="API.cs" />
     <Compile Include="Buffs\FortifiedBuff.cs" />
     <Compile Include="Buffs\ImpactTraumaBuff.cs" />
-    <Compile Include="ConfigDefaults.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="HealthLossDisplay.cs" />
     <Compile Include="Items\Accessories\LifeVestItem.cs" />
     <Compile Include="Items\WanderingHeartItem.cs" />

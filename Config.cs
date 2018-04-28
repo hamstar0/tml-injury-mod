@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 
 
 namespace Injury {
+
 	public class InjuryServerConfigData : ModConfig {
 		public override MultiplayerSyncMode Mode {
 			get { return MultiplayerSyncMode.ServerDictates; }

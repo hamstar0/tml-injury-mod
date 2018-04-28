@@ -10,7 +10,7 @@ namespace Injury {
 				return InjuryAPI.GetModSettings();
 			case "SaveModSettingsChanges":
 				InjuryAPI.SaveModSettingsChanges();
-				return true;
+				return null;
 			}
 
 			throw new Exception( "No such api call " + call_type );

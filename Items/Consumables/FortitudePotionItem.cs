@@ -52,7 +52,7 @@ namespace Injury.Items.Consumables {
 			this.AddIngredient( this.mod.GetItem<VitaeItem>(), 1 );
 			this.AddIngredient( ItemID.Bone, 1 );
 			this.AddRecipeGroup( RecipeHelpers.EvilBossDrops.Key );
-			
+
 			this.SetResult( moditem );
 		}
 

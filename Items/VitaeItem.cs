@@ -68,8 +68,8 @@ namespace Injury.Items {
 				} else if( Main.netMode == 0 ) {
 					NPC.SpawnOnPlayer( Main.LocalPlayer.whoAmI, NPCID.Wraith );
 				}
-				
-				if( Main.LocalPlayer.FindBuffIndex(BuffID.Cursed) != -1 ) {
+
+				if( Main.LocalPlayer.FindBuffIndex( BuffID.Cursed ) != -1 ) {
 					Main.NewText( "An otherworldly presense has noticed your act. Your body seizes up.", Color.Red );
 				} else {
 					Main.NewText( "An otherworldly presense has noticed your act...", Color.Red );

@@ -25,7 +25,7 @@ namespace Injury.Buffs {
 			player.accRunSpeed = player.maxRunSpeed;
 			player.moveSpeed *= mymod.Config.FallLimpSpeedMultiplier;
 
-			int maxJump = (int)(Player.jumpHeight * mymod.Config.FallLimpJumpMultiplier);
+			int maxJump = (int)( Player.jumpHeight * mymod.Config.FallLimpJumpMultiplier );
 			if( player.jump > maxJump ) { player.jump = maxJump; }
 		}
 	}

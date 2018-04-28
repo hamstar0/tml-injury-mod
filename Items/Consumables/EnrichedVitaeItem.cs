@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HamstarHelpers.RecipeHelpers;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -16,7 +17,7 @@ namespace Injury.Items.Consumables {
 		public override void SetStaticDefaults() {
 			this.DisplayName.SetDefault( "Enriched Vitae" );
 			this.Tooltip.SetDefault( "Enriched life extract. A drink to die for."
-				+ '\n'+"Increases maximum life by 5 (up to 500)" );
+				+ '\n' + "Increases maximum life by 5 (up to 500)" );
 		}
 
 		public override void ModifyTooltips( List<TooltipLine> tooltips ) {
@@ -35,7 +36,7 @@ namespace Injury.Items.Consumables {
 			this.item.useStyle = 2;
 			this.item.UseSound = SoundID.Item3;
 			this.item.maxStack = 30;
-			this.item.value = Item.buyPrice( 0, 2, 50, 0 );	// Sells for 50s
+			this.item.value = Item.buyPrice( 0, 2, 50, 0 ); // Sells for 50s
 			this.item.rare = 3;
 		}
 
@@ -48,10 +49,10 @@ namespace Injury.Items.Consumables {
 			}
 			return base.UseItem( player );
 		}
-		
+
 		public override bool ConsumeItem( Player player ) {
 			bool can_consume = player.statLifeMax <= 495;
-			
+
 			if( can_consume ) {
 				int pot_sick = 60 * 30;
 				int poisoned = 60 * 30;
@@ -84,16 +85,16 @@ namespace Injury.Items.Consumables {
 	}
 
 
-	
+
 	class AmbrosiaItemRecipe : ModRecipe {
 		public AmbrosiaItemRecipe( EnrichedVitaeItem myitem ) : base( myitem.mod ) {
 			var mymod = (InjuryMod)this.mod;
 
 			this.AddTile( TileID.Bottles );
 
-			this.AddIngredient( mymod.GetItem<WanderingHeartItem>(), 3 );
+			this.AddIngredient( mymod.GetItem<WanderingHeartItem>(), 2 );
 			this.AddIngredient( mymod.GetItem<VitaeItem>(), 2 );
-			this.AddIngredient( ItemID.PinkPricklyPear, 1 );
+			this.AddRecipeGroup( RecipeHelpers.StrangePlants.Key, 1 );
 
 			this.SetResult( myitem, mymod.Config.EnrichedVitaeQuantityPerCraft );
 		}

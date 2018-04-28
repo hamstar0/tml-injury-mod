@@ -21,7 +21,7 @@ namespace Injury.NetProtocol {
 			}
 		}
 
-		
+
 		////////////////////////////////
 		// Senders
 		////////////////////////////////
@@ -34,7 +34,7 @@ namespace Injury.NetProtocol {
 
 			packet.Send( (int)player.whoAmI );
 		}
-		
+
 
 		////////////////////////////////
 		// Recipients (server)

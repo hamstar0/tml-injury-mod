@@ -36,7 +36,7 @@ namespace Injury.Items {
 	class WanderingHeartViaLifeFruitItemRecipe : ModRecipe {
 		public WanderingHeartViaLifeFruitItemRecipe( WanderingHeartItem myitem ) : base( myitem.mod ) {
 			this.AddTile( TileID.WorkBenches );
-			
+
 			this.AddIngredient( ItemID.LifeFruit, 1 );
 
 			this.SetResult( myitem, 1 );

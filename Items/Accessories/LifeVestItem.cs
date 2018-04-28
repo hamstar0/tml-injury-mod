@@ -10,9 +10,9 @@ namespace Injury.Items.Accessories {
 		public static int Width = 18;
 		public static int Height = 20;
 
-		
+
 		////////////////
-		
+
 		public override void SetStaticDefaults() {
 			this.DisplayName.SetDefault( "Life Vest" );
 			this.Tooltip.SetDefault( "Fortifies against injury"
@@ -36,8 +36,11 @@ namespace Injury.Items.Accessories {
 			var mymod = (InjuryMod)this.mod;
 			var modplayer = player.GetModPlayer<InjuryPlayer>();
 
-			if( modplayer.LifeVestPresence == 0 ) { modplayer.LifeVestPresence = 2; }
-			else { modplayer.LifeVestPresence++; }
+			if( modplayer.LifeVestPresence == 0 ) {
+				modplayer.LifeVestPresence = 2;
+			} else {
+				modplayer.LifeVestPresence++;
+			}
 
 			if( player.wet && player.velocity.Y > -1f ) {
 				player.velocity.Y -= 0.24f;

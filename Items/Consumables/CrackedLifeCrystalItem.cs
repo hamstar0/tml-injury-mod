@@ -25,7 +25,7 @@ namespace Injury.Items.Consumables {
 			this.item.useAnimation = 30;
 			this.item.UseSound = SoundID.Item4;
 			this.item.maxStack = 99;
-			this.item.value = Item.buyPrice( 0, 2, 50, 0 );	// Sells for 50s
+			this.item.value = Item.buyPrice( 0, 2, 50, 0 ); // Sells for 50s
 			this.item.rare = 2;
 		}
 
@@ -56,7 +56,7 @@ namespace Injury.Items.Consumables {
 	}
 
 
-	
+
 	class CrackedLifeCrystalItemRecipe : ModRecipe {
 		public CrackedLifeCrystalItemRecipe( CrackedLifeCrystalItem myitem ) : base( myitem.mod ) {
 			var mymod = (InjuryMod)this.mod;

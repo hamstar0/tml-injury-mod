@@ -11,12 +11,12 @@ namespace Injury {
 		public bool IsAnimatingHeartDrop { get; private set; }
 		private int HeartDropAnimation = 0;
 
-		
+
 		////////////////
 
 		public HealthLossDisplay() {
 			this.IsAnimatingHeartDrop = false;
-			
+
 			if( Main.netMode != 2 ) {   // Not server
 				this.HeartTex = ModLoader.GetTexture( "Terraria/Heart" );
 			}
@@ -70,7 +70,7 @@ namespace Injury {
 
 			var rect = new Rectangle( x, y, this.HeartTex.Width, this.HeartTex.Height );
 			float percent_progress = frame / maxframes;
-			float alpha = 0.5f - (percent_progress * 0.5f);
+			float alpha = 0.5f - ( percent_progress * 0.5f );
 
 			sb.Draw( this.HeartTex, rect, Color.White * alpha );
 		}

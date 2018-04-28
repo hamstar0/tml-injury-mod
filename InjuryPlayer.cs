@@ -86,10 +86,10 @@ namespace Injury {
 			if( this.Logic.IsPowerfulBlow( mymod, player, (float)damage_with_crit ) ) {
 				this.Logic.AfflictPowerfulBlowEffect( mymod, player );
 			}
-			
-			if( !quiet && this.Logic.CanBeHarmed( mymod, player, damage, crit) ) {
+
+			if( !quiet && this.Logic.CanBeHarmed( mymod, player, damage, crit ) ) {
 				float harm = this.Logic.ComputeHarmFromDamage( mymod, player, damage, crit );
-//Main.NewText("harmed: "+harm+" buffer: "+ this.HiddenHarmBuffer.ToString("N2")+" threshold: "+this.ComputeHarmBufferCapacity().ToString("N2") );
+				//Main.NewText("harmed: "+harm+" buffer: "+ this.HiddenHarmBuffer.ToString("N2")+" threshold: "+this.ComputeHarmBufferCapacity().ToString("N2") );
 				this.Logic.AfflictHarm( mymod, player, harm );
 			}
 		}
@@ -105,7 +105,7 @@ namespace Injury {
 			if( this.player.velocity.Y == 0f ) {
 				int dmg = PlayerHelpers.ComputeImpendingFallDamage( this.player );
 				if( dmg != 0 ) {
-					this.player.AddBuff( mod.BuffType("ImpactTrauma"), dmg * mymod.Config.FallLimpDurationMultiplier );
+					this.player.AddBuff( mod.BuffType( "ImpactTrauma" ), dmg * mymod.Config.FallLimpDurationMultiplier );
 				}
 			}
 
@@ -125,7 +125,7 @@ namespace Injury {
 						this.AmDead = true;
 
 						float harm_buffer_percent = this.Logic.ComputeHarmBufferPercent( mymod, this.player );
-						float harm = this.Logic.ComputeHarmBufferCapacity( mymod, player ) * (1f - harm_buffer_percent);
+						float harm = this.Logic.ComputeHarmBufferCapacity( mymod, player ) * ( 1f - harm_buffer_percent );
 
 						this.Logic.AfflictHarm( mymod, this.player, harm + 0.001f );
 					}
@@ -134,7 +134,7 @@ namespace Injury {
 				}
 			}
 		}
-		
+
 
 
 		public override void PostUpdateRunSpeeds() {

@@ -39,7 +39,7 @@ namespace Injury.Logic {
 
 		public float ComputeHarmFromDamage( InjuryMod mymod, Player player, double damage, bool crit ) {
 			float damage_with_crit = crit ? (float)damage * 2f : (float)damage;
-			float damage_clamped = damage_with_crit > player.statLife ? (float)(player.statLife + 1) : damage_with_crit;
+			float damage_clamped = damage_with_crit > player.statLife ? (float)( player.statLife + 1 ) : damage_with_crit;
 			float harm = damage_clamped * mymod.Config.PercentOfDamageToUseAsInjury + mymod.Config.AdditionalInjuryPerDamagingHit;
 
 			return harm;
@@ -49,10 +49,10 @@ namespace Injury.Logic {
 			float hp_scale = 1f;
 
 			if( mymod.Config.HighMaxHealthReducesInjury ) {
-				hp_scale = 0.75f + ((float)player.statLifeMax / 400f);
+				hp_scale = 0.75f + ( (float)player.statLifeMax / 400f );
 			}
 
-			float amt = (hp_scale < 1f ? 1f : hp_scale) * mymod.Config.HarmBufferCapacityBeforeReceivingInjury;
+			float amt = ( hp_scale < 1f ? 1f : hp_scale ) * mymod.Config.HarmBufferCapacityBeforeReceivingInjury;
 			amt *= this.ComputeFortifyScale( mymod, player );
 
 			return amt;
@@ -96,7 +96,7 @@ namespace Injury.Logic {
 				if( mymod.Config.BrokenHeartsDrop ) {
 					bool mech = NPC.downedMechBoss1 || NPC.downedMechBoss2 || NPC.downedMechBoss3;
 
-					if( player.statLifeMax <= 415 || (mech && player.statLifeMax <= 400) ) {
+					if( player.statLifeMax <= 415 || ( mech && player.statLifeMax <= 400 ) ) {
 						BleedingHeartProjectile.Spawn( player, mymod );
 					} else {
 						WanderingHeartProjectile.Spawn( player, mymod );

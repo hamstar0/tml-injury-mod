@@ -25,7 +25,7 @@ namespace Injury.Logic {
 
 
 		////////////////
-		
+
 		public bool CanTemporaryInjuryHeal( Player player, int amt ) {
 			return player.statLifeMax < 400;
 		}

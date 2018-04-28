@@ -39,7 +39,7 @@ namespace Injury {
 		public int DurationOfBleedingHeart = 24 * 60;
 		public int VitaePerLifeCrystal = 4;
 		public int VitaePerCrackedLifeCrystal = 2;
-		public int EnrichedVitaeQuantityPerCraft = 3;
+		public int EnrichedVitaeQuantityPerCraft = 5;
 
 
 		public bool CraftableBandOfLife = true;
@@ -83,7 +83,6 @@ namespace Injury {
 		////////////////
 
 		public static int _2_0_0_EnrichedVitaeQuantityPerCraft = 3;
-		public static int _2_0_2_EnrichedVitaeQuantityPerCraft = 5;
 
 
 		////////////////
@@ -106,11 +105,6 @@ namespace Injury {
 			}
 			if( vers_since < new Version( 2, 0, 2 ) ) {
 				if( this.EnrichedVitaeQuantityPerCraft == InjuryConfigData._2_0_0_EnrichedVitaeQuantityPerCraft ) {
-					this.EnrichedVitaeQuantityPerCraft = new_config.EnrichedVitaeQuantityPerCraft;
-				}
-			}
-			if( vers_since < new Version( 2, 0, 3 ) ) {
-				if( this.EnrichedVitaeQuantityPerCraft == InjuryConfigData._2_0_2_EnrichedVitaeQuantityPerCraft ) {
 					this.EnrichedVitaeQuantityPerCraft = new_config.EnrichedVitaeQuantityPerCraft;
 				}
 			}

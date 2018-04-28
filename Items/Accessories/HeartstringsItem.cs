@@ -64,7 +64,7 @@ namespace Injury.Items.Accessories {
 
 		public override bool RecipeAvailable() {
 			var mymod = (InjuryMod)this.mod;
-			return mymod.ServerConfig.Enabled && mymod.ServerConfig.CraftableHeartstrings;
+			return mymod.Config.Enabled && mymod.Config.CraftableHeartstrings;
 		}
 	}
 }

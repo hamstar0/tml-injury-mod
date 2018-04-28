@@ -31,6 +31,7 @@ namespace Injury {
 			myclone.IsImpaired = this.IsImpaired;
 			myclone.HeartstringsEffectDuration = this.HeartstringsEffectDuration;
 			myclone.LifeVestPresence = this.LifeVestPresence;
+			myclone.AmDead = this.AmDead;
 		}
 
 
@@ -46,7 +47,18 @@ namespace Injury {
 			}
 		}
 
-		
+
+		public override void OnEnterWorld( Player player ) {
+			var mymod = (InjuryMod)this.mod;
+
+			if( player.whoAmI == this.player.whoAmI ) {
+				if( Main.netMode == 0 ) {   // Not server
+					if( !mymod.JsonConfig.LoadFile() ) {
+						mymod.JsonConfig.SaveFile();
+					}
+				}
+			}
+		}
 
 		////////////////
 
@@ -68,7 +80,7 @@ namespace Injury {
 			var mymod = (InjuryMod)this.mod;
 			double damage_with_crit = crit ? damage * 2 : damage;
 
-			if( !mymod.ServerConfig.Enabled ) { return; }
+			if( !mymod.Config.Enabled ) { return; }
 
 			// Powerful blow stagger
 			if( this.Logic.IsPowerfulBlow( mymod, player, (float)damage_with_crit ) ) {
@@ -85,7 +97,7 @@ namespace Injury {
 
 		public override void PreUpdate() {
 			var mymod = (InjuryMod)this.mod;
-			if( !mymod.ServerConfig.Enabled ) { return; }
+			if( !mymod.Config.Enabled ) { return; }
 
 			this.Logic.UpdateBleeding( mymod, this.player );
 
@@ -93,7 +105,7 @@ namespace Injury {
 			if( this.player.velocity.Y == 0f ) {
 				int dmg = PlayerHelpers.ComputeImpendingFallDamage( this.player );
 				if( dmg != 0 ) {
-					this.player.AddBuff( mod.BuffType("ImpactTrauma"), dmg * mymod.ServerConfig.FallLimpDurationMultiplier );
+					this.player.AddBuff( mod.BuffType("ImpactTrauma"), dmg * mymod.Config.FallLimpDurationMultiplier );
 				}
 			}
 
@@ -107,7 +119,7 @@ namespace Injury {
 				this.LifeVestPresence--;
 			}
 
-			if( mymod.ServerConfig.InjuryOnDeath ) {
+			if( mymod.Config.InjuryOnDeath ) {
 				if( !this.AmDead ) {
 					if( player.dead ) {
 						this.AmDead = true;

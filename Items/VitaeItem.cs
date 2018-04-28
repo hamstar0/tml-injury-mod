@@ -52,13 +52,13 @@ namespace Injury.Items {
 
 		public override bool RecipeAvailable() {
 			var mymod = (InjuryMod)this.mod;
-			return mymod.ServerConfig.Enabled && mymod.ServerConfig.CraftableVitae;
+			return mymod.Config.Enabled && mymod.Config.CraftableVitae;
 		}
 
 
 		public override void OnCraft( Item item ) {
 			var mymod = InjuryMod.Instance;
-			int odds = mymod.ServerConfig.VitaeCraftingAccidentOdds;
+			int odds = mymod.Config.VitaeCraftingAccidentOdds;
 
 			if( !Main.hardMode && Main.rand.Next( odds ) == 0 ) {
 				Main.LocalPlayer.AddBuff( BuffID.Cursed, 60 * 15 ); // 15 seconds of curse
@@ -88,13 +88,13 @@ namespace Injury.Items {
 
 			this.AddIngredient( ItemID.LifeCrystal, 1 );
 
-			this.SetResult( myitem, mymod.ServerConfig.VitaePerLifeCrystal );
+			this.SetResult( myitem, mymod.Config.VitaePerLifeCrystal );
 		}
 
 
 		public override bool RecipeAvailable() {
 			var mymod = (InjuryMod)this.mod;
-			return mymod.Config.Enabled && mymod.ServerConfig.CraftableVitae;
+			return mymod.Config.Enabled && mymod.Config.CraftableVitae;
 		}
 	}
 }

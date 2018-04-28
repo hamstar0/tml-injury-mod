@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HamstarHelpers.RecipeHelpers;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -91,17 +92,17 @@ namespace Injury.Items.Consumables {
 
 			this.AddTile( TileID.Bottles );
 
-			this.AddIngredient( mymod.GetItem<WanderingHeartItem>(), 3 );
+			this.AddIngredient( mymod.GetItem<WanderingHeartItem>(), 2 );
 			this.AddIngredient( mymod.GetItem<VitaeItem>(), 2 );
-			this.AddIngredient( ItemID.PinkPricklyPear, 1 );
+			this.AddRecipeGroup( RecipeHelpers.StrangePlants.Key, 1 );
 
-			this.SetResult( myitem, mymod.ServerConfig.EnrichedVitaeQuantityPerCraft );
+			this.SetResult( myitem, mymod.Config.EnrichedVitaeQuantityPerCraft );
 		}
 
 
 		public override bool RecipeAvailable() {
 			var mymod = (InjuryMod)this.mod;
-			return mymod.ServerConfig.Enabled && mymod.ServerConfig.CraftableAmbrosia;
+			return mymod.Config.Enabled && mymod.Config.CraftableAmbrosia;
 		}
 	}
 }

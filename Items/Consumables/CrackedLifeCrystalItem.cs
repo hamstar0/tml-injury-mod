@@ -63,7 +63,7 @@ namespace Injury.Items.Consumables {
 
 			this.AddTile( TileID.WorkBenches );
 
-			this.AddIngredient( mymod.GetItem<VitaeItem>(), mymod.ServerConfig.VitaePerCrackedLifeCrystal );
+			this.AddIngredient( mymod.GetItem<VitaeItem>(), mymod.Config.VitaePerCrackedLifeCrystal );
 			this.AddIngredient( ItemID.RubyGemsparkBlock, 10 );
 
 			this.SetResult( myitem, 1 );
@@ -72,7 +72,7 @@ namespace Injury.Items.Consumables {
 
 		public override bool RecipeAvailable() {
 			var mymod = (InjuryMod)this.mod;
-			return mymod.ServerConfig.Enabled && mymod.ServerConfig.CraftableCrackedLifeCrystal;
+			return mymod.Config.Enabled && mymod.Config.CraftableCrackedLifeCrystal;
 		}
 	}
 }

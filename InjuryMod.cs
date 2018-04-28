@@ -17,21 +17,24 @@ namespace Injury {
 		public static string GithubProjectName { get { return "tml-injury-mod"; } }
 
 		public static string ConfigFileRelativePath {
-			get { return ConfigurationDataBase.RelativePath + Path.DirectorySeparatorChar + InjuryConfigMetaData.ConfigFileName; }
+			get { return ConfigurationDataBase.RelativePath + Path.DirectorySeparatorChar + InjuryConfigData.ConfigFileName; }
 		}
 		public static void ReloadConfigFromFile() {
 			if( Main.netMode != 0 ) {
 				throw new Exception( "Cannot reload configs outside of single player." );
 			}
-			InjuryMod.Instance.ServerConfig.Load();
-			InjuryMod.Instance.ClientConfig.Load();
+			if( InjuryMod.Instance != null ) {
+				if( !InjuryMod.Instance.JsonConfig.LoadFile() ) {
+					InjuryMod.Instance.JsonConfig.SaveFile();
+				}
+			}
 		}
 
 
 		////////////////
 
-		public InjuryServerConfigData ServerConfig { get; internal set; }
-		public InjuryClientConfigData ClientConfig { get; internal set; }
+		public JsonConfig<InjuryConfigData> JsonConfig { get; private set; }
+		public InjuryConfigData Config { get { return this.JsonConfig.Data; } }
 
 		public HealthLossDisplay HealthLoss { get; private set; }
 
@@ -44,6 +47,9 @@ namespace Injury {
 				AutoloadGores = true,
 				AutoloadSounds = true
 			};
+
+			this.JsonConfig = new JsonConfig<InjuryConfigData>( InjuryConfigData.ConfigFileName,
+				ConfigurationDataBase.RelativePath, new InjuryConfigData() );
 		}
 
 		////////////////
@@ -52,7 +58,21 @@ namespace Injury {
 			InjuryMod.Instance = this;
 
 			this.HealthLoss = new HealthLossDisplay();
+
+			this.LoadConfig();
 		}
+
+		private void LoadConfig() {
+			if( !this.JsonConfig.LoadFile() ) {
+				this.JsonConfig.SaveFile();
+			}
+
+			if( this.Config.UpdateToLatestVersion() ) {
+				ErrorLogger.Log( "Injury updated to " + InjuryConfigData.ConfigVersion.ToString() );
+				this.JsonConfig.SaveFile();
+			}
+		}
+
 
 		public override void Unload() {
 			InjuryMod.Instance = null;
@@ -98,12 +118,8 @@ namespace Injury {
 			int idx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Resource Bars" ) );   //Vanilla: Inventory
 			if( idx != -1 ) {
 				GameInterfaceDrawMethod func = delegate {
-					if( this.ClientConfig.RenderSubHealth ) {
-						this.HealthLoss.DrawSubHealth( this, Main.spriteBatch );
-					}
-					if( this.ClientConfig.RenderHudHeartDrops ) {
-						this.HealthLoss.DrawCurrentHeartDropAnimation( this, Main.spriteBatch );
-					}
+					this.HealthLoss.DrawSubHealth( this, Main.spriteBatch );
+					this.HealthLoss.DrawCurrentHeartDropAnimation( this, Main.spriteBatch );
 
 					return true;
 				};
@@ -111,6 +127,13 @@ namespace Injury {
 
 				layers.Insert( idx + 1, interface_layer );
 			}
+		}
+
+
+		////////////////
+
+		public bool IsDebugInfoMode() {
+			return this.Config.DebugModeInfo;
 		}
 	}
 }

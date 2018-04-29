@@ -1,5 +1,5 @@
 author = hamstar
-version = 2.1.0.1
+version = 2.1.0
 displayName = Injury
 modReferences = HamstarHelpers@1.4.5
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*

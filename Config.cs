@@ -6,9 +6,9 @@ using Terraria.ModLoader;
 namespace Injury {
 	public class InjuryConfigMetaData {
 		public readonly static Version ConfigVersion = new Version( 2, 1, 0 );
-		public readonly static string ConfigFileName = "Injury ModConfig.json";
+		public readonly static string ConfigFileName = "Injury Config.json";
 	}
-	
+
 
 
 	public class InjuryServerConfigData : ModConfig {
@@ -77,13 +77,13 @@ namespace Injury {
 
 		[Label( "Pre-injury 1/60th second auto-heal amount" )]
 		[DefaultValue( 1f / ( 60f * 75f ) )]
-		public float InjuryBufferHealPerSecond = 1f / (60f * 75f);  // 1 hp every 75 seconds
+		public float InjuryBufferHealPerSecond = 1f / ( 60f * 75f );  // 1 hp every 75 seconds
 		[Label( "Pre-injury 1/60th second auto-heal amount via. Band of Life" )]
 		[DefaultValue( 1f / ( 60f * 30f ) )]
-		public float BandOfLifeInjuryHealPerSecond = 1f / (60f * 30f); // 1 hp every 30 seconds
+		public float BandOfLifeInjuryHealPerSecond = 1f / ( 60f * 30f ); // 1 hp every 30 seconds
 		[Label( "Pre-injury 1/60th second auto-heal amount via. Band of Afterlife" )]
 		[DefaultValue( 1f / ( 60f * 45f ) )]
-		public float BandOfAfterlifeInjuryHealPerSecond = 1f / (60f * 45f); // 1 hp every 45 seconds
+		public float BandOfAfterlifeInjuryHealPerSecond = 1f / ( 60f * 45f ); // 1 hp every 45 seconds
 
 
 		[Label( "Reduce injury with high max health" )]
@@ -218,7 +218,7 @@ namespace Injury {
 			if( vers_since >= InjuryConfigMetaData.ConfigVersion ) {
 				return false;
 			}
-			
+
 			if( vers_since < new Version( 1, 8, 1 ) ) {
 				this.BandOfLifeInjuryHealPerSecond = new_config.BandOfLifeInjuryHealPerSecond;
 			}

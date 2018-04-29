@@ -19,10 +19,6 @@ namespace Injury {
 		public override void PostAutoLoad() {
 			var mymod = (InjuryMod)this.mod;
 			mymod.ServerConfig = this;
-
-			if( this.UpdateToLatestVersion() ) {
-				ErrorLogger.Log( "Injury updated to " + InjuryConfigMetaData.ConfigVersion.ToString() );
-			}
 		}
 
 
@@ -124,7 +120,7 @@ namespace Injury {
 		public int VitaePerCrackedLifeCrystal = 2;
 
 		[Label( "Vitae required to craft Cracked Life Crystal" )]
-		[DefaultValue( 5 )]
+		[DefaultValue( 3 )]
 		public int EnrichedVitaeQuantityPerCraft = 3;
 
 		[Label( "Evil boss drops needed per Life Crystal" )]
@@ -232,10 +228,6 @@ namespace Injury {
 		public override void PostAutoLoad() {
 			var mymod = (InjuryMod)this.mod;
 			mymod.ClientConfig = this;
-
-			if( this.UpdateToLatestVersion() ) {
-				ErrorLogger.Log( "Injury updated to " + InjuryConfigMetaData.ConfigVersion.ToString() );
-			}
 		}
 
 

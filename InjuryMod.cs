@@ -19,7 +19,7 @@ namespace Injury {
 		public static string ConfigFileRelativePath {
 			get { return ConfigurationDataBase.RelativePath + Path.DirectorySeparatorChar + InjuryConfigMetaData.ConfigFileName; }
 		}
-		public static void ReloadConfigFromFile() {
+		/*public static void ReloadConfigFromFile() {
 			if( Main.netMode != 0 ) {
 				throw new Exception( "Cannot reload configs outside of single player." );
 			}
@@ -29,7 +29,7 @@ namespace Injury {
 			if( !InjuryMod.Instance.ClientConfig.LoadFile() ) {
 				InjuryMod.Instance.ClientConfig.SaveFile();
 			}
-		}
+		}	TODO	*/
 
 
 		////////////////
@@ -54,18 +54,13 @@ namespace Injury {
 		public override void Load() {
 			InjuryMod.Instance = this;
 
-			var hamhelpmod = ModLoader.GetMod( "HamstarHelpers" );
-			var min_vers = new Version( 1, 2, 2 );
-			if( hamhelpmod.Version < min_vers ) {
-				throw new Exception( "Hamstar Helpers must be version " + min_vers.ToString() + " or greater." );
-			}
-
 			this.HealthLoss = new HealthLossDisplay();
 			
-			if( this.ServerConfig.UpdateToLatestVersion() ) {
-				ErrorLogger.Log( "Injury updated to " + InjuryConfigMetaData.ConfigVersion.ToString() );
-				this.Config.SaveFile();
-			}
+			// TODO
+			//if( this.ServerConfig.UpdateToLatestVersion() ) {
+			///	ErrorLogger.Log( "Injury updated to " + InjuryConfigMetaData.ConfigVersion.ToString() );
+			//	this.Config.SaveFile();
+			//}
 		}
 
 

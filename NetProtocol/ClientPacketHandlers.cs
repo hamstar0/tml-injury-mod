@@ -8,9 +8,6 @@ namespace Injury.NetProtocol {
 			InjuryNetProtocolTypes protocol = (InjuryNetProtocolTypes)reader.ReadByte();
 
 			switch( protocol ) {
-			case InjuryNetProtocolTypes.ModSettings:
-				ClientPacketHandlers.ReceiveSettings( mymod, reader );
-				break;
 			default:
 				ErrorLogger.Log( "Invalid packet protocol: " + protocol );
 				break;
@@ -21,13 +18,6 @@ namespace Injury.NetProtocol {
 		////////////////////////////////
 		// Senders
 		////////////////////////////////
-
-		public static void SendSettingsRequest( InjuryMod mymod ) {
-			ModPacket packet = mymod.GetPacket();
-
-			packet.Write( (byte)InjuryNetProtocolTypes.ModSettingsRequest );
-			packet.Send();
-		}
 
 		public static void SendSpawnRequestFromClient( InjuryMod mymod, int npc_type ) {
 			ModPacket packet = mymod.GetPacket();
@@ -42,9 +32,5 @@ namespace Injury.NetProtocol {
 		////////////////////////////////
 		// Recipients
 		////////////////////////////////
-
-		private static void ReceiveSettings( InjuryMod mymod, BinaryReader reader ) {
-			mymod.Config.DeserializeMe( reader.ReadString() );
-		}
 	}
 }

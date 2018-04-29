@@ -1,7 +1,5 @@
 ﻿using HamstarHelpers.PlayerHelpers;
 using Injury.Logic;
-using Injury.NetProtocol;
-using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -31,22 +29,6 @@ namespace Injury {
 			myclone.IsImpaired = this.IsImpaired;
 			myclone.HeartstringsEffectDuration = this.HeartstringsEffectDuration;
 			myclone.LifeVestPresence = this.LifeVestPresence;
-		}
-
-		public override void OnEnterWorld( Player player ) {
-			var mymod = (InjuryMod)this.mod;
-
-			if( Main.netMode != 2 ) {   // Not server
-				if( player.whoAmI == this.player.whoAmI ) {
-					if( !mymod.Config.LoadFile() ) {
-						mymod.Config.SaveFile();
-					}
-
-					if( Main.netMode == 1 ) {   // Client
-						ClientPacketHandlers.SendSettingsRequest( mymod );
-					}
-				}
-			}
 		}
 
 		////////////////

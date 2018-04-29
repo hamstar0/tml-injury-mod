@@ -10,9 +10,9 @@ namespace Injury.Items.Accessories {
 		public static int Width = 28;
 		public static int Height = 22;
 
-
+		
 		////////////////
-
+		
 		public override void SetStaticDefaults() {
 			this.DisplayName.SetDefault( "Band of Afterlife" );
 			this.Tooltip.SetDefault( "Slowly fills maximum life (up to 500)"

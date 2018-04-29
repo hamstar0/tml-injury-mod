@@ -10,9 +10,9 @@ namespace Injury.Items.Accessories {
 		public static int Width = 22;
 		public static int Height = 22;
 
-
+		
 		////////////////
-
+		
 		public override void SetStaticDefaults() {
 			this.DisplayName.SetDefault( "Band of Life" );
 			this.Tooltip.SetDefault( "Slowly fills maximum life (up to 400)" );
@@ -85,7 +85,7 @@ namespace Injury.Items.Accessories {
 		//public override GlobalItem NewInstance( Item item ) {
 		//	return new BandOfLifeItemInfo();
 		//}
-
+		
 		public override GlobalItem Clone( Item item, Item item_clone ) {
 			var clone = (BandOfLifeItemInfo)base.Clone( item, item_clone );
 			clone.HealBuffer = this.HealBuffer;

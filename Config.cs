@@ -29,9 +29,9 @@ namespace Injury {
 
 		public int LowestAllowedMaxHealth = 20;
 
-		public float InjuryBufferHealPerSecond = 1f / ( 60f * 75f );  // 1 hp every 75 seconds
-		public float BandOfLifeInjuryHealPerSecond = 1f / ( 60f * 30f ); // 1 hp every 30 seconds
-		public float BandOfAfterlifeInjuryHealPerSecond = 1f / ( 60f * 45f ); // 1 hp every 45 seconds
+		public float InjuryBufferHealPerSecond = 1f / (60f * 75f);  // 1 hp every 75 seconds
+		public float BandOfLifeInjuryHealPerSecond = 1f / (60f * 30f); // 1 hp every 30 seconds
+		public float BandOfAfterlifeInjuryHealPerSecond = 1f / (60f * 45f); // 1 hp every 45 seconds
 
 		public bool HighMaxHealthReducesInjury = true;
 
@@ -39,13 +39,13 @@ namespace Injury {
 		public int DurationOfBleedingHeart = 24 * 60;
 		public int VitaePerLifeCrystal = 4;
 		public int VitaePerCrackedLifeCrystal = 2;
-		public int EnrichedVitaeQuantityPerCraft = 3;
+		public int EnrichedVitaeQuantityPerCraft = 5;
 
 
 		public bool CraftableBandOfLife = true;
 		public bool CraftableVitae = true;
 		public bool CraftableLifeCrystal = true;
-		public bool LifeCrystalNeedsEvilBossDrops = true;
+		 public bool LifeCrystalNeedsEvilBossDrops = true;
 		public bool CraftableCrackedLifeCrystal = true;
 		public bool CraftableWanderingHeart = true;
 		public bool CraftableHeartstrings = true;
@@ -83,7 +83,6 @@ namespace Injury {
 		////////////////
 
 		public static int _2_0_0_EnrichedVitaeQuantityPerCraft = 3;
-		public static int _2_0_2_EnrichedVitaeQuantityPerCraft = 5;
 
 
 		////////////////
@@ -97,7 +96,7 @@ namespace Injury {
 			if( vers_since >= InjuryConfigData.ConfigVersion ) {
 				return false;
 			}
-
+			
 			if( vers_since < new Version( 1, 8, 1 ) ) {
 				this.BandOfLifeInjuryHealPerSecond = new_config.BandOfLifeInjuryHealPerSecond;
 			}
@@ -106,11 +105,6 @@ namespace Injury {
 			}
 			if( vers_since < new Version( 2, 0, 2 ) ) {
 				if( this.EnrichedVitaeQuantityPerCraft == InjuryConfigData._2_0_0_EnrichedVitaeQuantityPerCraft ) {
-					this.EnrichedVitaeQuantityPerCraft = new_config.EnrichedVitaeQuantityPerCraft;
-				}
-			}
-			if( vers_since < new Version( 2, 0, 3 ) ) {
-				if( this.EnrichedVitaeQuantityPerCraft == InjuryConfigData._2_0_2_EnrichedVitaeQuantityPerCraft ) {
 					this.EnrichedVitaeQuantityPerCraft = new_config.EnrichedVitaeQuantityPerCraft;
 				}
 			}

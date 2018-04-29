@@ -23,9 +23,9 @@ namespace Injury.Projectiles {
 			float vel_x = 0, vel_y = 0;
 
 			do {
-				vel_x = ( Main.rand.NextFloat() * 10f ) - 5f;
-				vel_y = ( Main.rand.NextFloat() * 7.5f ) - 5f;
-			} while( Math.Abs( vel_x ) + Math.Abs( vel_y ) < 6f );
+				vel_x = (Main.rand.NextFloat() * 10f) - 5f;
+				vel_y = (Main.rand.NextFloat() * 7.5f) - 5f;
+			} while( Math.Abs(vel_x) + Math.Abs(vel_y) < 6f );
 
 			if( modplayer.HeartstringsEffectDuration > 0 ) {
 				vel_x /= 2f;
@@ -33,7 +33,7 @@ namespace Injury.Projectiles {
 			}
 
 			int proj_id = Projectile.NewProjectile( player.position.X, player.position.Y, vel_x, vel_y, proj_type, 0, 0, player.whoAmI, 0f, 0f );
-			Projectile proj = Main.projectile[proj_id];
+			Projectile proj = Main.projectile[ proj_id ];
 
 			proj.timeLeft = WanderingHeartProjectile.GetDuration( mymod, modplayer );
 		}
@@ -77,28 +77,28 @@ namespace Injury.Projectiles {
 			int proj_width = proj.width * 3;
 			int proj_height = proj.height * 3;
 			var proj_rect = new Rectangle( proj_x, proj_y, proj_width, proj_height );
-
+			
 			// Spew particles
-			if( ( proj.timeLeft > 60 && proj.timeLeft % 2 == 0 ) || proj.timeLeft % 5 == 0 ) {
+			if( (proj.timeLeft > 60 && proj.timeLeft % 2 == 0) || proj.timeLeft % 5 == 0 ) {
 				int blood_who = Dust.NewDust( proj.Center, 3, 6, 216, 0, 1f, 0, Color.Red, 1f );
 				Main.dust[blood_who].velocity /= 2f;
 				Main.dust[blood_who].scale = 0.8f;
 
-				if( Main.rand.Next( 7 ) == 0 ) {
+				if( Main.rand.Next(7) == 0 ) {
 					int spark_who = Dust.NewDust( proj.position, proj.width, proj.height, 55, 0f, 0f, 200, Color.White, 1f );
 					Main.dust[spark_who].velocity *= 0.1f;
 					Main.dust[spark_who].scale *= 0.4f;
 				}
 			}
-
+			
 			// Enable item pickup
-			if( proj.timeLeft < ( duration - 180 ) ) {
+			if( proj.timeLeft < (duration - 180) ) {
 				for( int i = 0; i < 255; i++ ) {
 					Player player = Main.player[i];
 					if( player == null || !player.active || player.dead ) { continue; }
 
 					Rectangle player_rect = new Rectangle( (int)player.position.X, (int)player.position.Y, player.width, player.height );
-
+						
 					if( proj_rect.Intersects( player_rect ) ) {
 						BleedingHeartProjectile.GiveBrokenHeart( player, mymod );
 						proj.Kill();

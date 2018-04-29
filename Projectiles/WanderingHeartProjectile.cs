@@ -23,8 +23,8 @@ namespace Injury.Projectiles {
 			float vel_x = 0, vel_y = 0;
 
 			do {
-				vel_x = ( Main.rand.NextFloat() * 20f ) - 10f;
-				vel_y = ( Main.rand.NextFloat() * 15f ) - 7.5f;
+				vel_x = (Main.rand.NextFloat() * 20f) - 10f;
+				vel_y = (Main.rand.NextFloat() * 15f) - 7.5f;
 			} while( Math.Abs( vel_x ) + Math.Abs( vel_y ) < 8f );
 
 			int proj_id = Projectile.NewProjectile( player.position.X, player.position.Y, vel_x, vel_y, proj_type, 0, 0, player.whoAmI, 0f, 0f );
@@ -35,7 +35,7 @@ namespace Injury.Projectiles {
 
 		public static void GiveHeartItem( Player player, Mod mod ) {
 			int item_which = ItemHelpers.CreateItem( player.Center, mod.ItemType<WanderingHeartItem>(), 1, 16, 16 );
-			Item item = Main.item[item_which];
+			Item item = Main.item[ item_which ];
 			item.noGrabDelay = 3;
 		}
 
@@ -76,15 +76,15 @@ namespace Injury.Projectiles {
 			// Preserve some bounciness
 			if( proj.velocity.Y < 0 ) { proj.velocity.Y *= 1.02f; }
 
-			if( ( proj.timeLeft > 60 && proj.timeLeft % 2 == 0 ) || proj.timeLeft % 5 == 0 ) {
+			if( (proj.timeLeft > 60 && proj.timeLeft % 2 == 0) || proj.timeLeft % 5 == 0 ) {
 				if( Main.rand.Next( 4 ) == 0 ) {
 					int spark_who = Dust.NewDust( proj.position, proj.width, proj.height, 55, 0f, 0f, 200, Color.White, 1f );
 					Main.dust[spark_who].velocity *= 0.1f;
 					Main.dust[spark_who].scale *= 0.4f;
 				}
 			}
-
-			if( proj.timeLeft < ( duration - 180 ) ) {
+			
+			if( proj.timeLeft < (duration - 180) ) {
 				for( int i = 0; i < 255; i++ ) {
 					Player player = Main.player[i];
 					if( player == null || !player.active || player.dead ) { continue; }

@@ -19,7 +19,7 @@ namespace Injury.Items {
 			this.item.width = BrokenHeartItem.Width;
 			this.item.height = BrokenHeartItem.Height;
 			this.item.maxStack = 99;
-			this.item.value = Item.buyPrice( 0, 1, 0, 0 );  // Sells for 20s
+			this.item.value = Item.buyPrice( 0, 1, 0, 0 );	// Sells for 20s
 			this.item.rare = 2;
 		}
 	}

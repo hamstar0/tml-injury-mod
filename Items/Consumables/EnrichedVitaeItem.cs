@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HamstarHelpers.RecipeHelpers;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -92,8 +93,8 @@ namespace Injury.Items.Consumables {
 			this.AddTile( TileID.Bottles );
 
 			this.AddIngredient( mymod.GetItem<WanderingHeartItem>(), 2 );
-			this.AddIngredient( mymod.GetItem<VitaeItem>(), 1 );
-			this.AddIngredient( ItemID.PinkPricklyPear, 1 );
+			this.AddIngredient( mymod.GetItem<VitaeItem>(), 2 );
+			this.AddRecipeGroup( RecipeHelpers.StrangePlants.Key, 1 );
 
 			this.SetResult( myitem, mymod.ServerConfig.EnrichedVitaeQuantityPerCraft );
 		}

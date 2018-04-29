@@ -5,7 +5,7 @@ using System;
 namespace Injury {
 	public class InjuryConfigData : ConfigurationDataBase {
 		public readonly static Version ConfigVersion = new Version( 2, 0, 2 );
-		public readonly static string ConfigFileName = "Injury Config.json";
+		public readonly static string ConfigFileName = "Injury Config.json"; 
 
 
 		////////////////

@@ -22,5 +22,29 @@ namespace Injury.Items {
 			this.item.value = Item.buyPrice( 0, 1, 5, 0 );  // Sells for 30s
 			this.item.rare = 2;
 		}
+
+
+		public override void AddRecipes() {
+			var myrecipe = new WanderingHeartViaLifeFruitItemRecipe( this );
+			myrecipe.AddRecipe();
+		}
+	}
+
+
+
+	class WanderingHeartViaLifeFruitItemRecipe : ModRecipe {
+		public WanderingHeartViaLifeFruitItemRecipe( WanderingHeartItem myitem ) : base( myitem.mod ) {
+			this.AddTile( TileID.WorkBenches );
+			
+			this.AddIngredient( ItemID.LifeFruit, 1 );
+
+			this.SetResult( myitem, 1 );
+		}
+
+
+		public override bool RecipeAvailable() {
+			var mymod = (InjuryMod)this.mod;
+			return mymod.ServerConfig.Enabled && mymod.ServerConfig.CraftableWanderingHeart;
+		}
 	}
 }

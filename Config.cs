@@ -43,9 +43,10 @@ namespace Injury {
 
 		[DefaultValue( true )]
 		public bool Enabled = true;
+
 		[Label( "Display debug information" )]
 		[DefaultValue( false )]
-		public bool DEBUGINFOMODE;
+		public bool DebugModeInfo;
 
 		[Label( "Take injury on death" )]
 		[DefaultValue( true )]
@@ -123,7 +124,7 @@ namespace Injury {
 		public int VitaePerCrackedLifeCrystal = 2;
 
 		[Label( "Vitae required to craft Cracked Life Crystal" )]
-		[DefaultValue( 3 )]
+		[DefaultValue( 5 )]
 		public int EnrichedVitaeQuantityPerCraft = 3;
 
 		[Label( "Evil boss drops needed per Life Crystal" )]
@@ -146,6 +147,10 @@ namespace Injury {
 		[Label( "Craftable Cracked Life Crystal" )]
 		[DefaultValue( true )]
 		public bool CraftableCrackedLifeCrystal = true;
+
+		[Label( "Craftable Wandering Heart" )]
+		[DefaultValue( true )]
+		public bool CraftableWanderingHeart = true;
 
 		[Label( "Craftable Heartstrings" )]
 		[DefaultValue( true )]
@@ -206,30 +211,13 @@ namespace Injury {
 		public int VitaeCraftingAccidentOdds = 6;
 
 
+		[Label( "Renders buffered damage before max hp loss" )]
+		[DefaultValue( true )]
+		public bool RenderSubHealth = true;
 
-		////////////////
-
-		public bool UpdateToLatestVersion() {
-			var new_config = new InjuryServerConfigData();
-			var vers_since = this.VersionSinceUpdate != "" ?
-				new Version( this.VersionSinceUpdate ) :
-				new Version();
-
-			if( vers_since >= InjuryConfigMetaData.ConfigVersion ) {
-				return false;
-			}
-
-			if( vers_since < new Version( 1, 8, 1 ) ) {
-				this.BandOfLifeInjuryHealPerSecond = new_config.BandOfLifeInjuryHealPerSecond;
-			}
-			if( vers_since < new Version( 1, 9, 2 ) ) {
-				this.DurationOfBleedingHeart = new_config.DurationOfBleedingHeart;
-			}
-
-			this.VersionSinceUpdate = InjuryConfigMetaData.ConfigVersion.ToString();
-
-			return true;
-		}
+		[Label( "Renders life bar effect when max health is loss" )]
+		[DefaultValue( true )]
+		public bool RenderHudHeartDrops = true;
 	}
 
 
@@ -272,24 +260,5 @@ namespace Injury {
 		[Label( "Render HUD injury heart drop animation" )]
 		[DefaultValue( true )]
 		public bool RenderHudHeartDrops = true;
-
-
-
-		////////////////
-
-		public bool UpdateToLatestVersion() {
-			var new_config = new InjuryServerConfigData();
-			var vers_since = this.VersionSinceUpdate != "" ?
-				new Version( this.VersionSinceUpdate ) :
-				new Version();
-
-			if( vers_since >= InjuryConfigMetaData.ConfigVersion ) {
-				return false;
-			}
-
-			this.VersionSinceUpdate = InjuryConfigMetaData.ConfigVersion.ToString();
-
-			return true;
-		}
 	}
 }

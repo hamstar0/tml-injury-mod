@@ -70,7 +70,7 @@ namespace Injury.Logic {
 				add += mymod.ServerConfig.LifeVestHarmBufferMultiplier - 1f;
 			}
 
-			if( mymod.ServerConfig.DEBUGINFOMODE ) {
+			if( mymod.ServerConfig.DebugModeInfo ) {
 				DebugHelpers.SetDisplay( "fortify scale ", "" + ( amt + add ), 30 );
 			}
 
@@ -79,7 +79,7 @@ namespace Injury.Logic {
 
 
 		////////////////
-
+			
 		public void ApplyRunImpairment( InjuryMod mymod, Player player ) {
 			ImpactTraumaBuff.ApplyImpairment( mymod, player );
 		}
@@ -101,8 +101,8 @@ namespace Injury.Logic {
 			}
 
 			for( int i = 0; i < max_blood; i++ ) {
-				var vel_x = 2f - ( Main.rand.NextFloat() * 4f );
-				var vel_y = 2f - ( Main.rand.NextFloat() * 4f );
+				var vel_x = 2f - (Main.rand.NextFloat() * 4f);
+				var vel_y = 2f - (Main.rand.NextFloat() * 4f);
 				Dust.NewDust( pos, player.width, player.height, 5, vel_x, vel_y );
 			}
 

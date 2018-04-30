@@ -27,7 +27,7 @@ namespace Injury.Logic {
 		public void Load( InjuryMod mymod, TagCompound tags ) {
 			if( tags.ContainsKey( "temp_max_hp" ) ) {
 				this.TemporaryMaxHp = tags.GetInt( "temp_max_hp" );
-				this.TemporaryMaxHpTimer = mymod.ServerConfig.TemporaryMaxHpChunkDrainTickRate;
+				this.TemporaryMaxHpTimer = mymod.ServerConfig.TemporaryMaxHpChunkDrainRate * 60;
 			}
 		}
 

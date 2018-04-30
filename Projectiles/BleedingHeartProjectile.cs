@@ -10,9 +10,9 @@ namespace Injury.Projectiles {
 	class BleedingHeartProjectile : ModProjectile {
 		public static int GetDuration( InjuryMod mymod, InjuryPlayer modplayer ) {
 			if( modplayer != null && modplayer.HeartstringsEffectDuration > 0 ) {
-				return mymod.ServerConfig.DurationOfBleedingHeart + mymod.ServerConfig.HeartstringsAddedDuration;
+				return (mymod.ServerConfig.BleedingHeartDuration + mymod.ServerConfig.HeartstringsAddedDuration) * 60;
 			}
-			return mymod.ServerConfig.DurationOfBleedingHeart;
+			return mymod.ServerConfig.BleedingHeartDuration * 60;
 		}
 
 		////////////////
@@ -60,7 +60,7 @@ namespace Injury.Projectiles {
 			this.projectile.aiStyle = 14;
 			this.projectile.penetrate = -1;
 			this.projectile.netImportant = true;
-			this.projectile.timeLeft = mymod.ServerConfig.DurationOfBleedingHeart;
+			this.projectile.timeLeft = mymod.ServerConfig.BleedingHeartDuration * 60;
 		}
 
 		////////////////

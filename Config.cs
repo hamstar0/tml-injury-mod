@@ -5,12 +5,45 @@ using Terraria.ModLoader;
 
 namespace Injury {
 	public class InjuryConfigMetaData {
-		public readonly static Version ConfigVersion = new Version( 2, 1, 0 );
+		public readonly static Version ConfigVersion = new Version( 3, 0, 0 );
 		public readonly static string ConfigFileName = "Injury Config.json";
 	}
 
 
 
+	[Label( "Client Settings" )]
+	public class InjuryClientConfigData : ModConfig {
+		public override MultiplayerSyncMode Mode {
+			get { return MultiplayerSyncMode.UniquePerPlayer; }
+		}
+
+		public override void PostAutoLoad() {
+			var mymod = (InjuryMod)this.mod;
+			mymod.ClientConfig = this;
+		}
+
+
+		////////////////
+
+		[Label( "Version since last update to config data" )]
+		[DefaultValue( "" )]
+		public string VersionSinceUpdate = "";
+
+		[Tooltip( "Shown as a growing shadow upon your last life heart." )]
+		[Label( "Renders injury buffer %" )]
+		[DefaultValue( true )]
+		public bool RenderInjuryBuffer = true;
+
+		[Tooltip( "Shown as a heart dropping from where your last life heart was." )]
+		[Label( "Renders max hp loss" )]
+		[DefaultValue( true )]
+		public bool RenderHudHeartDrops = true;
+	}
+
+
+
+
+	[Label( "Game Settings" )]
 	public class InjuryServerConfigData : ModConfig {
 		public override MultiplayerSyncMode Mode {
 			get { return MultiplayerSyncMode.ServerDictates; }
@@ -37,6 +70,7 @@ namespace Injury {
 		public string VersionSinceUpdate = "";
 
 
+		[Tooltip( "Enables functions of the mod. Disable to use like an API." )]
 		[DefaultValue( true )]
 		public bool Enabled = true;
 
@@ -44,43 +78,59 @@ namespace Injury {
 		[DefaultValue( false )]
 		public bool DebugModeInfo;
 
+
 		[Label( "Take injury on death" )]
 		[DefaultValue( true )]
 		public bool InjuryOnDeath = true;
 
 
-		[Label( "Percent of damage to build up to each injury with (pre-injury)" )]
+		[Tooltip( "As % of damage." )]
+		[Label( "Damage to add to injury buffer" )]
 		[Range( 0f, 1f )]
 		[DefaultValue( 0.075f )]
 		public float PercentOfDamageToUseAsInjury = 0.075f;
 
-		[Label( "Amount of build up until injury (pre-injury)" )]
+		[Label( "Injury buffer size" )]
+		[Range( 1f, 100f )]
 		[DefaultValue( 5f )]
-		public float HarmBufferCapacityBeforeReceivingInjury = 5f;
+		public float InjuryBufferSize = 5f;
 
 		[Label( "Additional injury per damaging hit" )]
+		[Range( 0f, 100f )]
 		[DefaultValue( 0f )]
 		public float AdditionalInjuryPerDamagingHit = 0f;
 
-		[Label( "Max health lost from injury" )]
+		[Label( "Max health lost from injury buffer fill" )]
+		[Range( 0, 100 )]
 		[DefaultValue( 5 )]
 		public int MaxHealthLostFromInjury = 5;
 
 
 		[Label( "Lowest allowed max health" )]
+		[DrawTicks]
+		[Range( 5, 100 )]
+		[Increment( 5 )]
 		[DefaultValue( 20 )]
 		public int LowestAllowedMaxHealth = 20;
 
 
-		[Label( "Pre-injury 1/60th second auto-heal amount" )]
-		[DefaultValue( 1f / ( 60f * 75f ) )]
-		public float InjuryBufferHealPerSecond = 1f / ( 60f * 75f );  // 1 hp every 75 seconds
-		[Label( "Pre-injury 1/60th second auto-heal amount via. Band of Life" )]
-		[DefaultValue( 1f / ( 60f * 30f ) )]
-		public float BandOfLifeInjuryHealPerSecond = 1f / ( 60f * 30f ); // 1 hp every 30 seconds
-		[Label( "Pre-injury 1/60th second auto-heal amount via. Band of Afterlife" )]
-		[DefaultValue( 1f / ( 60f * 45f ) )]
-		public float BandOfAfterlifeInjuryHealPerSecond = 1f / ( 60f * 45f ); // 1 hp every 45 seconds
+		[Tooltip( "In seconds." )]
+		[Label( "Injury buffer auto-heal rate" )]
+		[Range( 60, 60 * 10 )]  // Up to 10 minutes
+		[DefaultValue( 75 )]
+		public int InjuryBufferHealRate = 75;  // 1 hp every 75 seconds
+
+		[Tooltip( "In seconds." )]
+		[Label( "Injury buffer auto-heal rate with Band of Life" )]
+		[Range( 60, 60 * 10 )]  // Up to 10 minutes
+		[DefaultValue( 30 )]
+		public int BandOfLifeInjuryHealRate = 30;  // 1 hp every 30 seconds
+
+		[Tooltip( "In seconds." )]
+		[Label( "Injury buffer auto-heal rate with Band of Afterlife" )]
+		[Range( 1, 60 * 10 )]  // Up to 10 minutes
+		[DefaultValue( 45 )]
+		public int BandOfAfterlifeInjuryHealRate = 45;	// 1 hp every 45 seconds
 
 
 		[Label( "Reduce injury with high max health" )]
@@ -88,7 +138,8 @@ namespace Injury {
 		public bool HighMaxHealthReducesInjury = true;
 
 
-		[Label( "Fall limp (1/60s units) duration multiplier-per-hp-lost" )]
+		[Tooltip( "Multiplies hp lost as the duration. Duration is in ticks (1/60 second units)." )]
+		[Label( "Fall limp duration multiplier" )]
 		[DefaultValue( 9 )]
 		public int FallLimpDurationMultiplier = 9;
 
@@ -102,24 +153,31 @@ namespace Injury {
 		[DefaultValue( 0.35f )]
 		public float FallLimpJumpMultiplier = 0.35f;
 
-
+		//[SeparatePage]
+		
 		[Label( "Drop Broken Hearts on injury" )]
 		[DefaultValue( true )]
 		public bool BrokenHeartsDrop = true;
 
+		[Tooltip( "In seconds." )]
 		[Label( "Duration of broken hearts (1/60s units)" )]
-		[DefaultValue( 24 * 60 )]
-		public int DurationOfBleedingHeart = 24 * 60;
+		[Range( 1, 60 * 10 )]	// 10 minutes
+		[DefaultValue( 24 )]
+		public int BleedingHeartDuration = 24;
+
 
 		[Label( "Vitae required to craft Life Crystal" )]
+		[Range( 0, 100 )]
 		[DefaultValue( 4 )]
 		public int VitaePerLifeCrystal = 4;
 
 		[Label( "Vitae required to craft Cracked Life Crystal" )]
+		[Range( 0, 100 )]
 		[DefaultValue( 2 )]
 		public int VitaePerCrackedLifeCrystal = 2;
 
 		[Label( "Vitae required to craft Cracked Life Crystal" )]
+		[Range( 0, 100 )]
 		[DefaultValue( 3 )]
 		public int EnrichedVitaeQuantityPerCraft = 3;
 
@@ -168,89 +226,62 @@ namespace Injury {
 		[DefaultValue( true )]
 		public bool CraftableLifeVest = true;
 
+		//[SeparatePage]
 
-		[Label( "Time (in 1/60s units) until loss of Cracked Life Crystal's temporary max hp" )]
-		[DefaultValue( 5 * 30 * 60 )]
-		public int TemporaryMaxHpChunkDrainTickRate = 5 * 30 * 60;   // 5 hp every 30 seconds
+		[Tooltip( "Time until 5 max hp is lost. Measured in seconds." )]
+		[Label( "Cracked Life Crystal's temp. max hp time" )]
+		[Range( 1, 15 * 60 )]	// 15 minutes
+		[DefaultValue( 5 * 30 )]
+		public int TemporaryMaxHpChunkDrainRate = 5 * 30;   // Every 30 seconds
 
 
-		[Label( "Life% remaining until Bleeding debuff appears" )]
+		[Tooltip( "Measured as % of hp." )]
+		[Label( "Life remaining until Bleeding debuff appears" )]
 		[Range( 0f, 1f )]
+		[Increment( 0.01f )]
 		[DefaultValue( 0.35f )]
 		public float MaxHpPercentRemainingUntilBleeding = 0.35f;
 
-		[Label( "Life% remaining before powerful blows cause staggering" )]
+		[Tooltip( "Measured as % of hp." )]
+		[Label( "Life remaining before powerful blows stagger" )]
 		[Range( 0f, 1f )]
+		[Increment( 0.01f )]
 		[DefaultValue( 0.25f )]
 		public float MaxHpPercentLossForPowerfulBlowStagger = 0.25f;
 
 
-		[Label( "Damage as max hp% before injury happens (when at full health; adventurer's grace)" )]
+		[Tooltip( "Measured as % of max hp." )]
+		[Label( "Damage before injury happens while at full health" )]
 		[Range( 0f, 1f )]
+		[Increment( 0.01f )]
 		[DefaultValue( 0.20f )]
 		public float MaxHpPercentAsDamageAtFullHealthUntilHarm = 0.20f; // Adventurer's grace
 
+		//[SeparatePage]
 
-		[Label( "Broken Heart added duration via. Heartstrings (in 1/60s units)" )]
-		[DefaultValue( 60 * 45 )]
-		public int HeartstringsAddedDuration = 60 * 45; // +45s
-		[Label( "Fortitude potion pre-injury capacity multiplier" )]
+		[Tooltip( "In seconds." )]
+		[Label( "Broken Heart added duration from Heartstrings" )]
+		[Range( 0, 60 * 10 )]	// 10 minutes
+		[DefaultValue( 45 )]
+		public int HeartstringsAddedDuration = 45;
+
+		[Label( "Fortitude potion injury buffer size multiplier" )]
+		[Range( 1f, 10f )]
+		[Increment( 0.01f )]
 		[DefaultValue( 1.4f )]
 		public float FortitudePotionHarmBufferMultiplier = 1.4f;
-		[Label( "Life vest pre-injury capacity multiplier" )]
+
+		[Label( "Life vest injury buffer size multiplier" )]
+		[Range( 1f, 10f )]
+		[Increment( 0.01f )]
 		[DefaultValue( 1.7f )]
 		public float LifeVestHarmBufferMultiplier = 1.7f;
 
 
-		[Label( "Odds of an accident while crafting Vitae" )]
+		[Tooltip( "Larger is safer." )]
+		[Label( "Odds of \"accident\" while crafting Vitae" )]
+		[Range( 1, 100 )]
 		[DefaultValue( 6 )]
 		public int VitaeCraftingAccidentOdds = 6;
-
-
-		[Label( "Renders buffered damage before max hp loss" )]
-		[DefaultValue( true )]
-		public bool RenderSubHealth = true;
-
-		[Label( "Renders life bar effect when max health is loss" )]
-		[DefaultValue( true )]
-		public bool RenderHudHeartDrops = true;
-	}
-
-
-
-	////////////////
-
-	public class InjuryClientConfigData : ModConfig {
-		public override MultiplayerSyncMode Mode {
-			get { return MultiplayerSyncMode.UniquePerPlayer; }
-		}
-
-		public override void PostAutoLoad() {
-			var mymod = (InjuryMod)this.mod;
-			mymod.ClientConfig = this;
-		}
-
-
-		public void Load() {
-			// TODO
-		}
-		public void Save() {
-			// TODO
-		}
-
-
-		////////////////
-
-		[Label( "Version since last update to config data" )]
-		[DefaultValue( "" )]
-		public string VersionSinceUpdate = "";
-
-		[Label( "Render sub health (how close to injury you are)" )]
-		[DefaultValue( true )]
-		public bool RenderSubHealth = true;
-
-		[Label( "Render HUD injury heart drop animation" )]
-		[DefaultValue( true )]
-		public bool RenderHudHeartDrops = true;
 	}
 }

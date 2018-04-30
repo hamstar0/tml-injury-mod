@@ -3,7 +3,6 @@ using Terraria;
 using System.IO;
 using HamstarHelpers.Utilities.Config;
 using Injury.NetProtocol;
-using System;
 using Terraria.UI;
 using System.Collections.Generic;
 using Injury.Items.Consumables;
@@ -93,7 +92,7 @@ namespace Injury {
 			int idx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Resource Bars" ) );   //Vanilla: Inventory
 			if( idx != -1 ) {
 				GameInterfaceDrawMethod func = delegate {
-					if( this.ClientConfig.RenderSubHealth ) {
+					if( this.ClientConfig.RenderInjuryBuffer ) {
 						this.HealthLoss.DrawSubHealth( this, Main.spriteBatch );
 					}
 					if( this.ClientConfig.RenderHudHeartDrops ) {

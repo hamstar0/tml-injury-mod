@@ -1,7 +1,7 @@
 author = hamstar
-version = 2.1.0
+version = 3.0.0
 displayName = Injury
-modReferences = HamstarHelpers@1.4.5
+modReferences = HamstarHelpers@1.4.6
 buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*
 includePDB = true
 homepage = http://forums.terraria.org/index.php?threads/lives-injury.52287/

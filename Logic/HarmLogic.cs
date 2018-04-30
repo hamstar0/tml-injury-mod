@@ -1,13 +1,14 @@
 ﻿using HamstarHelpers.PlayerHelpers;
 using Injury.Projectiles;
 using Terraria;
+using Terraria.ID;
 
 
 namespace Injury.Logic {
 	partial class InjuryLogic {
 		public void UpdateHarm( InjuryMod mymod, Player player ) {
 			// Erode harm gradually
-			this.HiddenHarmBuffer -= mymod.ServerConfig.InjuryBufferHealPerSecond;
+			this.HiddenHarmBuffer -= 1f / (float)(mymod.ServerConfig.InjuryBufferHealRate * 60);
 			if( this.HiddenHarmBuffer < 0f ) { this.HiddenHarmBuffer = 0f; }
 			if( player.dead ) { this.HiddenHarmBuffer = 0f; }
 
@@ -54,7 +55,7 @@ namespace Injury.Logic {
 				hp_scale = 0.75f + ((float)player.statLifeMax / 400f);
 			}
 
-			float amt = (hp_scale < 1f ? 1f : hp_scale) * data.HarmBufferCapacityBeforeReceivingInjury;
+			float amt = (hp_scale < 1f ? 1f : hp_scale) * data.InjuryBufferSize;
 			amt *= this.ComputeFortifyScale( mymod, player );
 
 			return amt;

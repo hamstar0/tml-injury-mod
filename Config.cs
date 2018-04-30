@@ -114,23 +114,23 @@ namespace Injury {
 		public int LowestAllowedMaxHealth = 20;
 
 
-		[Tooltip( "In seconds." )]
-		[Label( "Injury buffer auto-heal rate" )]
+		[Tooltip( "Seconds per 1 hp." )]
+		[Label( "Injury buffer auto-heal duration" )]
 		[Range( 60, 60 * 10 )]  // Up to 10 minutes
 		[DefaultValue( 75 )]
-		public int InjuryBufferHealRate = 75;  // 1 hp every 75 seconds
+		public int InjuryBufferHealDuration = 75;  // 1 hp every 75 seconds
 
-		[Tooltip( "In seconds." )]
-		[Label( "Injury buffer auto-heal rate with Band of Life" )]
+		[Tooltip( "Seconds per 1 hp." )]
+		[Label( "Injury buffer auto-heal duration with Band of Life" )]
 		[Range( 60, 60 * 10 )]  // Up to 10 minutes
 		[DefaultValue( 30 )]
-		public int BandOfLifeInjuryHealRate = 30;  // 1 hp every 30 seconds
+		public int BandOfLifeInjuryHealDuration = 30;  // 1 hp every 30 seconds
 
-		[Tooltip( "In seconds." )]
-		[Label( "Injury buffer auto-heal rate with Band of Afterlife" )]
+		[Tooltip( "Seconds per 1 hp." )]
+		[Label( "Injury buffer auto-heal duration with Band of Afterlife" )]
 		[Range( 1, 60 * 10 )]  // Up to 10 minutes
 		[DefaultValue( 45 )]
-		public int BandOfAfterlifeInjuryHealRate = 45;	// 1 hp every 45 seconds
+		public int BandOfAfterlifeInjuryHealDuration = 45;	// 1 hp every 45 seconds
 
 
 		[Label( "Reduce injury with high max health" )]

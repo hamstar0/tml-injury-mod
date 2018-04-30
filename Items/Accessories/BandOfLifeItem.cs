@@ -38,7 +38,7 @@ namespace Injury.Items.Accessories {
 			bool can_heal = player.statLifeMax < 400;
 
 			if( modplayer.Logic.HiddenHarmBuffer == 0 && item_info.HealBuffer < 5f ) {
-				item_info.HealBuffer += 1f / (float)(mymod.ServerConfig.BandOfLifeInjuryHealRate * 60);
+				item_info.HealBuffer += 1f / (float)(mymod.ServerConfig.BandOfLifeInjuryHealDuration * 60);
 			}
 
 			if( item_info.HealBuffer >= 5f && can_heal ) {

@@ -8,7 +8,7 @@ namespace Injury.Logic {
 	partial class InjuryLogic {
 		public void UpdateHarm( InjuryMod mymod, Player player ) {
 			// Erode harm gradually
-			this.HiddenHarmBuffer -= 1f / (float)(mymod.ServerConfig.InjuryBufferHealRate * 60);
+			this.HiddenHarmBuffer -= 1f / (float)(mymod.ServerConfig.InjuryBufferHealDuration * 60);
 			if( this.HiddenHarmBuffer < 0f ) { this.HiddenHarmBuffer = 0f; }
 			if( player.dead ) { this.HiddenHarmBuffer = 0f; }
 

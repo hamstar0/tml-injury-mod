@@ -42,7 +42,7 @@ namespace Injury.Items.Accessories {
 			HeartstringsItem.ApplyHeartstringEffect( player );
 
 			if( modplayer.Logic.HiddenHarmBuffer == 0 && item_info.HealBuffer < 5f ) {
-				item_info.HealBuffer += 1f / (float)(mymod.ServerConfig.BandOfAfterlifeInjuryHealRate * 60);
+				item_info.HealBuffer += 1f / (float)(mymod.ServerConfig.BandOfAfterlifeInjuryHealDuration * 60);
 			}
 
 			if( item_info.HealBuffer >= 5f && can_heal ) {

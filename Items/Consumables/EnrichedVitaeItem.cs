@@ -93,7 +93,7 @@ namespace Injury.Items.Consumables {
 
 			this.AddIngredient( mymod.GetItem<WanderingHeartItem>(), 2 );
 			this.AddIngredient( mymod.GetItem<VitaeItem>(), 2 );
-			this.AddRecipeGroup( "HamstarHelpers.StrangePlants", 1 );
+			this.AddRecipeGroup( "HamstarHelpers:StrangePlants", 1 );
 
 			this.SetResult( myitem, mymod.Config.EnrichedVitaeQuantityPerCraft );
 		}

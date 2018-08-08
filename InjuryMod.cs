@@ -1,11 +1,11 @@
 ﻿using Terraria.ModLoader;
 using Terraria;
 using System.IO;
-using HamstarHelpers.Utilities.Config;
 using Injury.NetProtocol;
 using Terraria.UI;
 using System.Collections.Generic;
 using Injury.Items.Consumables;
+using HamstarHelpers.Components.Config;
 
 
 namespace Injury {

@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.PlayerHelpers;
+﻿using HamstarHelpers.Helpers.PlayerHelpers;
 using Injury.Logic;
 using Injury.NetProtocol;
 using Terraria;
@@ -53,8 +53,8 @@ namespace Injury {
 
 			if( player.whoAmI == this.player.whoAmI ) {
 				if( Main.netMode == 0 ) {   // Not server
-					if( !mymod.JsonConfig.LoadFile() ) {
-						mymod.JsonConfig.SaveFile();
+					if( !mymod.ConfigJson.LoadFile() ) {
+						mymod.ConfigJson.SaveFile();
 					}
 				}
 			}

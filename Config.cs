@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.Utilities.Config;
+﻿using HamstarHelpers.Components.Config;
 using System;
 
 
@@ -71,21 +71,6 @@ namespace Injury {
 		public int VitaeCraftingAccidentOdds = 6;
 
 
-		////
-
-		public string _OLD_SETTINGS_BELOW_ = "";
-
-		public int BrokenHeartsPerLifeCrystal = 4;
-		public int BrokenHeartsPerCrackedLifeCrystal = 2;
-
-
-
-		////////////////
-
-		public static int _2_0_0_EnrichedVitaeQuantityPerCraft = 3;
-		public static int _2_0_2_EnrichedVitaeQuantityPerCraft = 5;
-
-
 		////////////////
 
 		public bool UpdateToLatestVersion() {
@@ -96,23 +81,6 @@ namespace Injury {
 
 			if( vers_since >= InjuryConfigData.ConfigVersion ) {
 				return false;
-			}
-			
-			if( vers_since < new Version( 1, 8, 1 ) ) {
-				this.BandOfLifeInjuryHealPerSecond = new_config.BandOfLifeInjuryHealPerSecond;
-			}
-			if( vers_since < new Version( 1, 9, 2 ) ) {
-				this.DurationOfBleedingHeart = new_config.DurationOfBleedingHeart;
-			}
-			if( vers_since < new Version( 2, 0, 2 ) ) {
-				if( this.EnrichedVitaeQuantityPerCraft == InjuryConfigData._2_0_0_EnrichedVitaeQuantityPerCraft ) {
-					this.EnrichedVitaeQuantityPerCraft = new_config.EnrichedVitaeQuantityPerCraft;
-				}
-			}
-			if( vers_since < new Version( 2, 0, 3 ) ) {
-				if( this.EnrichedVitaeQuantityPerCraft == InjuryConfigData._2_0_2_EnrichedVitaeQuantityPerCraft ) {
-					this.EnrichedVitaeQuantityPerCraft = new_config.EnrichedVitaeQuantityPerCraft;
-				}
 			}
 
 			this.VersionSinceUpdate = InjuryConfigData.ConfigVersion.ToString();

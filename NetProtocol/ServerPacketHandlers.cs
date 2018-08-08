@@ -30,7 +30,7 @@ namespace Injury.NetProtocol {
 			ModPacket packet = mymod.GetPacket();
 
 			packet.Write( (byte)InjuryNetProtocolTypes.ModSettings );
-			packet.Write( (string)mymod.JsonConfig.SerializeMe() );
+			packet.Write( (string)mymod.ConfigJson.SerializeMe() );
 
 			packet.Send( (int)player.whoAmI );
 		}

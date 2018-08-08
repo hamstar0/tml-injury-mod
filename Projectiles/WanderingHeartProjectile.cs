@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.ItemHelpers;
+﻿using HamstarHelpers.Helpers.ItemHelpers;
 using Injury.Items;
 using Microsoft.Xna.Framework;
 using System;

@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.RecipeHelpers;
+﻿using HamstarHelpers.Helpers.RecipeHelpers;
 using Injury.NetProtocol;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -43,7 +43,7 @@ namespace Injury.Items {
 			this.AddTile( TileID.DemonAltar );
 
 			this.AddIngredient( this.mod.GetItem<BrokenHeartItem>(), 1 );
-			this.AddRecipeGroup( RecipeHelpers.VanillaAnimals.Key, 1 );
+			this.AddRecipeGroup( "HamstarHelpers:VanillaAnimals", 1 );
 			this.AddIngredient( ItemID.Mushroom, 1 );
 
 			this.SetResult( myitem, 1 );

@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.RecipeHelpers;
+﻿using HamstarHelpers.Helpers.RecipeHelpers;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -51,7 +51,7 @@ namespace Injury.Items.Consumables {
 			this.AddIngredient( ItemID.BottledWater, 1 );
 			this.AddIngredient( this.mod.GetItem<VitaeItem>(), 1 );
 			this.AddIngredient( ItemID.Bone, 1 );
-			this.AddRecipeGroup( RecipeHelpers.EvilBossDrops.Key );
+			this.AddRecipeGroup( "HamstarHelpers.EvilBossDrops", 1 );
 			
 			this.SetResult( moditem );
 		}

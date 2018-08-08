@@ -1,40 +1,23 @@
 ﻿using Terraria.ModLoader;
 using Terraria;
 using System.IO;
-using HamstarHelpers.Utilities.Config;
 using Injury.NetProtocol;
 using System;
 using Terraria.UI;
 using System.Collections.Generic;
 using Injury.Items.Consumables;
+using HamstarHelpers.Components.Config;
 
 
 namespace Injury {
-	class InjuryMod : Mod {
+	partial class InjuryMod : Mod {
 		public static InjuryMod Instance { get; private set; }
-
-		public static string GithubUserName { get { return "hamstar0"; } }
-		public static string GithubProjectName { get { return "tml-injury-mod"; } }
-
-		public static string ConfigFileRelativePath {
-			get { return ConfigurationDataBase.RelativePath + Path.DirectorySeparatorChar + InjuryConfigData.ConfigFileName; }
-		}
-		public static void ReloadConfigFromFile() {
-			if( Main.netMode != 0 ) {
-				throw new Exception( "Cannot reload configs outside of single player." );
-			}
-			if( InjuryMod.Instance != null ) {
-				if( !InjuryMod.Instance.JsonConfig.LoadFile() ) {
-					InjuryMod.Instance.JsonConfig.SaveFile();
-				}
-			}
-		}
-
+		
 
 		////////////////
 
-		public JsonConfig<InjuryConfigData> JsonConfig { get; private set; }
-		public InjuryConfigData Config { get { return this.JsonConfig.Data; } }
+		public JsonConfig<InjuryConfigData> ConfigJson { get; private set; }
+		public InjuryConfigData Config { get { return this.ConfigJson.Data; } }
 
 		public HealthLossDisplay HealthLoss { get; private set; }
 
@@ -48,7 +31,7 @@ namespace Injury {
 				AutoloadSounds = true
 			};
 
-			this.JsonConfig = new JsonConfig<InjuryConfigData>( InjuryConfigData.ConfigFileName,
+			this.ConfigJson = new JsonConfig<InjuryConfigData>( InjuryConfigData.ConfigFileName,
 				ConfigurationDataBase.RelativePath, new InjuryConfigData() );
 		}
 
@@ -63,13 +46,13 @@ namespace Injury {
 		}
 
 		private void LoadConfig() {
-			if( !this.JsonConfig.LoadFile() ) {
-				this.JsonConfig.SaveFile();
+			if( !this.ConfigJson.LoadFile() ) {
+				this.ConfigJson.SaveFile();
 			}
 
 			if( this.Config.UpdateToLatestVersion() ) {
 				ErrorLogger.Log( "Injury updated to " + InjuryConfigData.ConfigVersion.ToString() );
-				this.JsonConfig.SaveFile();
+				this.ConfigJson.SaveFile();
 			}
 		}
 
@@ -127,13 +110,6 @@ namespace Injury {
 
 				layers.Insert( idx + 1, interface_layer );
 			}
-		}
-
-
-		////////////////
-
-		public bool IsDebugInfoMode() {
-			return this.Config.DebugModeInfo;
 		}
 	}
 }

@@ -25,7 +25,7 @@ namespace Injury {
 		}
 
 		public static void SaveModSettingsChanges() {
-			InjuryMod.Instance.JsonConfig.SaveFile();
+			InjuryMod.Instance.ConfigJson.SaveFile();
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.PlayerHelpers;
+﻿using HamstarHelpers.Helpers.PlayerHelpers;
 using Injury.Projectiles;
 using Terraria;
 using Terraria.ID;

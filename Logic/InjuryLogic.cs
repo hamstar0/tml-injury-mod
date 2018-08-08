@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.DebugHelpers;
+﻿using HamstarHelpers.Helpers.DebugHelpers;
 using Injury.Buffs;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -71,7 +71,7 @@ namespace Injury.Logic {
 			}
 
 			if( mymod.IsDebugInfoMode() ) {
-				DebugHelpers.SetDisplay( "fortify scale ", "" + (amt + add), 30 );
+				DebugHelpers.Print( "fortify scale ", "" + (amt + add), 30 );
 			}
 
 			return amt + add;

@@ -44,7 +44,8 @@ namespace Injury.NetProtocol {
 		////////////////////////////////
 
 		private static void ReceiveSettings( InjuryMod mymod, BinaryReader reader ) {
-			mymod.JsonConfig.DeserializeMe( reader.ReadString() );
+			bool success;
+			mymod.ConfigJson.DeserializeMe( reader.ReadString(), out success );
 		}
 	}
 }

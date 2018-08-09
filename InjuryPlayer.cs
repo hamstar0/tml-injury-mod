@@ -19,6 +19,8 @@ namespace Injury {
 
 		////////////////
 
+		public override bool CloneNewInstances { get { return false; } }
+
 		public override void Initialize() {
 			this.Logic = new InjuryLogic();
 		}
@@ -49,13 +51,14 @@ namespace Injury {
 
 
 		public override void OnEnterWorld( Player player ) {
+			if( player.whoAmI != Main.myPlayer ) { return; }
+			if( this.player.whoAmI != Main.myPlayer ) { return; }
+
 			var mymod = (InjuryMod)this.mod;
 
-			if( player.whoAmI == this.player.whoAmI ) {
-				if( Main.netMode == 0 ) {   // Not server
-					if( !mymod.ConfigJson.LoadFile() ) {
-						mymod.ConfigJson.SaveFile();
-					}
+			if( Main.netMode == 0 ) {   // Not server
+				if( !mymod.ConfigJson.LoadFile() ) {
+					mymod.ConfigJson.SaveFile();
 				}
 			}
 		}

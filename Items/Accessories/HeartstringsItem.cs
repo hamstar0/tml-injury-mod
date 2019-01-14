@@ -8,6 +8,8 @@ namespace Injury.Items.Accessories {
 		public static int Width = 22;
 		public static int Height = 22;
 
+
+
 		////////////////
 
 		public static void ApplyHeartstringEffect( Player player ) {
@@ -39,7 +41,7 @@ namespace Injury.Items.Accessories {
 
 		////////////////
 
-		public override void UpdateAccessory( Player player, bool hide_visual ) {
+		public override void UpdateAccessory( Player player, bool hideVisual ) {
 			HeartstringsItem.ApplyHeartstringEffect( player );
 		}
 
@@ -50,6 +52,7 @@ namespace Injury.Items.Accessories {
 			recipe.AddRecipe();
 		}
 	}
+
 
 
 

@@ -32,7 +32,7 @@ namespace Injury.Items.Accessories {
 
 		////////////////
 
-		public override void UpdateAccessory( Player player, bool hide_visual ) {
+		public override void UpdateAccessory( Player player, bool hideVisual ) {
 			var mymod = (InjuryMod)this.mod;
 			var modplayer = player.GetModPlayer<InjuryPlayer>();
 
@@ -50,6 +50,7 @@ namespace Injury.Items.Accessories {
 			recipe.AddRecipe();
 		}
 	}
+
 
 
 

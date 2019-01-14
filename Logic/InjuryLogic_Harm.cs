@@ -6,7 +6,9 @@ using Terraria.ID;
 
 namespace Injury.Logic {
 	partial class InjuryLogic {
-		public void UpdateHarm( InjuryMod mymod, Player player ) {
+		public void UpdateHarm( Player player ) {
+			var mymod = InjuryMod.Instance;
+
 			// Erode harm gradually
 			this.HiddenHarmBuffer -= mymod.Config.InjuryBufferHealPerSecond;
 			if( this.HiddenHarmBuffer < 0f ) { this.HiddenHarmBuffer = 0f; }
@@ -26,65 +28,70 @@ namespace Injury.Logic {
 
 		////////////////
 
-		public bool CanBeHarmed( InjuryMod mymod, Player player, double damage, bool crit ) {
-			double damage_with_crit = crit ? damage * 2 : damage;
-			double max_hp_until_harm = (double)player.statLifeMax2 * mymod.Config.MaxHpPercentAsDamageAtFullHealthUntilHarm;
+		public bool CanBeHarmed( Player player, double damage, bool crit ) {
+			var mymod = InjuryMod.Instance;
+			double damageWithCrit = crit ? damage * 2 : damage;
+			double maxHpUntilHarm = (double)player.statLifeMax2 * mymod.Config.MaxHpPercentAsDamageAtFullHealthUntilHarm;
 
 			return player.statLife < player.statLifeMax2    // Any amount of hurt
-				|| damage_with_crit > max_hp_until_harm;
+				|| damageWithCrit > maxHpUntilHarm;
 		}
 
 
 		////////////////
 
-		public float ComputeHarmFromDamage( InjuryMod mymod, Player player, double damage, bool crit ) {
-			float damage_with_crit = crit ? (float)damage * 2f : (float)damage;
-			float damage_clamped = damage_with_crit > player.statLife ? (float)(player.statLife + 1) : damage_with_crit;
-			float harm = damage_clamped * mymod.Config.PercentOfDamageToUseAsInjury + mymod.Config.AdditionalInjuryPerDamagingHit;
+		public float ComputeHarmFromDamage( Player player, double damage, bool crit ) {
+			var mymod = InjuryMod.Instance;
+			float damageWithCrit = crit ? (float)damage * 2f : (float)damage;
+			float damageClamped = damageWithCrit > player.statLife ? (float)(player.statLife + 1) : damageWithCrit;
+			float harm = damageClamped * mymod.Config.PercentOfDamageToUseAsInjury + mymod.Config.AdditionalInjuryPerDamagingHit;
 
 			return harm;
 		}
 
-		public float ComputeHarmBufferCapacity( InjuryMod mymod, Player player ) {
-			float hp_scale = 1f;
+		public float ComputeHarmBufferCapacity( Player player ) {
+			var mymod = InjuryMod.Instance;
+			float hpScale = 1f;
 
 			if( mymod.Config.HighMaxHealthReducesInjury ) {
-				hp_scale = 0.75f + ((float)player.statLifeMax / 400f);
+				hpScale = 0.75f + ((float)player.statLifeMax / 400f);
 			}
 
-			float amt = (hp_scale < 1f ? 1f : hp_scale) * mymod.Config.HarmBufferCapacityBeforeReceivingInjury;
-			amt *= this.ComputeFortifyScale( mymod, player );
+			float amt = (hpScale < 1f ? 1f : hpScale) * mymod.Config.HarmBufferCapacityBeforeReceivingInjury;
+			amt *= this.ComputeFortifyScale( player );
 
 			return amt;
 		}
 
-		public float ComputeHarmBufferPercent( InjuryMod mymod, Player player ) {
-			return this.HiddenHarmBuffer / this.ComputeHarmBufferCapacity( mymod, player );
+		public float ComputeHarmBufferPercent( Player player ) {
+			var mymod = InjuryMod.Instance;
+			return this.HiddenHarmBuffer / this.ComputeHarmBufferCapacity( player );
 		}
 
 
 		////////////////
 
-		public void AfflictHarm( InjuryMod mymod, Player player, float harm ) {
-			int min_hp = mymod.Config.LowestAllowedMaxHealth;
-			bool is_injured = false;
-			float injury_threshold = this.ComputeHarmBufferCapacity( mymod, player );
+		public void AfflictHarm( Player player, float harm ) {
+			var mymod = InjuryMod.Instance;
+			int minHp = mymod.Config.LowestAllowedMaxHealth;
+			bool isInjured = false;
+			float injuryThreshold = this.ComputeHarmBufferCapacity(  player );
 
-			if( player.statLifeMax <= min_hp ) { return; }
+			if( player.statLifeMax <= minHp ) { return; }
 
 			this.HiddenHarmBuffer += harm;
 
 			// When harm is sufficient to cause injury, transfer buffer to much ouch
-			while( this.HiddenHarmBuffer >= injury_threshold && player.statLifeMax > min_hp ) {
-				is_injured = true;
-				this.HiddenHarmBuffer -= injury_threshold;
+			while( this.HiddenHarmBuffer >= injuryThreshold && player.statLifeMax > minHp ) {
+				isInjured = true;
+				this.HiddenHarmBuffer -= injuryThreshold;
 				player.statLifeMax -= mymod.Config.MaxHealthLostFromInjury;
 			}
 
 			// Enforce minimum health cap
-			if( player.statLifeMax <= min_hp ) {
-				is_injured = false;
-				player.statLifeMax = min_hp;
+			if( player.statLifeMax <= minHp ) {
+				isInjured = false;
+				player.statLifeMax = minHp;
 				this.HiddenHarmBuffer = 0f;
 
 				if( Main.netMode == 1 ) {
@@ -92,18 +99,18 @@ namespace Injury.Logic {
 				}
 			}
 
-			if( is_injured ) {
+			if( isInjured ) {
 				if( mymod.Config.BrokenHeartsDrop ) {
 					bool mech = NPC.downedMechBoss1 || NPC.downedMechBoss2 || NPC.downedMechBoss3;
 
 					if( player.statLifeMax <= 415 || (mech && player.statLifeMax <= 400) ) {
-						BleedingHeartProjectile.Spawn( player, mymod );
+						BleedingHeartProjectile.Spawn( player );
 					} else {
-						WanderingHeartProjectile.Spawn( player, mymod );
+						WanderingHeartProjectile.Spawn( player );
 					}
 				}
 
-				this.InjuryFullFX( mymod, player );
+				this.InjuryFullFX( player );
 			}
 		}
 	}

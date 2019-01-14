@@ -31,19 +31,19 @@ namespace Injury.Items.Accessories {
 
 		////////////////
 
-		public override void UpdateAccessory( Player player, bool hide_visual ) {
+		public override void UpdateAccessory( Player player, bool hideVisual ) {
 			var mymod = (InjuryMod)this.mod;
 			var modplayer = player.GetModPlayer<InjuryPlayer>( mymod );
-			var item_info = this.item.GetGlobalItem<BandOfLifeItemInfo>( mymod );
-			bool can_heal = player.statLifeMax < 400;
+			var itemInfo = this.item.GetGlobalItem<BandOfLifeItemInfo>( mymod );
+			bool canHeal = player.statLifeMax < 400;
 
-			if( modplayer.Logic.HiddenHarmBuffer == 0 && item_info.HealBuffer < 5f ) {
-				item_info.HealBuffer += mymod.Config.BandOfLifeInjuryHealPerSecond;
+			if( modplayer.Logic.HiddenHarmBuffer == 0 && itemInfo.HealBuffer < 5f ) {
+				itemInfo.HealBuffer += mymod.Config.BandOfLifeInjuryHealPerSecond;
 			}
 
-			if( item_info.HealBuffer >= 5f && can_heal ) {
+			if( itemInfo.HealBuffer >= 5f && canHeal ) {
 				player.statLifeMax += 5;
-				item_info.HealBuffer -= 5f;
+				itemInfo.HealBuffer -= 5f;
 
 				Main.PlaySound( SoundID.Item4, player.position );
 			}
@@ -55,6 +55,7 @@ namespace Injury.Items.Accessories {
 			recipe.AddRecipe();
 		}
 	}
+
 
 
 
@@ -76,18 +77,21 @@ namespace Injury.Items.Accessories {
 
 
 
+
 	class BandOfLifeItemInfo : GlobalItem {
 		public override bool InstancePerEntity { get { return true; } }
 		//public override bool CloneNewInstances { get { return true; } }
 
 		public float HealBuffer = 0;
 
+
+
 		//public override GlobalItem NewInstance( Item item ) {
 		//	return new BandOfLifeItemInfo();
 		//}
 		
-		public override GlobalItem Clone( Item item, Item item_clone ) {
-			var clone = (BandOfLifeItemInfo)base.Clone( item, item_clone );
+		public override GlobalItem Clone( Item item, Item itemClone ) {
+			var clone = (BandOfLifeItemInfo)base.Clone( item, itemClone );
 			clone.HealBuffer = this.HealBuffer;
 			return clone;
 		}

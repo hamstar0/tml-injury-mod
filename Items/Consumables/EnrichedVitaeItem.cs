@@ -11,6 +11,7 @@ namespace Injury.Items.Consumables {
 		public static int Height = 24;
 
 
+
 		////////////////
 
 		public override void SetStaticDefaults() {
@@ -50,9 +51,9 @@ namespace Injury.Items.Consumables {
 		}
 		
 		public override bool ConsumeItem( Player player ) {
-			bool can_consume = player.statLifeMax <= 495;
+			bool canConsume = player.statLifeMax <= 495;
 			
-			if( can_consume ) {
+			if( canConsume ) {
 				int pot_sick = 60 * 30;
 				int poisoned = 60 * 30;
 				int venomed = 60 * 15;
@@ -72,7 +73,7 @@ namespace Injury.Items.Consumables {
 				player.statLifeMax += 5;
 			}
 
-			return can_consume;
+			return canConsume;
 		}
 
 		////////////////
@@ -82,6 +83,7 @@ namespace Injury.Items.Consumables {
 			myrecipe.AddRecipe();
 		}
 	}
+
 
 
 	

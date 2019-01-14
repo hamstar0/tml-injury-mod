@@ -44,8 +44,9 @@ namespace Injury.Items.Consumables {
 
 
 
+
 	class FortitudePotionItemRecipe : ModRecipe {
-		public FortitudePotionItemRecipe( FortitudePotionItem moditem ) : base( moditem.mod ) {
+		public FortitudePotionItemRecipe( FortitudePotionItem myitem ) : base( myitem.mod ) {
 			this.AddTile( TileID.Bottles );
 
 			this.AddIngredient( ItemID.BottledWater, 1 );
@@ -53,7 +54,7 @@ namespace Injury.Items.Consumables {
 			this.AddIngredient( ItemID.Bone, 1 );
 			this.AddRecipeGroup( "HamstarHelpers:EvilBossDrops", 1 );
 			
-			this.SetResult( moditem );
+			this.SetResult( myitem );
 		}
 
 		public override bool RecipeAvailable() {

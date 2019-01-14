@@ -74,12 +74,12 @@ namespace Injury {
 		////////////////
 
 		public bool UpdateToLatestVersion() {
-			var new_config = new InjuryConfigData();
-			var vers_since = this.VersionSinceUpdate != "" ?
+			var newConfig = new InjuryConfigData();
+			var versSince = this.VersionSinceUpdate != "" ?
 				new Version( this.VersionSinceUpdate ) :
 				new Version();
 
-			if( vers_since >= InjuryConfigData.ConfigVersion ) {
+			if( versSince >= InjuryConfigData.ConfigVersion ) {
 				return false;
 			}
 

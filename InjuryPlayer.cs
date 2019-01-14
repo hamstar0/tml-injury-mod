@@ -79,21 +79,21 @@ namespace Injury {
 		////////////////
 
 		//public override bool PreHurt( bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource ) {
-		public override void PostHurt( bool pvp, bool quiet, double damage, int hit_direction, bool crit ) {
+		public override void PostHurt( bool pvp, bool quiet, double damage, int hitDirection, bool crit ) {
 			var mymod = (InjuryMod)this.mod;
-			double damage_with_crit = crit ? damage * 2 : damage;
+			double damageWithCrit = crit ? damage * 2 : damage;
 
 			if( !mymod.Config.Enabled ) { return; }
 
 			// Powerful blow stagger
-			if( this.Logic.IsPowerfulBlow( mymod, player, (float)damage_with_crit ) ) {
-				this.Logic.AfflictPowerfulBlowEffect( mymod, player );
+			if( this.Logic.IsPowerfulBlow( player, (float)damageWithCrit ) ) {
+				this.Logic.AfflictPowerfulBlowEffect( player );
 			}
 			
-			if( !quiet && this.Logic.CanBeHarmed( mymod, player, damage, crit) ) {
-				float harm = this.Logic.ComputeHarmFromDamage( mymod, player, damage, crit );
+			if( !quiet && this.Logic.CanBeHarmed( player, damage, crit) ) {
+				float harm = this.Logic.ComputeHarmFromDamage( player, damage, crit );
 //Main.NewText("harmed: "+harm+" buffer: "+ this.HiddenHarmBuffer.ToString("N2")+" threshold: "+this.ComputeHarmBufferCapacity().ToString("N2") );
-				this.Logic.AfflictHarm( mymod, player, harm );
+				this.Logic.AfflictHarm( player, harm );
 			}
 		}
 
@@ -102,7 +102,7 @@ namespace Injury {
 			var mymod = (InjuryMod)this.mod;
 			if( !mymod.Config.Enabled ) { return; }
 
-			this.Logic.UpdateBleeding( mymod, this.player );
+			this.Logic.UpdateBleeding( this.player );
 
 			// Fall impact staggering
 			if( this.player.velocity.Y == 0f ) {
@@ -112,8 +112,8 @@ namespace Injury {
 				}
 			}
 
-			this.Logic.UpdateHarm( mymod, this.player );
-			this.Logic.UpdateTemporaryHealth( mymod, this.player );
+			this.Logic.UpdateHarm( this.player );
+			this.Logic.UpdateTemporaryHealth( this.player );
 
 			if( this.HeartstringsEffectDuration > 0 ) {
 				this.HeartstringsEffectDuration--;
@@ -127,10 +127,10 @@ namespace Injury {
 					if( player.dead ) {
 						this.AmDead = true;
 
-						float harm_buffer_percent = this.Logic.ComputeHarmBufferPercent( mymod, this.player );
-						float harm = this.Logic.ComputeHarmBufferCapacity( mymod, player ) * (1f - harm_buffer_percent);
+						float harmBufferPercent = this.Logic.ComputeHarmBufferPercent( this.player );
+						float harm = this.Logic.ComputeHarmBufferCapacity( player ) * (1f - harmBufferPercent);
 
-						this.Logic.AfflictHarm( mymod, this.player, harm + 0.001f );
+						this.Logic.AfflictHarm( this.player, harm + 0.001f );
 					}
 				} else if( !player.dead ) {
 					this.AmDead = false;
@@ -142,7 +142,7 @@ namespace Injury {
 
 		public override void PostUpdateRunSpeeds() {
 			if( this.IsImpaired ) {
-				this.Logic.ApplyRunImpairment( (InjuryMod)this.mod, player );
+				this.Logic.ApplyRunImpairment( player );
 				this.IsImpaired = false;
 			}
 		}

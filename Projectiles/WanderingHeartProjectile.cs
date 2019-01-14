@@ -8,8 +8,10 @@ using Terraria.ModLoader;
 
 namespace Injury.Projectiles {
 	class WanderingHeartProjectile : ModProjectile {
-		public static int GetDuration( InjuryMod mymod, InjuryPlayer modplayer ) {
-			if( modplayer != null && modplayer.HeartstringsEffectDuration > 0 ) {
+		public static int GetDuration( InjuryPlayer myplayer ) {
+			var mymod = InjuryMod.Instance;
+
+			if( myplayer != null && myplayer.HeartstringsEffectDuration > 0 ) {
 				return mymod.Config.DurationOfBleedingHeart + mymod.Config.HeartstringsAddedDuration;
 			}
 			return mymod.Config.DurationOfBleedingHeart;
@@ -17,25 +19,26 @@ namespace Injury.Projectiles {
 
 		////////////////
 
-		public static void Spawn( Player player, InjuryMod mymod ) {
+		public static void Spawn( Player player ) {
+			var mymod = InjuryMod.Instance;
 			var modplayer = player.GetModPlayer<InjuryPlayer>();
-			int proj_type = mymod.ProjectileType<WanderingHeartProjectile>();
-			float vel_x = 0, vel_y = 0;
+			int projType = mymod.ProjectileType<WanderingHeartProjectile>();
+			float velX = 0, velY = 0;
 
 			do {
-				vel_x = (Main.rand.NextFloat() * 20f) - 10f;
-				vel_y = (Main.rand.NextFloat() * 15f) - 7.5f;
-			} while( Math.Abs( vel_x ) + Math.Abs( vel_y ) < 8f );
+				velX = (Main.rand.NextFloat() * 20f) - 10f;
+				velY = (Main.rand.NextFloat() * 15f) - 7.5f;
+			} while( Math.Abs( velX ) + Math.Abs( velY ) < 8f );
 
-			int proj_id = Projectile.NewProjectile( player.position.X, player.position.Y, vel_x, vel_y, proj_type, 0, 0, player.whoAmI, 0f, 0f );
-			Projectile proj = Main.projectile[proj_id];
+			int projId = Projectile.NewProjectile( player.position.X, player.position.Y, velX, velY, projType, 0, 0, player.whoAmI, 0f, 0f );
+			Projectile proj = Main.projectile[projId];
 
-			proj.timeLeft = WanderingHeartProjectile.GetDuration( mymod, modplayer );
+			proj.timeLeft = WanderingHeartProjectile.GetDuration( modplayer );
 		}
 
 		public static void GiveHeartItem( Player player, Mod mod ) {
-			int item_which = ItemHelpers.CreateItem( player.Center, mod.ItemType<WanderingHeartItem>(), 1, 16, 16 );
-			Item item = Main.item[ item_which ];
+			int itemWhich = ItemHelpers.CreateItem( player.Center, mod.ItemType<WanderingHeartItem>(), 1, 16, 16 );
+			Item item = Main.item[ itemWhich ];
 			item.noGrabDelay = 3;
 		}
 
@@ -48,14 +51,12 @@ namespace Injury.Projectiles {
 		}
 
 		public override void SetDefaults() {
-			var mymod = (InjuryMod)this.mod;
-
 			this.projectile.width = 16;
 			this.projectile.height = 16;
 			this.projectile.aiStyle = 14;
 			this.projectile.penetrate = -1;
 			this.projectile.netImportant = true;
-			this.projectile.timeLeft = WanderingHeartProjectile.GetDuration( mymod, null );
+			this.projectile.timeLeft = WanderingHeartProjectile.GetDuration( null );
 		}
 
 		////////////////
@@ -66,21 +67,21 @@ namespace Injury.Projectiles {
 			var myplayer = Main.player[proj.owner];
 			InjuryPlayer modplayer = myplayer != null && myplayer.active ? myplayer.GetModPlayer<InjuryPlayer>() : null;
 
-			int duration = WanderingHeartProjectile.GetDuration( mymod, modplayer );
-			int proj_x = (int)proj.position.X - proj.width;
-			int proj_y = (int)proj.position.Y - proj.height;
-			int proj_width = proj.width * 3;
-			int proj_height = proj.height * 3;
-			var proj_rect = new Rectangle( proj_x - proj.width, proj_y - proj.height, proj_width, proj_height );
+			int duration = WanderingHeartProjectile.GetDuration( modplayer );
+			int projX = (int)proj.position.X - proj.width;
+			int projY = (int)proj.position.Y - proj.height;
+			int projWidth = proj.width * 3;
+			int projHeight = proj.height * 3;
+			var projRect = new Rectangle( projX - proj.width, projY - proj.height, projWidth, projHeight );
 
 			// Preserve some bounciness
 			if( proj.velocity.Y < 0 ) { proj.velocity.Y *= 1.02f; }
 
 			if( (proj.timeLeft > 60 && proj.timeLeft % 2 == 0) || proj.timeLeft % 5 == 0 ) {
 				if( Main.rand.Next( 4 ) == 0 ) {
-					int spark_who = Dust.NewDust( proj.position, proj.width, proj.height, 55, 0f, 0f, 200, Color.White, 1f );
-					Main.dust[spark_who].velocity *= 0.1f;
-					Main.dust[spark_who].scale *= 0.4f;
+					int sparkWho = Dust.NewDust( proj.position, proj.width, proj.height, 55, 0f, 0f, 200, Color.White, 1f );
+					Main.dust[sparkWho].velocity *= 0.1f;
+					Main.dust[sparkWho].scale *= 0.4f;
 				}
 			}
 			
@@ -89,9 +90,9 @@ namespace Injury.Projectiles {
 					Player player = Main.player[i];
 					if( player == null || !player.active || player.dead ) { continue; }
 
-					Rectangle player_rect = new Rectangle( (int)player.position.X, (int)player.position.Y, player.width, player.height );
+					Rectangle playerRect = new Rectangle( (int)player.position.X, (int)player.position.Y, player.width, player.height );
 
-					if( proj_rect.Intersects( player_rect ) ) {
+					if( projRect.Intersects( playerRect ) ) {
 						WanderingHeartProjectile.GiveHeartItem( player, this.mod );
 						proj.Kill();
 						break;

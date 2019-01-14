@@ -57,7 +57,7 @@ namespace Injury.Items {
 
 
 		public override void OnCraft( Item item ) {
-			var mymod = InjuryMod.Instance;
+			var mymod = (InjuryMod)this.mod;
 			int odds = mymod.Config.VitaeCraftingAccidentOdds;
 
 			if( !Main.hardMode && Main.rand.Next( odds ) == 0 ) {

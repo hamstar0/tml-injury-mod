@@ -9,6 +9,7 @@ namespace Injury.Items.Consumables {
 		public static int Height = 22;
 
 
+
 		////////////////
 
 		public override void SetStaticDefaults() {
@@ -38,14 +39,14 @@ namespace Injury.Items.Consumables {
 		}
 
 		public override bool ConsumeItem( Player player ) {
-			var modplayer = player.GetModPlayer<InjuryPlayer>( this.mod );
-			bool can_heal = modplayer.Logic.CanTemporaryInjuryHeal( player, 20 );
+			var myplayer = player.GetModPlayer<InjuryPlayer>();
+			bool canHeal = myplayer.Logic.CanTemporaryInjuryHeal( player, 20 );
 
-			if( can_heal ) {
-				modplayer.Logic.TemporaryInjuryHeal( (InjuryMod)this.mod, player, 20 );
+			if( canHeal ) {
+				myplayer.Logic.TemporaryInjuryHeal( player, 20 );
 			}
 
-			return can_heal;
+			return canHeal;
 		}
 
 
@@ -54,6 +55,7 @@ namespace Injury.Items.Consumables {
 			myrecipe.AddRecipe();
 		}
 	}
+
 
 
 	

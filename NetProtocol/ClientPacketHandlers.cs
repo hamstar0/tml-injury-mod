@@ -29,11 +29,11 @@ namespace Injury.NetProtocol {
 			packet.Send();
 		}
 
-		public static void SendSpawnRequest( InjuryMod mymod, int npc_type ) {
+		public static void SendSpawnRequest( InjuryMod mymod, int npcType ) {
 			ModPacket packet = mymod.GetPacket();
 
 			packet.Write( (byte)InjuryNetProtocolTypes.NpcSpawnRequest );
-			packet.Write( (int)npc_type );
+			packet.Write( (int)npcType );
 			packet.Send();
 		}
 

@@ -26,7 +26,7 @@ namespace Injury {
 
 		public void DrawSubHealth( InjuryMod mymod, SpriteBatch sb ) {
 			var myplayer = Main.LocalPlayer.GetModPlayer<InjuryPlayer>();
-			float percent = myplayer.Logic.ComputeHarmBufferPercent( mymod, Main.LocalPlayer );
+			float percent = myplayer.Logic.ComputeHarmBufferPercent( Main.LocalPlayer );
 
 			this.DrawSubHealthAtPercent( sb, percent );
 		}
@@ -49,7 +49,7 @@ namespace Injury {
 		private void DrawSubHealthAtPercent( SpriteBatch sb, float percent ) {
 			int width = this.HeartTex.Width;
 			int height = (int)( (float)this.HeartTex.Height * percent );
-			var src_rect = new Rectangle( 0, 0, width, height );
+			var srcRect = new Rectangle( 0, 0, width, height );
 			int x = 0;
 			int y = 0;
 
@@ -57,11 +57,11 @@ namespace Injury {
 
 			var dest_rect = new Rectangle( x, y, width, height );
 
-			sb.Draw( this.HeartTex, dest_rect, src_rect, Color.Black * 0.5f );
+			sb.Draw( this.HeartTex, dest_rect, srcRect, Color.Black * 0.5f );
 		}
 
 
-		private void DrawHeartDropAnimationFrame( SpriteBatch sb, int frame, int maxframes ) {
+		private void DrawHeartDropAnimationFrame( SpriteBatch sb, int frame, int maxFrames ) {
 			int x = 0;
 			int y = 0;
 
@@ -69,8 +69,8 @@ namespace Injury {
 			y += frame * 2;
 
 			var rect = new Rectangle( x, y, this.HeartTex.Width, this.HeartTex.Height );
-			float percent_progress = frame / maxframes;
-			float alpha = 0.5f - (percent_progress * 0.5f);
+			float percentProgress = frame / maxFrames;
+			float alpha = 0.5f - (percentProgress * 0.5f);
 
 			sb.Draw( this.HeartTex, rect, Color.White * alpha );
 		}

@@ -3,7 +3,9 @@
 
 namespace Injury.Logic {
 	partial class InjuryLogic {
-		public void UpdateTemporaryHealth( InjuryMod mymod, Player player ) {
+		public void UpdateTemporaryHealth( Player player ) {
+			var mymod = InjuryMod.Instance;
+
 			// Erode temporary max hp
 			if( this.TemporaryMaxHp > 0 ) {
 				if( this.TemporaryMaxHpTimer == 0 ) {
@@ -12,7 +14,7 @@ namespace Injury.Logic {
 
 					if( player.statLifeMax > mymod.Config.LowestAllowedMaxHealth ) {
 						player.statLifeMax -= 5;
-						this.InjuryVisualFX( mymod, player );
+						this.InjuryVisualFX( player );
 					} else {
 						this.TemporaryMaxHpTimer = 0;
 						this.TemporaryMaxHp = 0;
@@ -33,7 +35,9 @@ namespace Injury.Logic {
 
 		////////////////
 
-		public bool TemporaryInjuryHeal( InjuryMod mymod, Player player, int amt ) {
+		public bool TemporaryInjuryHeal( Player player, int amt ) {
+			var mymod = InjuryMod.Instance;
+
 			player.statLifeMax += amt;
 			this.TemporaryMaxHp += amt;
 			this.TemporaryMaxHpTimer = mymod.Config.TemporaryMaxHpChunkDrainTickRate;

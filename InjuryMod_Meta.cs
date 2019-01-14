@@ -29,10 +29,10 @@ namespace Injury {
 				throw new Exception( "Cannot reset to default configs outside of single player." );
 			}
 
-			var new_config = new InjuryConfigData();
+			var newConfig = new InjuryConfigData();
 			//new_config.SetDefaults();
 
-			InjuryMod.Instance.ConfigJson.SetData( new_config );
+			InjuryMod.Instance.ConfigJson.SetData( newConfig );
 			InjuryMod.Instance.ConfigJson.SaveFile();
 		}
 

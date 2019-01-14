@@ -15,6 +15,7 @@ namespace Injury.Logic {
 		private int TemporaryMaxHpTimer = 0;
 
 
+
 		////////////////
 
 		public InjuryLogic() {
@@ -38,7 +39,9 @@ namespace Injury.Logic {
 
 		////////////////
 
-		public void UpdateBleeding( InjuryMod mymod, Player player ) {
+		public void UpdateBleeding( Player player ) {
+			var mymod = InjuryMod.Instance;
+
 			// Low hp (< %35) blood loss
 			if( (float)player.statLife < (float)player.statLifeMax2 * mymod.Config.MaxHpPercentRemainingUntilBleeding ) {
 				player.AddBuff( 30, 2 );
@@ -51,22 +54,24 @@ namespace Injury.Logic {
 
 		////////////////
 
-		public bool IsPowerfulBlow( InjuryMod mymod, Player player, float damage_with_crit ) {
-			return damage_with_crit > (float)player.statLifeMax2 * mymod.Config.MaxHpPercentLossForPowerfulBlowStagger;
+		public bool IsPowerfulBlow( Player player, float damageWithCrit ) {
+			var mymod = InjuryMod.Instance;
+			return damageWithCrit > (float)player.statLifeMax2 * mymod.Config.MaxHpPercentLossForPowerfulBlowStagger;
 		}
 
 
 		////////////////
 
-		public float ComputeFortifyScale( InjuryMod mymod, Player player ) {
+		public float ComputeFortifyScale( Player player ) {
+			var mymod = InjuryMod.Instance;
 			float amt = 1f;
 			float add = 0f;
-			var modplayer = player.GetModPlayer<InjuryPlayer>();
+			var myplayer = player.GetModPlayer<InjuryPlayer>();
 
 			if( player.FindBuffIndex( mymod.BuffType<FortifiedBuff>() ) != -1 ) {
 				add += mymod.Config.FortitudePotionHarmBufferMultiplier - 1f;
 			}
-			if( modplayer.LifeVestPresence > 0 ) {
+			if( myplayer.LifeVestPresence > 0 ) {
 				add += mymod.Config.LifeVestHarmBufferMultiplier - 1f;
 			}
 
@@ -80,11 +85,13 @@ namespace Injury.Logic {
 
 		////////////////
 			
-		public void ApplyRunImpairment( InjuryMod mymod, Player player ) {
+		public void ApplyRunImpairment( Player player ) {
+			var mymod = InjuryMod.Instance;
 			ImpactTraumaBuff.ApplyImpairment( mymod, player );
 		}
 
-		public void AfflictPowerfulBlowEffect( InjuryMod mymod, Player player ) {
+		public void AfflictPowerfulBlowEffect( Player player ) {
+			var mymod = InjuryMod.Instance;
 			player.AddBuff( mymod.BuffType( "ImpactTrauma" ), 60 * 3 );
 			player.AddBuff( BuffID.Weak, 60 * 6 );
 		}
@@ -92,25 +99,26 @@ namespace Injury.Logic {
 
 		////////////////
 
-		public void InjuryVisualFX( InjuryMod mymod, Player player ) {
+		public void InjuryVisualFX( Player player ) {
+			var mymod = InjuryMod.Instance;
 			Vector2 pos = player.position;
-			int max_blood = Main.rand.Next( 32, 48 );
+			int maxBlood = Main.rand.Next( 32, 48 );
 
 			if( player.gravDir < 0 ) {
 				pos.Y += player.height;
 			}
 
-			for( int i = 0; i < max_blood; i++ ) {
-				var vel_x = 2f - (Main.rand.NextFloat() * 4f);
-				var vel_y = 2f - (Main.rand.NextFloat() * 4f);
-				Dust.NewDust( pos, player.width, player.height, 5, vel_x, vel_y );
+			for( int i = 0; i < maxBlood; i++ ) {
+				var velX = 2f - (Main.rand.NextFloat() * 4f);
+				var velY = 2f - (Main.rand.NextFloat() * 4f);
+				Dust.NewDust( pos, player.width, player.height, 5, velX, velY );
 			}
 
 			mymod.HealthLoss.AnimateHeartDrop();
 		}
 
-		public void InjuryFullFX( InjuryMod mymod, Player player ) {
-			this.InjuryVisualFX( mymod, player );
+		public void InjuryFullFX( Player player ) {
+			this.InjuryVisualFX( player );
 			Main.PlaySound( SoundID.NPCHit16, player.position );
 		}
 	}

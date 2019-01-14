@@ -33,21 +33,21 @@ namespace Injury.Items.Accessories {
 
 		////////////////
 
-		public override void UpdateAccessory( Player player, bool hide_visual ) {
+		public override void UpdateAccessory( Player player, bool hideVisual ) {
 			var mymod = (InjuryMod)this.mod;
 			var modplayer = player.GetModPlayer<InjuryPlayer>( mymod );
-			var item_info = this.item.GetGlobalItem<BandOfLifeItemInfo>( mymod );
-			bool can_heal = player.statLifeMax < 500;
+			var itemInfo = this.item.GetGlobalItem<BandOfLifeItemInfo>( mymod );
+			bool canHeal = player.statLifeMax < 500;
 
 			HeartstringsItem.ApplyHeartstringEffect( player );
 
-			if( modplayer.Logic.HiddenHarmBuffer == 0 && item_info.HealBuffer < 5f ) {
-				item_info.HealBuffer += mymod.Config.BandOfAfterlifeInjuryHealPerSecond;
+			if( modplayer.Logic.HiddenHarmBuffer == 0 && itemInfo.HealBuffer < 5f ) {
+				itemInfo.HealBuffer += mymod.Config.BandOfAfterlifeInjuryHealPerSecond;
 			}
 
-			if( item_info.HealBuffer >= 5f && can_heal ) {
+			if( itemInfo.HealBuffer >= 5f && canHeal ) {
 				player.statLifeMax += 5;
-				item_info.HealBuffer -= 5f;
+				itemInfo.HealBuffer -= 5f;
 
 				Main.PlaySound( SoundID.Item4, player.position );
 			}
@@ -59,6 +59,7 @@ namespace Injury.Items.Accessories {
 			recipe.AddRecipe();
 		}
 	}
+
 
 
 

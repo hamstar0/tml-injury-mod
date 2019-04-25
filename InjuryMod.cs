@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using Injury.Items.Consumables;
 using HamstarHelpers.Components.Config;
 using HamstarHelpers.Components.Errors;
-using HamstarHelpers.Helpers.DotNetHelpers;
+using HamstarHelpers.Helpers.TmlHelpers.ModHelpers;
 
 
 namespace Injury {
@@ -53,7 +53,7 @@ namespace Injury {
 			}
 
 			if( this.Config.UpdateToLatestVersion() ) {
-				ErrorLogger.Log( "Injury updated to " + InjuryConfigData.ConfigVersion.ToString() );
+				ErrorLogger.Log( "Injury updated to " + this.Version.ToString() );
 				this.ConfigJson.SaveFile();
 			}
 		}
@@ -68,39 +68,24 @@ namespace Injury {
 
 
 		public override object Call( params object[] args ) {
-			if( args == null || args.Length == 0 ) { throw new HamstarException( "Undefined call type." ); }
-
-			string callType = args[0] as string;
-			if( callType == null ) { throw new HamstarException( "Invalid call type." ); }
-
-			var methodInfo = typeof( InjuryAPI ).GetMethod( callType );
-			if( methodInfo == null ) { throw new HamstarException( "Invalid call type " + callType ); }
-
-			var newArgs = new object[args.Length - 1];
-			Array.Copy( args, 1, newArgs, 0, args.Length - 1 );
-
-			try {
-				return ReflectionHelpers.SafeCall( methodInfo, null, newArgs );
-			} catch( Exception e ) {
-				throw new HamstarException( "Bad API call.", e );
-			}
+			return ModBoilerplateHelpers.HandleModCall( typeof( InjuryAPI ), args );
 		}
 
 		////////////////
 
-		public override void HandlePacket( BinaryReader reader, int player_who ) {
+		public override void HandlePacket( BinaryReader reader, int playerWho ) {
 			if( Main.netMode == 1 ) {
 				ClientPacketHandlers.RoutePacket( this, reader );
 			} else if( Main.netMode == 2 ) {
-				ServerPacketHandlers.RoutePacket( this, reader, player_who );
+				ServerPacketHandlers.RoutePacket( this, reader, playerWho );
 			}
 		}
 
 		////////////////
 
 		public override void AddRecipes() {
-			var life_crystal_recipe = new LifeCrystalViaVitaeItemRecipe( this );
-			life_crystal_recipe.AddRecipe();
+			var lifeCrystalRecipe = new LifeCrystalViaVitaeItemRecipe( this );
+			lifeCrystalRecipe.AddRecipe();
 		}
 
 
@@ -115,9 +100,9 @@ namespace Injury {
 
 					return true;
 				};
-				var interface_layer = new LegacyGameInterfaceLayer( "Injury: Heart Overlay", func, InterfaceScaleType.UI );
+				var interfaceLayer = new LegacyGameInterfaceLayer( "Injury: Heart Overlay", func, InterfaceScaleType.UI );
 
-				layers.Insert( idx + 1, interface_layer );
+				layers.Insert( idx + 1, interfaceLayer );
 			}
 		}
 	}

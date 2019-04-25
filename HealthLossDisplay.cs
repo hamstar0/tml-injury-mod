@@ -1,4 +1,5 @@
 ﻿using HamstarHelpers.Helpers.HudHelpers;
+using HamstarHelpers.Helpers.TmlHelpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -25,7 +26,7 @@ namespace Injury {
 		////////////////
 
 		public void DrawSubHealth( InjuryMod mymod, SpriteBatch sb ) {
-			var myplayer = Main.LocalPlayer.GetModPlayer<InjuryPlayer>();
+			var myplayer = (InjuryPlayer)TmlHelpers.SafelyGetModPlayer( Main.LocalPlayer, mymod, "InjuryPlayer" );
 			float percent = myplayer.Logic.ComputeHarmBufferPercent( Main.LocalPlayer );
 
 			this.DrawSubHealthAtPercent( sb, percent );
@@ -55,9 +56,9 @@ namespace Injury {
 
 			HudHelpers.GetTopHeartPosition( Main.LocalPlayer, ref x, ref y );
 
-			var dest_rect = new Rectangle( x, y, width, height );
+			var destRect = new Rectangle( x, y, width, height );
 
-			sb.Draw( this.HeartTex, dest_rect, srcRect, Color.Black * 0.5f );
+			sb.Draw( this.HeartTex, destRect, srcRect, Color.Black * 0.5f );
 		}
 
 

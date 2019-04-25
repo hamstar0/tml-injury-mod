@@ -4,7 +4,6 @@ using System;
 
 namespace Injury {
 	public class InjuryConfigData : ConfigurationDataBase {
-		public readonly static Version ConfigVersion = new Version( 2, 0, 2 );
 		public readonly static string ConfigFileName = "Injury Config.json"; 
 
 
@@ -79,11 +78,11 @@ namespace Injury {
 				new Version( this.VersionSinceUpdate ) :
 				new Version();
 
-			if( versSince >= InjuryConfigData.ConfigVersion ) {
+			if( versSince >= InjuryMod.Instance.Version ) {
 				return false;
 			}
 
-			this.VersionSinceUpdate = InjuryConfigData.ConfigVersion.ToString();
+			this.VersionSinceUpdate = InjuryMod.Instance.Version.ToString();
 
 			return true;
 		}

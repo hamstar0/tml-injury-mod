@@ -39,11 +39,11 @@ namespace Injury {
 
 		////////////////
 
-		public override void SyncPlayer( int to_who, int from_who, bool new_player ) {
+		public override void SyncPlayer( int toWho, int fromWho, bool newPlayer ) {
 			var mymod = (InjuryMod)this.mod;
 
 			if( Main.netMode == 1 ) {
-				if( new_player ) {
+				if( newPlayer ) {
 					ClientPacketHandlers.SendSettingsRequest( mymod );
 				}
 			}

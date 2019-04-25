@@ -54,19 +54,19 @@ namespace Injury.Items.Consumables {
 			bool canConsume = player.statLifeMax <= 495;
 			
 			if( canConsume ) {
-				int pot_sick = 60 * 30;
+				int potSick = 60 * 30;
 				int poisoned = 60 * 30;
 				int venomed = 60 * 15;
 
-				int pot_sick_idx = player.FindBuffIndex( BuffID.PotionSickness );
-				int poisoned_idx = player.FindBuffIndex( BuffID.Poisoned );
-				int venomed_idx = player.FindBuffIndex( BuffID.Venom );
+				int potSickIdx = player.FindBuffIndex( BuffID.PotionSickness );
+				int poisonedIdx = player.FindBuffIndex( BuffID.Poisoned );
+				int venomedIdx = player.FindBuffIndex( BuffID.Venom );
 
-				if( pot_sick_idx != -1 ) { pot_sick += player.buffTime[pot_sick_idx]; }
-				if( poisoned_idx != -1 ) { poisoned += player.buffTime[poisoned_idx]; }
-				if( venomed_idx != -1 ) { venomed += player.buffTime[venomed_idx]; }
+				if( potSickIdx != -1 ) { potSick += player.buffTime[potSickIdx]; }
+				if( poisonedIdx != -1 ) { poisoned += player.buffTime[poisonedIdx]; }
+				if( venomedIdx != -1 ) { venomed += player.buffTime[venomedIdx]; }
 
-				player.AddBuff( BuffID.PotionSickness, pot_sick );
+				player.AddBuff( BuffID.PotionSickness, potSick );
 				player.AddBuff( BuffID.Poisoned, poisoned );
 				player.AddBuff( BuffID.Venom, venomed );
 

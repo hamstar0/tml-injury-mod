@@ -1,7 +1,6 @@
 author = hamstar
-version = 2.0.4.2
+version = 2.1.0
 displayName = Injury
-modReferences = HamstarHelpers@4.3.0
+modReferences = HamstarHelpers@5.0.0
 buildIgnore = *.csproj, *.user, *.bat, obj\*, bin\*, .vs\*, .git\*
-languageVersion = 6
 homepage = http://forums.terraria.org/index.php?threads/lives-injury.52287/

@@ -1,125 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="C:\Users\Spinach\Documents\My Games\Terraria\ModLoader\references\tModLoader.targets" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AA31119F-63DC-4502-B01D-C265ADB56E70}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Injury</RootNamespace>
     <AssemblyName>Injury</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>net452</TargetFramework>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="HamstarHelpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Helpers\HamstarHelpers\bin\Release\HamstarHelpers.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\References\Libraries\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.Xna.Framework" />
-    <Reference Include="Microsoft.Xna.Framework.Game" />
-    <Reference Include="Microsoft.Xna.Framework.Graphics" />
-    <Reference Include="Terraria">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Terraria\Terraria.exe</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="API.cs" />
-    <Compile Include="Buffs\FortifiedBuff.cs" />
-    <Compile Include="Buffs\ImpactTraumaBuff.cs" />
-    <Compile Include="Config.cs" />
-    <Compile Include="HealthLossDisplay.cs" />
-    <Compile Include="InjuryMod_Meta.cs" />
-    <Compile Include="Items\Accessories\LifeVestItem.cs" />
-    <Compile Include="Items\WanderingHeartItem.cs" />
-    <Compile Include="Logic\InjuryLogic_Harm.cs" />
-    <Compile Include="Logic\InjuryLogic.cs" />
-    <Compile Include="InjuryMod.cs" />
-    <Compile Include="InjuryPlayer.cs" />
-    <Compile Include="Items\Accessories\BandOfAfterlifeItem.cs" />
-    <Compile Include="Items\Accessories\HeartstringsItem.cs" />
-    <Compile Include="Items\Accessories\BandOfLifeItem.cs" />
-    <Compile Include="Items\Consumables\FortitudePotionItem.cs" />
-    <Compile Include="Items\Consumables\EnrichedVitaeItem.cs" />
-    <Compile Include="Items\Consumables\LifeCrystalItem.cs" />
-    <Compile Include="Items\VitaeItem.cs" />
-    <Compile Include="Items\BrokenHeartItem.cs" />
-    <Compile Include="Items\Consumables\CrackedLifeCrystalItem.cs" />
-    <Compile Include="Logic\InjuryLogic_TempMaxLife.cs" />
-    <Compile Include="NetProtocol\ClientPacketHandlers.cs" />
-    <Compile Include="NetProtocol\NetProtocolTypes.cs" />
-    <Compile Include="NetProtocol\ServerPacketHandlers.cs" />
-    <Compile Include="Projectiles\BleedingHeartProjectile.cs" />
-    <Compile Include="Projectiles\WanderingHeartProjectile.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Buffs\FortifiedBuff.png" />
-    <Content Include="Buffs\ImpactTraumaBuff.png" />
-    <Content Include="build.txt" />
-    <Content Include="description.txt" />
-    <Content Include="icon.png" />
-    <Content Include="Items\Accessories\BandOfAfterlifeItem.png" />
-    <Content Include="Items\Accessories\BandOfAfterlifeItem_HandsOn.png" />
-    <Content Include="Items\Accessories\LifeVestItem.png" />
-    <Content Include="Items\Accessories\LifeVestItem_Neck.png" />
-    <Content Include="Items\Accessories\HeartstringsItem.png" />
-    <Content Include="Items\Accessories\BandOfLifeItem.png" />
-    <Content Include="Items\Accessories\BandOfLifeItem_HandsOn.png" />
-    <Content Include="Items\Consumables\FortitudePotionItem.png" />
-    <Content Include="Items\Consumables\EnrichedVitaeItem.png" />
-    <Content Include="Items\BrokenHeartItem.png" />
-    <Content Include="Items\Consumables\CrackedLifeCrystalItem.png" />
-    <Content Include="Items\VitaeItem.png" />
-    <Content Include="Items\WanderingHeartItem.png" />
-    <Content Include="Projectiles\BleedingHeartProjectile.png" />
-    <Content Include="Projectiles\WanderingHeartProjectile.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="LICENSE" />
-    <None Include="README.md" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>"C:\Program Files (x86)\Steam\steamapps\common\terraria\tModLoaderServer.exe" -build "$(ProjectDir)\"</PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
+  <Target Name="BuildMod" AfterTargets="Build">
+    <Exec Command="&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <ItemGroup>
+    <None Remove=".gitattributes" />
+    <None Remove=".gitignore" />
+    <None Remove="CrackedLifeCrystal.pdn" />
+    <None Remove="desktop.ini" />
+    <None Remove="icon.pdn" />
+    <None Remove="logo tiny.png" />
+    <None Remove="tiny logo.png" />
+    <None Remove="title.pdn" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="HamstarHelpers">
+      <HintPath>..\..\Mod Helpers\v5 (tML11)\HamstarHelpers\bin\Release\HamstarHelpers.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

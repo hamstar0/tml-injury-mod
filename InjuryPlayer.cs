@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.Helpers.PlayerHelpers;
+﻿using HamstarHelpers.Helpers.Players;
 using Injury.Logic;
 using Injury.NetProtocol;
 using Terraria;
@@ -39,28 +39,11 @@ namespace Injury {
 
 		////////////////
 
-		public override void SyncPlayer( int toWho, int fromWho, bool newPlayer ) {
-			var mymod = (InjuryMod)this.mod;
-
-			if( Main.netMode == 1 ) {
-				if( newPlayer ) {
-					ClientPacketHandlers.SendSettingsRequest( mymod );
-				}
-			}
-		}
-
-
 		public override void OnEnterWorld( Player player ) {
 			if( player.whoAmI != Main.myPlayer ) { return; }
 			if( this.player.whoAmI != Main.myPlayer ) { return; }
 
 			var mymod = (InjuryMod)this.mod;
-
-			if( Main.netMode == 0 ) {   // Not server
-				if( !mymod.ConfigJson.LoadFile() ) {
-					mymod.ConfigJson.SaveFile();
-				}
-			}
 		}
 
 		////////////////
@@ -108,7 +91,7 @@ namespace Injury {
 			if( this.player.velocity.Y == 0f ) {
 				int dmg = PlayerHelpers.ComputeImpendingFallDamage( this.player );
 				if( dmg != 0 ) {
-					this.player.AddBuff( mod.BuffType("ImpactTrauma"), dmg * mymod.Config.FallLimpDurationMultiplier );
+					this.player.AddBuff( mod.BuffType("ImpactTrauma"), (int)((float)dmg * mymod.Config.FallLimpDurationMultiplier) );
 				}
 			}
 

@@ -5,9 +5,11 @@ using Terraria.ModLoader;
 namespace Injury.Items.Consumables {
 	class LifeCrystalViaVitaeItemRecipe : ModRecipe {
 		public LifeCrystalViaVitaeItemRecipe( InjuryMod mymod ) : base( mymod ) {
-			this.AddTile( TileID.WorkBenches ); 
+			this.AddTile( TileID.WorkBenches );
 
-			this.AddIngredient( mymod.GetItem<VitaeItem>(), mymod.Config.VitaePerLifeCrystal );
+			if( mymod.Config.VitaePerLifeCrystal > 0 ) {
+				this.AddIngredient( mymod.GetItem<VitaeItem>(), mymod.Config.VitaePerLifeCrystal );
+			}
 			if( mymod.Config.LifeCrystalNeedsEvilBossDrops ) {
 				this.AddRecipeGroup( "HamstarHelpers:EvilBossDrops", 4 );
 			}

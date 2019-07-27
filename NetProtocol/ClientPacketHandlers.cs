@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using HamstarHelpers.Helpers.Debug;
+using System.IO;
 using Terraria.ModLoader;
 
 
@@ -8,11 +9,8 @@ namespace Injury.NetProtocol {
 			InjuryNetProtocolTypes protocol = (InjuryNetProtocolTypes)reader.ReadByte();
 
 			switch( protocol ) {
-			case InjuryNetProtocolTypes.ModSettings:
-				ClientPacketHandlers.ReceiveSettings( mymod, reader );
-				break;
 			default:
-				ErrorLogger.Log( "Invalid packet protocol: " + protocol );
+				LogHelpers.Log( "Invalid packet protocol: " + protocol );
 				break;
 			}
 		}
@@ -21,13 +19,6 @@ namespace Injury.NetProtocol {
 		////////////////////////////////
 		// Senders
 		////////////////////////////////
-
-		public static void SendSettingsRequest( InjuryMod mymod ) {
-			ModPacket packet = mymod.GetPacket();
-
-			packet.Write( (byte)InjuryNetProtocolTypes.ModSettingsRequest );
-			packet.Send();
-		}
 
 		public static void SendSpawnRequest( InjuryMod mymod, int npcType ) {
 			ModPacket packet = mymod.GetPacket();
@@ -42,10 +33,5 @@ namespace Injury.NetProtocol {
 		////////////////////////////////
 		// Recipients
 		////////////////////////////////
-
-		private static void ReceiveSettings( InjuryMod mymod, BinaryReader reader ) {
-			bool success;
-			mymod.ConfigJson.DeserializeMe( reader.ReadString(), out success );
-		}
 	}
 }

@@ -1,5 +1,5 @@
-﻿using HamstarHelpers.Helpers.HudHelpers;
-using HamstarHelpers.Helpers.TmlHelpers;
+﻿using HamstarHelpers.Helpers.HUD;
+using HamstarHelpers.Helpers.TModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -19,7 +19,7 @@ namespace Injury {
 			this.IsAnimatingHeartDrop = false;
 			
 			if( Main.netMode != 2 ) {   // Not server
-				this.HeartTex = ModLoader.GetTexture( "Terraria/Heart" );
+				this.HeartTex = ModContent.GetTexture( "Terraria/Heart" );
 			}
 		}
 
@@ -54,7 +54,7 @@ namespace Injury {
 			int x = 0;
 			int y = 0;
 
-			HudHelpers.GetTopHeartPosition( Main.LocalPlayer, ref x, ref y );
+			HUDHealthBarHelpers.GetTopHeartPosition( Main.LocalPlayer.statLife, ref x, ref y );
 
 			var destRect = new Rectangle( x, y, width, height );
 
@@ -66,7 +66,7 @@ namespace Injury {
 			int x = 0;
 			int y = 0;
 
-			HudHelpers.GetTopHeartPosition( Main.LocalPlayer, ref x, ref y );
+			HUDHealthBarHelpers.GetTopHeartPosition( Main.LocalPlayer.statLife, ref x, ref y );
 			y += frame * 2;
 
 			var rect = new Rectangle( x, y, this.HeartTex.Width, this.HeartTex.Height );

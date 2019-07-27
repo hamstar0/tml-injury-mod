@@ -79,16 +79,20 @@ namespace Injury.Items.Consumables {
 		////////////////
 
 		public override void AddRecipes() {
-			var myrecipe = new AmbrosiaItemRecipe( this );
-			myrecipe.AddRecipe();
+			var mymod = (InjuryMod)this.mod;
+
+			if( mymod.Config.EnrichedVitaeQuantityPerCraft > 0 ) {
+				var myrecipe = new EnrichedVitaeItemRecipe( this );
+				myrecipe.AddRecipe();
+			}
 		}
 	}
 
 
 
 	
-	class AmbrosiaItemRecipe : ModRecipe {
-		public AmbrosiaItemRecipe( EnrichedVitaeItem myitem ) : base( myitem.mod ) {
+	class EnrichedVitaeItemRecipe : ModRecipe {
+		public EnrichedVitaeItemRecipe( EnrichedVitaeItem myitem ) : base( myitem.mod ) {
 			var mymod = (InjuryMod)this.mod;
 
 			this.AddTile( TileID.Bottles );

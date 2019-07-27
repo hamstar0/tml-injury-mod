@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.Helpers.DebugHelpers;
+﻿using HamstarHelpers.Helpers.Debug;
 using Injury.Buffs;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -69,10 +69,10 @@ namespace Injury.Logic {
 			var myplayer = player.GetModPlayer<InjuryPlayer>();
 
 			if( player.FindBuffIndex( mymod.BuffType<FortifiedBuff>() ) != -1 ) {
-				add += mymod.Config.FortitudePotionHarmBufferMultiplier - 1f;
+				add += mymod.Config.FortitudePotionHarmAddedBufferMultiplier - 1f;
 			}
 			if( myplayer.LifeVestPresence > 0 ) {
-				add += mymod.Config.LifeVestHarmBufferMultiplier - 1f;
+				add += mymod.Config.LifeVestHarmAddedBufferMultiplier - 1f;
 			}
 
 			if( mymod.IsDebugInfoMode() ) {

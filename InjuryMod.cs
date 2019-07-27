@@ -6,20 +6,16 @@ using System;
 using Terraria.UI;
 using System.Collections.Generic;
 using Injury.Items.Consumables;
-using HamstarHelpers.Components.Config;
-using HamstarHelpers.Components.Errors;
-using HamstarHelpers.Helpers.TmlHelpers.ModHelpers;
-
+using HamstarHelpers.Helpers.TModLoader.Mods;
 
 namespace Injury {
 	partial class InjuryMod : Mod {
 		public static InjuryMod Instance { get; private set; }
-		
+
 
 		////////////////
 
-		public JsonConfig<InjuryConfigData> ConfigJson { get; private set; }
-		public InjuryConfigData Config { get { return this.ConfigJson.Data; } }
+		public InjuryConfig Config => this.GetConfig<InjuryConfig>();
 
 		public HealthLossDisplay HealthLoss { get; private set; }
 
@@ -27,35 +23,13 @@ namespace Injury {
 		////////////////
 
 		public InjuryMod() {
-			this.Properties = new ModProperties() {
-				Autoload = true,
-				AutoloadGores = true,
-				AutoloadSounds = true
-			};
-
-			this.ConfigJson = new JsonConfig<InjuryConfigData>( InjuryConfigData.ConfigFileName,
-				ConfigurationDataBase.RelativePath, new InjuryConfigData() );
+			InjuryMod.Instance = this;
 		}
 
 		////////////////
 
 		public override void Load() {
-			InjuryMod.Instance = this;
-
 			this.HealthLoss = new HealthLossDisplay();
-
-			this.LoadConfig();
-		}
-
-		private void LoadConfig() {
-			if( !this.ConfigJson.LoadFile() ) {
-				this.ConfigJson.SaveFile();
-			}
-
-			if( this.Config.UpdateToLatestVersion() ) {
-				ErrorLogger.Log( "Injury updated to " + this.Version.ToString() );
-				this.ConfigJson.SaveFile();
-			}
 		}
 
 
@@ -65,7 +39,6 @@ namespace Injury {
 
 
 		////////////////
-
 
 		public override object Call( params object[] args ) {
 			return ModBoilerplateHelpers.HandleModCall( typeof( InjuryAPI ), args );

@@ -1,4 +1,4 @@
-﻿using HamstarHelpers.Helpers.RecipeHelpers;
+﻿using HamstarHelpers.Helpers.Recipes;
 using Injury.NetProtocol;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -29,10 +29,15 @@ namespace Injury.Items {
 
 
 		public override void AddRecipes() {
+			var mymod = (InjuryMod)this.mod;
+
 			var myrecipe = new VitaeViaBrokenHeartItemRecipe( this );
 			myrecipe.AddRecipe();
-			var myotherrecipe = new VitaeViaLifeCrystalItemRecipe( this );
-			myotherrecipe.AddRecipe();
+
+			if( mymod.Config.VitaePerLifeCrystal > 0 ) {
+				var myotherrecipe = new VitaeViaLifeCrystalItemRecipe( this );
+				myotherrecipe.AddRecipe();
+			}
 		}
 	}
 
@@ -60,7 +65,7 @@ namespace Injury.Items {
 			var mymod = (InjuryMod)this.mod;
 			int odds = mymod.Config.VitaeCraftingAccidentOdds;
 
-			if( !Main.hardMode && Main.rand.Next( odds ) == 0 ) {
+			if( !Main.hardMode && (odds == 0 || Main.rand.Next( odds ) == 0) ) {
 				Main.LocalPlayer.AddBuff( BuffID.Cursed, 60 * 15 ); // 15 seconds of curse
 
 				if( Main.netMode == 1 ) {

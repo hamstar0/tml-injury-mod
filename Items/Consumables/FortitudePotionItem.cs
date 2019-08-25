@@ -51,7 +51,7 @@ namespace Injury.Items.Consumables {
 			this.AddIngredient( ItemID.BottledWater, 1 );
 			this.AddIngredient( this.mod.GetItem<VitaeItem>(), 1 );
 			this.AddIngredient( ItemID.Bone, 1 );
-			this.AddRecipeGroup( "HamstarHelpers:EvilBossDrops", 1 );
+			this.AddRecipeGroup( "ModHelpers:EvilBossDrops", 1 );
 			
 			this.SetResult( myitem );
 		}

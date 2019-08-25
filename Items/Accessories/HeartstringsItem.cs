@@ -60,7 +60,7 @@ namespace Injury.Items.Accessories {
 		public HeartstringsItemRecipe( HeartstringsItem myitem ) : base( myitem.mod ) {
 			this.AddTile( TileID.TinkerersWorkbench );
 			this.AddIngredient( ItemID.BeeWax, 20 );
-			this.AddRecipeGroup( "HamstarHelpers:EvilBiomeLightPet", 1 );
+			this.AddRecipeGroup( "ModHelpers:EvilBiomeLightPet", 1 );
 			this.AddIngredient( ItemID.RainbowString, 1 );
 			this.SetResult( myitem );
 		}

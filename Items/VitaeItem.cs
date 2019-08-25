@@ -48,7 +48,7 @@ namespace Injury.Items {
 			this.AddTile( TileID.DemonAltar );
 
 			this.AddIngredient( this.mod.GetItem<BrokenHeartItem>(), 1 );
-			this.AddRecipeGroup( "HamstarHelpers:VanillaAnimals", 1 );
+			this.AddRecipeGroup( "ModHelpers:VanillaAnimals", 1 );
 			this.AddIngredient( ItemID.Mushroom, 1 );
 
 			this.SetResult( myitem, 1 );

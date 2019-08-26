@@ -11,7 +11,7 @@ namespace Injury.Items.Consumables {
 				this.AddIngredient( mymod.GetItem<VitaeItem>(), mymod.Config.VitaePerLifeCrystal );
 			}
 			if( mymod.Config.LifeCrystalNeedsEvilBossDrops ) {
-				this.AddRecipeGroup( "ModHelpers:EvilBossDrops", 4 );
+				this.AddRecipeGroup( "ModHelpers:EvilBiomeBossDrops", 4 );
 			}
 			this.AddIngredient( ItemID.RubyGemsparkBlock, 10 );
 

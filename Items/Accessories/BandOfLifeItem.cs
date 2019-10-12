@@ -33,8 +33,8 @@ namespace Injury.Items.Accessories {
 
 		public override void UpdateAccessory( Player player, bool hideVisual ) {
 			var mymod = (InjuryMod)this.mod;
-			var modplayer = player.GetModPlayer<InjuryPlayer>( mymod );
-			var itemInfo = this.item.GetGlobalItem<BandOfLifeItemInfo>( mymod );
+			var modplayer = ModContent.GetInstance<InjuryPlayer>();
+			var itemInfo = ModContent.GetInstance<BandOfLifeItemInfo>();
 			bool canHeal = player.statLifeMax < 400;
 
 			if( modplayer.Logic.HiddenHarmBuffer == 0 && itemInfo.HealBuffer < 5f ) {
@@ -65,7 +65,7 @@ namespace Injury.Items.Accessories {
 			this.AddTile( TileID.WorkBenches );
 			this.AddIngredient( ItemID.BandofRegeneration, 1 );
 			this.AddIngredient( ItemID.PixieDust, 10 );
-			this.AddIngredient( this.mod.GetItem<VitaeItem>(), 10 );
+			this.AddIngredient( ModContent.GetInstance<VitaeItem>(), 10 );
 			this.SetResult( myitem );
 		}
 

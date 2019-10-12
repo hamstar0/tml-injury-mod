@@ -3,7 +3,7 @@ using System;
 
 
 namespace Injury {
-	partial class InjuryMod : Mod {
+	public partial class InjuryMod : Mod {
 		public static string GithubUserName => "hamstar0";
 		public static string GithubProjectName => "tml-injury-mod";
 

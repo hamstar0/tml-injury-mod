@@ -3,6 +3,7 @@ using Injury.Buffs;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
 
@@ -68,7 +69,7 @@ namespace Injury.Logic {
 			float add = 0f;
 			var myplayer = player.GetModPlayer<InjuryPlayer>();
 
-			if( player.FindBuffIndex( mymod.BuffType<FortifiedBuff>() ) != -1 ) {
+			if( player.FindBuffIndex( ModContent.BuffType<FortifiedBuff>() ) != -1 ) {
 				add += mymod.Config.FortitudePotionHarmAddedBufferMultiplier - 1f;
 			}
 			if( myplayer.LifeVestPresence > 0 ) {

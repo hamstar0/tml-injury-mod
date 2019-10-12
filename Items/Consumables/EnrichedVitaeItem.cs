@@ -97,8 +97,8 @@ namespace Injury.Items.Consumables {
 
 			this.AddTile( TileID.Bottles );
 
-			this.AddIngredient( mymod.GetItem<WanderingHeartItem>(), 2 );
-			this.AddIngredient( mymod.GetItem<VitaeItem>(), 2 );
+			this.AddIngredient( ModContent.GetInstance<WanderingHeartItem>(), 2 );
+			this.AddIngredient( ModContent.GetInstance<VitaeItem>(), 2 );
 			this.AddRecipeGroup( "ModHelpers:VanillaStrangePlants", 1 );
 
 			this.SetResult( myitem, mymod.Config.EnrichedVitaeQuantityPerCraft );

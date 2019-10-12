@@ -60,7 +60,7 @@ namespace Injury.Items.Accessories {
 			this.AddIngredient( ItemID.Silk, 10 );
 			this.AddIngredient( ItemID.Bubble, 50 );
 			this.AddIngredient( ItemID.ShroomiteBar, 5 );
-			this.AddIngredient( this.mod.GetItem<EnrichedVitaeItem>(), 10 );
+			this.AddIngredient( ModContent.GetInstance<EnrichedVitaeItem>(), 10 );
 			this.SetResult( myitem );
 		}
 

@@ -35,8 +35,8 @@ namespace Injury.Items.Accessories {
 
 		public override void UpdateAccessory( Player player, bool hideVisual ) {
 			var mymod = (InjuryMod)this.mod;
-			var modplayer = player.GetModPlayer<InjuryPlayer>( mymod );
-			var itemInfo = this.item.GetGlobalItem<BandOfLifeItemInfo>( mymod );
+			var modplayer = ModContent.GetInstance<InjuryPlayer>();
+			var itemInfo = ModContent.GetInstance<BandOfLifeItemInfo>();
 			bool canHeal = player.statLifeMax < 500;
 
 			HeartstringsItem.ApplyHeartstringEffect( player );
@@ -67,9 +67,9 @@ namespace Injury.Items.Accessories {
 		public BandOfAfterlifeItemRecipe( BandOfAfterlifeItem myitem ) : base( myitem.mod ) {
 			this.AddTile( TileID.WorkBenches );
 
-			this.AddIngredient( this.mod.GetItem<BandOfLifeItem>(), 1 );
-			this.AddIngredient( this.mod.GetItem<HeartstringsItem>(), 1 );
-			this.AddIngredient( this.mod.GetItem<EnrichedVitaeItem>(), 20 );
+			this.AddIngredient( ModContent.GetInstance<BandOfLifeItem>(), 1 );
+			this.AddIngredient( ModContent.GetInstance<HeartstringsItem>(), 1 );
+			this.AddIngredient( ModContent.GetInstance<EnrichedVitaeItem>(), 20 );
 
 			this.SetResult( myitem );
 		}

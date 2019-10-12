@@ -8,16 +8,17 @@ using System.Collections.Generic;
 using Injury.Items.Consumables;
 using HamstarHelpers.Helpers.TModLoader.Mods;
 
+
 namespace Injury {
-	partial class InjuryMod : Mod {
+	public partial class InjuryMod : Mod {
 		public static InjuryMod Instance { get; private set; }
 
 
 		////////////////
 
-		public InjuryConfig Config => this.GetConfig<InjuryConfig>();
+		public InjuryConfig Config => ModContent.GetInstance<InjuryConfig>();
 
-		public HealthLossDisplay HealthLoss { get; private set; }
+		internal HealthLossDisplay HealthLoss { get; private set; }
 
 
 		////////////////

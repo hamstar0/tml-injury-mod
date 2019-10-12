@@ -66,7 +66,7 @@ namespace Injury.Items.Consumables {
 			this.AddTile( TileID.WorkBenches );
 
 			if( mymod.Config.VitaePerCrackedLifeCrystal > 0 ) {
-				this.AddIngredient( mymod.GetItem<VitaeItem>(), mymod.Config.VitaePerCrackedLifeCrystal );
+				this.AddIngredient( ModContent.GetInstance<VitaeItem>(), mymod.Config.VitaePerCrackedLifeCrystal );
 			}
 			this.AddIngredient( ItemID.RubyGemsparkBlock, 10 );
 

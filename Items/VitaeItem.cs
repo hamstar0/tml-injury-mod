@@ -47,7 +47,7 @@ namespace Injury.Items {
 		public VitaeViaBrokenHeartItemRecipe( VitaeItem myitem ) : base( myitem.mod ) {
 			this.AddTile( TileID.DemonAltar );
 
-			this.AddIngredient( this.mod.GetItem<BrokenHeartItem>(), 1 );
+			this.AddIngredient( ModContent.GetInstance<BrokenHeartItem>(), 1 );
 			this.AddRecipeGroup( "ModHelpers:VanillaAnimals", 1 );
 			this.AddIngredient( ItemID.Mushroom, 1 );
 

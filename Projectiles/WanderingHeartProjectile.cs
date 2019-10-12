@@ -22,7 +22,7 @@ namespace Injury.Projectiles {
 		public static void Spawn( Player player ) {
 			var mymod = InjuryMod.Instance;
 			var modplayer = player.GetModPlayer<InjuryPlayer>();
-			int projType = mymod.ProjectileType<WanderingHeartProjectile>();
+			int projType = ModContent.ProjectileType<WanderingHeartProjectile>();
 			float velX = 0, velY = 0;
 
 			do {
@@ -37,7 +37,7 @@ namespace Injury.Projectiles {
 		}
 
 		public static void GiveHeartItem( Player player, Mod mod ) {
-			int itemWhich = ItemHelpers.CreateItem( player.Center, mod.ItemType<WanderingHeartItem>(), 1, 16, 16 );
+			int itemWhich = ItemHelpers.CreateItem( player.Center, ModContent.ItemType<WanderingHeartItem>(), 1, 16, 16 );
 			Item item = Main.item[ itemWhich ];
 			item.noGrabDelay = 3;
 		}

@@ -8,7 +8,7 @@ namespace Injury.Items.Consumables {
 			this.AddTile( TileID.WorkBenches );
 
 			if( mymod.Config.VitaePerLifeCrystal > 0 ) {
-				this.AddIngredient( mymod.GetItem<VitaeItem>(), mymod.Config.VitaePerLifeCrystal );
+				this.AddIngredient( ModContent.GetInstance<VitaeItem>(), mymod.Config.VitaePerLifeCrystal );
 			}
 			if( mymod.Config.LifeCrystalNeedsEvilBossDrops ) {
 				this.AddRecipeGroup( "ModHelpers:EvilBiomeBossDrops", 4 );

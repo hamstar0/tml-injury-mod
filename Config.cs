@@ -5,6 +5,12 @@ using Terraria.ModLoader.Config;
 
 
 namespace Injury {
+	class MyFloatInputElement : FloatInputElement { }
+
+
+
+
+
 	public class InjuryConfig : ModConfig {
 		public override ConfigScope Mode => ConfigScope.ServerSide;
 
@@ -24,17 +30,17 @@ namespace Injury {
 
 		[Range( 0f, 1f )]
 		[DefaultValue( 0.075f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float PercentOfDamageToUseAsInjury = 0.075f;
 
 		[Range( 0f, 1000f )]
 		[DefaultValue( 0f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float AdditionalInjuryPerDamagingHit = 0f;
 
 		[Range( 0f, 1000f )]
 		[DefaultValue( 5f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float HarmBufferCapacityBeforeReceivingInjury = 5f;
 
 		[Range( 0, 1000 )]
@@ -44,17 +50,17 @@ namespace Injury {
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 9f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float FallLimpDurationMultiplier = 9f;
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 0.45f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float FallLimpSpeedMultiplier = 0.45f;
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 0.35f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float FallLimpJumpMultiplier = 0.35f;
 
 
@@ -65,17 +71,17 @@ namespace Injury {
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 1f / ( 60f * 75f ) )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float InjuryBufferHealPerSecond = 1f / (60f * 75f);  // 1 hp every 75 seconds
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 1f / ( 60f * 30f ) )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float BandOfLifeInjuryHealPerSecond = 1f / (60f * 30f); // 1 hp every 30 seconds
 
 		[Range( 0f, 100f )]
 		[DefaultValue( 1f / ( 60f * 45f ) )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float BandOfAfterlifeInjuryHealPerSecond = 1f / (60f * 45f); // 1 hp every 45 seconds
 
 
@@ -148,18 +154,18 @@ namespace Injury {
 
 		[Range( 0f, 1f )]
 		[DefaultValue( 0.35f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float MaxHpPercentRemainingUntilBleeding = 0.35f;
 
 		[Range( 0f, 1f )]
 		[DefaultValue( 0.25f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float MaxHpPercentLossForPowerfulBlowStagger = 0.25f;
 
 
 		[Range( 0f, 1f )]
 		[DefaultValue( 0.20f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float MaxHpPercentAsDamageAtFullHealthUntilHarm = 0.20f; // "Adventurer's grace"
 
 
@@ -176,12 +182,12 @@ namespace Injury {
 
 		[Range( 1f, 100f )]
 		[DefaultValue( 1.4f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float FortitudePotionHarmAddedBufferMultiplier = 1.4f;
 
 		[Range( 1f, 100f )]
 		[DefaultValue( 1.7f )]
-		[CustomModConfigItem( typeof( FloatInputElement ) )]
+		[CustomModConfigItem( typeof( MyFloatInputElement ) )]
 		public float LifeVestHarmAddedBufferMultiplier = 1.7f;
 
 

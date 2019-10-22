@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using HamstarHelpers.Helpers.TModLoader;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -33,8 +34,8 @@ namespace Injury.Items.Accessories {
 
 		public override void UpdateAccessory( Player player, bool hideVisual ) {
 			var mymod = (InjuryMod)this.mod;
-			var modplayer = ModContent.GetInstance<InjuryPlayer>();
-			var itemInfo = ModContent.GetInstance<BandOfLifeItemInfo>();
+			var modplayer = TmlHelpers.SafelyGetModPlayer<InjuryPlayer>( player );
+			var itemInfo = this.item.GetGlobalItem<BandOfLifeItemInfo>();
 			bool canHeal = player.statLifeMax < 400;
 
 			if( modplayer.Logic.HiddenHarmBuffer == 0 && itemInfo.HealBuffer < 5f ) {

@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using HamstarHelpers.Helpers.TModLoader;
+using Terraria;
 using Terraria.ModLoader;
 
 
@@ -15,8 +16,8 @@ namespace Injury.Buffs {
 		public override void Update( Player player, ref int buffIndex ) {
 			if( player.mount.Active ) { return; }
 
-			InjuryPlayer info = ModContent.GetInstance<InjuryPlayer>();
-			info.IsImpaired = true;
+			var myplayer = TmlHelpers.SafelyGetModPlayer<InjuryPlayer>( player );
+			myplayer.IsImpaired = true;
 		}
 
 
